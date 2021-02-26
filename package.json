@@ -1,6 +1,6 @@
 {
-  "name": "my-midway-project",
-  "version": "1.0.0",
+  "name": "sf-midway-admin",
+  "version": "0.0.1",
   "description": "",
   "private": true,
   "dependencies": {
@@ -49,8 +49,8 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/hackycy/sf-midway-admin"
   },
-  "author": "",
+  "author": "hackycy",
   "license": "MIT"
 }
