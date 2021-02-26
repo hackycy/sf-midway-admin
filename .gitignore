@@ -13,4 +13,5 @@ run/
 *.un~
 .tsbuildinfo
 .tsbuildinfo.*
+src/config/config.local.*
 
