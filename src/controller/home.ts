@@ -4,7 +4,7 @@ import { Controller, Get, Provide } from '@midwayjs/decorator';
 @Controller('/')
 export class HomeController {
   @Get('/')
-  async home() {
+  async home(): Promise<string> {
     return 'Hello Midwayjs!';
   }
 }

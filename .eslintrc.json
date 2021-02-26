@@ -5,8 +5,7 @@
     "dist",
     "test",
     "jest.config.js",
-    "typings",
-    "bootstrap.js"
+    "typings"
   ],
   "env": {
     "jest": true

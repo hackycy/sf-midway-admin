@@ -4,10 +4,8 @@ import { Application } from 'egg';
 
 @Configuration()
 export class ContainerLifeCycle implements ILifeCycle {
-
   @App()
   app: Application;
 
-  async onReady() {
-  }
+  async onReady(): Promise<void> {}
 }
