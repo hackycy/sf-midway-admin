@@ -1,0 +1,3 @@
+INSERT INTO `sys_user` VALUES ('2020-08-27 03:38:30.000000', '2020-10-07 07:17:14.000000', 1, 1, 'hackycy', 'rootadmin', 'U2FsdGVkX18E8MLkt/45xe3xRALUa6mE9udOXcxrVCA=', '', 'http://image.si-yee.com/思忆/20200924_021100.png', 'qa894178522@qq.com', '15622472425', NULL, 1);
+INSERT INTO `sys_user` VALUES ('2020-09-14 07:41:33.732000', '2020-10-12 06:04:19.000000', 2, 2, 'hackycy', 'test001', 'U2FsdGVkX1+iVR+kHHErkPNInZiV27Mpk4pFL8uhtTQ=', '', '', 'qa894178522@qq.com', '', '', 0);
+INSERT INTO `sys_user` VALUES ('2020-10-12 03:23:14.611864', '2020-10-12 06:12:20.000000', 3, 2, 'hackycy', 'openadmin', 'U2FsdGVkX18tvghStliPvPopFZQiILUrZhNk3mUs2jA=', '', NULL, '', '', '', 1);
