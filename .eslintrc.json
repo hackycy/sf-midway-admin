@@ -7,6 +7,11 @@
     "jest.config.js",
     "typings"
   ],
+  "rules": {
+    // disable the rule for all files
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "node/no-extraneous-import": "off"
+  },
   "env": {
     "jest": true
   }
