@@ -16,6 +16,23 @@ export default (appInfo: EggAppInfo) => {
     '/favicon.ico': fs.readFileSync(path.join(__dirname, '../../favicon.ico')),
   };
 
+  // swagger 配置
+  config.swagger = {
+    title: 'sf-midway-admin',
+    description: 'sf-admin for midway api',
+    version: '0.0.1',
+    termsOfService: '',
+    contact: {
+      name: 'API Support',
+      url: 'http://www.example.com/support',
+      email: 'support@example.com',
+    },
+    license: {
+      name: 'MIT',
+      url: 'https://www.apache.org/licenses/LICENSE-2.0.html',
+    },
+  };
+
   // add your config here
   config.middleware = [];
 
