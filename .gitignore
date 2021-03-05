@@ -13,6 +13,10 @@ run/
 *.un~
 .tsbuildinfo
 .tsbuildinfo.*
+
 src/config/config.local.*
 src/config/config.prod.*
+
+typings/app/*
+typings/config/*
 
