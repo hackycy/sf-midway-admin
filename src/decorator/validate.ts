@@ -2,6 +2,20 @@ import { getMethodParamTypes } from '@midwayjs/decorator';
 import { validateSync, ValidatorOptions } from 'class-validator';
 import { ClassTransformOptions, plainToClass } from 'class-transformer';
 
+export class ValidateError extends Error {
+  property: string;
+
+  constructor(msg: string, property?: string) {
+    super(msg);
+    this.property = property;
+  }
+}
+
+/**
+ * 自定义Validate注解，基于class-validator
+ * @param classTransformOptions 等同于ClassTransformOptions
+ * @param validatorOptions 等同于ValidatorOptions
+ */
 export function Validate(
   classTransformOptions: ClassTransformOptions = {
     excludeExtraneousValues: true,
@@ -24,6 +38,7 @@ export function Validate(
       forbidNonWhitelisted: false,
     };
 
+    // merge option
     if (validatorOptions) {
       Object.assign(originValidatorOptions, validatorOptions);
     }
@@ -36,12 +51,13 @@ export function Validate(
         if (args[i]) {
           const errors = validateSync(args[i], originValidatorOptions);
           if (errors && errors.length > 0) {
-            throw Error(
-              `validate error, parameter ${errors[0].property} is invalid `
+            throw new ValidateError(
+              `validate error, parameter ${errors[0].property} is invalid`,
+              errors[0].property
             );
           }
         } else {
-          throw Error('validate error, args is undefined');
+          throw new ValidateError('validate error, args is undefined');
         }
       }
       return origin.call(this, ...args);
