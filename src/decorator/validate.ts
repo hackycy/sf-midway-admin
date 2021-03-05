@@ -4,10 +4,12 @@ import { ClassTransformOptions, plainToClass } from 'class-transformer';
 
 export class ValidateError extends Error {
   property: string;
+  status: number;
 
   constructor(msg: string, property?: string) {
     super(msg);
     this.property = property;
+    this.status = 422;
   }
 }
 
