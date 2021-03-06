@@ -1,4 +1,4 @@
-# my-midway-project
+# sf-midway-admin
 
 ## 快速入门
 
