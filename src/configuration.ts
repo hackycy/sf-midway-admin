@@ -29,7 +29,6 @@ export class ContainerLifeCycle implements ILifeCycle {
       const constructorFn = queues[i];
       const c: IQueue = new constructorFn();
       const bullInstance = c.handle();
-      console.log(bullInstance);
       const providerId = getProviderId(queues[i]);
       container.registerObject(providerId, bullInstance);
     }
