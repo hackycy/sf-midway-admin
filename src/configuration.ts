@@ -1,8 +1,14 @@
-import { App, Configuration } from '@midwayjs/decorator';
-import { ILifeCycle } from '@midwayjs/core';
+import {
+  App,
+  Configuration,
+  listModule,
+  getProviderId,
+} from '@midwayjs/decorator';
+import { ILifeCycle, IMidwayContainer } from '@midwayjs/core';
 import { Application } from 'egg';
 import * as swagger from '@midwayjs/swagger';
 import * as orm from '@midwayjs/orm';
+import { BULL_QUEUE_KEY, IQueue } from './decorator/bull';
 
 @Configuration({
   imports: [
@@ -17,5 +23,15 @@ export class ContainerLifeCycle implements ILifeCycle {
   @App()
   app: Application;
 
-  async onReady(): Promise<void> {}
+  async onReady(container: IMidwayContainer) {
+    const queues = listModule(BULL_QUEUE_KEY) || [];
+    for (let i = 0; i < queues.length; i++) {
+      const constructorFn = queues[i];
+      const c: IQueue = new constructorFn();
+      const bullInstance = c.handle();
+      console.log(bullInstance);
+      const providerId = getProviderId(queues[i]);
+      container.registerObject(providerId, bullInstance);
+    }
+  }
 }
