@@ -1,14 +1,9 @@
-import {
-  App,
-  Configuration,
-  listModule,
-  getProviderId,
-} from '@midwayjs/decorator';
+import { App, Configuration } from '@midwayjs/decorator';
 import { ILifeCycle, IMidwayContainer } from '@midwayjs/core';
 import { Application } from 'egg';
 import * as swagger from '@midwayjs/swagger';
 import * as orm from '@midwayjs/orm';
-import { BULL_QUEUE_KEY, IQueue } from './decorator/bull';
+import { BULL_KEY, BullQueueManager } from './decorator/bull';
 
 @Configuration({
   imports: [
@@ -23,14 +18,15 @@ export class ContainerLifeCycle implements ILifeCycle {
   @App()
   app: Application;
 
+  // bull manager
+  private bullQueueManager: BullQueueManager;
+
   async onReady(container: IMidwayContainer) {
-    const queues = listModule(BULL_QUEUE_KEY) || [];
-    for (let i = 0; i < queues.length; i++) {
-      const constructorFn = queues[i];
-      const c: IQueue = new constructorFn();
-      const bullInstance = c.handle();
-      const providerId = getProviderId(queues[i]);
-      container.registerObject(providerId, bullInstance);
-    }
+    // init bull
+    this.bullQueueManager = new BullQueueManager();
+    container.registerDataHandler(BULL_KEY, (key: { queueKey }) => {
+      const queue = this.bullQueueManager.getQuque(key.queueKey);
+      return queue;
+    });
   }
 }

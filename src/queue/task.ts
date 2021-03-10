@@ -1,8 +1,8 @@
 import { BullQueue, IQueue } from '../decorator/bull';
 
-@BullQueue()
+@BullQueue('SysTask')
 export class Task implements IQueue {
-  handle() {
+  handle(): any {
     return {
       msg: 'success',
     };

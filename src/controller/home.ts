@@ -1,11 +1,13 @@
 import { Logger } from '@midwayjs/decorator';
-import { Controller, Get, Inject, Provide } from '@midwayjs/decorator';
+import { Controller, Get, Provide } from '@midwayjs/decorator';
 import { ILogger } from '@midwayjs/logger';
+import { InjectBullQueue } from '../decorator/bull';
+import { Task } from '../queue/task';
 
 @Provide()
 @Controller('/')
 export class HomeController {
-  @Inject()
+  @InjectBullQueue(Task)
   task;
 
   @Logger()

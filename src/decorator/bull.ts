@@ -1,18 +1,64 @@
-import { saveModule } from '@midwayjs/core';
-import * as Queue from 'bull';
+import {
+  saveClassMetadata,
+  attachClassMetadata,
+  getClassMetadata,
+} from '@midwayjs/core';
+import { Queue } from 'bull';
 
 export const BULL_QUEUE_KEY = 'bull_queue_key';
 export const BULL_KEY = 'bull:queue';
 
-export function BullQueue(): ClassDecorator {
+export function BullQueue(queueName: string): ClassDecorator {
   return function (target) {
-    if (typeof target === 'function') {
-      saveModule(BULL_QUEUE_KEY, target);
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      saveModule(BULL_QUEUE_KEY, (target as object).constructor);
-    }
+    saveClassMetadata(
+      BULL_QUEUE_KEY,
+      {
+        name: queueName,
+      },
+      target
+    );
   };
+}
+
+export function InjectBullQueue(queueKey?: any) {
+  return function (target, propertyKey: string) {
+    attachClassMetadata(
+      BULL_KEY,
+      {
+        key: {
+          queueKey,
+        },
+        propertyName: propertyKey,
+      },
+      target
+    );
+  };
+}
+
+interface StoreQueue {
+  queue: Queue;
+  name: string;
+}
+
+export class BullQueueManager {
+  readonly queues: StoreQueue[] = [];
+
+  getQuque(target: any): Queue {
+    const metadata = getClassMetadata(BULL_QUEUE_KEY, target);
+    if (!metadata) {
+      throw Error();
+    }
+    const queue = this.queues.find(q => {
+      return q.name === metadata.name;
+    });
+    if (queue) {
+      return queue.queue;
+    }
+    const targetInstance = new target();
+    const newQueue: Queue = targetInstance.handle();
+    this.queues.push({ name: metadata.name, queue: newQueue });
+    return newQueue;
+  }
 }
 
 export interface IQueue {
