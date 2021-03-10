@@ -23,7 +23,7 @@ export class ContainerLifeCycle implements ILifeCycle {
 
   async onReady(container: IMidwayContainer) {
     // init bull
-    this.bullQueueManager = new BullQueueManager();
+    this.bullQueueManager = new BullQueueManager(this.app);
     container.registerDataHandler(BULL_KEY, (key: { queueKey }) => {
       const queue = this.bullQueueManager.getQuque(key.queueKey);
       return queue;

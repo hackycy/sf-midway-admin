@@ -3,6 +3,7 @@ import {
   attachClassMetadata,
   getClassMetadata,
 } from '@midwayjs/core';
+import { IMidwayWebApplication } from '@midwayjs/web';
 import { Queue } from 'bull';
 
 export const BULL_QUEUE_KEY = 'bull_queue_key';
@@ -41,6 +42,12 @@ interface StoreQueue {
 }
 
 export class BullQueueManager {
+  app: IMidwayWebApplication;
+
+  constructor(app) {
+    this.app = app;
+  }
+
   readonly queues: StoreQueue[] = [];
 
   getQuque(target: any): Queue {
@@ -54,7 +61,7 @@ export class BullQueueManager {
     if (queue) {
       return queue.queue;
     }
-    const targetInstance = new target();
+    const targetInstance = new target(this.app);
     const newQueue: Queue = targetInstance.handle();
     this.queues.push({ name: metadata.name, queue: newQueue });
     return newQueue;
