@@ -9,6 +9,11 @@ import { Queue } from 'bull';
 export const BULL_QUEUE_KEY = 'bull_queue_key';
 export const BULL_KEY = 'bull:queue';
 
+/**
+ * @BullQueue注解注册队列，再使用的地方使用InjectBullQueue注入
+ * @param queueName 队列标识符，请保证唯一
+ * @returns ClassDecorator
+ */
 export function BullQueue(queueName: string): ClassDecorator {
   return function (target) {
     saveClassMetadata(
@@ -53,7 +58,7 @@ export class BullQueueManager {
   getQuque(target: any): Queue {
     const metadata = getClassMetadata(BULL_QUEUE_KEY, target);
     if (!metadata) {
-      throw Error();
+      throw Error('metadata is undefined');
     }
     const queue = this.queues.find(q => {
       return q.name === metadata.name;
