@@ -17,9 +17,12 @@
     "egg-redis": "^2.4.0",
     "egg-scripts": "^2.10.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "mysql2": "^2.2.5",
     "nanoid": "^2.1.11",
-    "swagger-ui-dist": "^3.44.0"
+    "svg-captcha": "^1.4.0",
+    "swagger-ui-dist": "^3.44.0",
+    "ua-parser-js": "^0.7.24"
   },
   "devDependencies": {
     "@midwayjs/cli": "^1.0.0",
@@ -28,6 +31,7 @@
     "@midwayjs/mock": "^2.3.0",
     "@types/bull": "^3.15.0",
     "@types/jest": "^26.0.10",
+    "@types/lodash": "^4.14.168",
     "@types/node": "14",
     "cross-env": "^6.0.0",
     "jest": "^26.4.0",

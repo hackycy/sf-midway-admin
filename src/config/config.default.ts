@@ -16,6 +16,33 @@ export default (appInfo: EggAppInfo) => {
     '/favicon.ico': fs.readFileSync(path.join(__dirname, '../../favicon.ico')),
   };
 
+  // jwt 密钥
+  config.jwt = {
+    secret: 'INnyQ50BEE6AITQraIaDGooJ',
+  };
+
+  // aes密钥
+  config.aesSecret = {
+    admin: 'hXuLvp6zmhahtW1kf21DpYxm',
+    front: 'eECRYHR5Er93BijVlkMz9CIn',
+  };
+
+  // https://eggjs.org/zh-cn/basics/controller.html#获取上传的文件
+  config.multipart = {
+    mode: 'file',
+  };
+
+  // https://eggjs.org/zh-cn/core/security.html
+  config.security = {
+    // 配合egg-cors使用
+    // domainWhiteList: [ 'http://localhost:7003' ],
+    csrf: {
+      // 默认为 false，当设置为 true 时，将会放过所有 content-type 为 `application/json` 的请求
+      enable: false,
+      ignoreJSON: true,
+    },
+  };
+
   // swagger 配置
   config.swagger = {
     title: 'sf-midway-admin',
