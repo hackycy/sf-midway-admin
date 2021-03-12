@@ -5,6 +5,7 @@ import { Utils } from '../../../common/utils';
 import SysReqLog from '../../../entity/admin/sys/req_log';
 import { BaseService } from '../../base';
 import { Repository } from 'typeorm';
+import { IPageSearchReqLogResult } from '../interface';
 
 @Provide()
 export class AdminSysReqLoginService extends BaseService {
@@ -64,7 +65,11 @@ export class AdminSysReqLoginService extends BaseService {
   /**
    * 分页查询
    */
-  async search(page: number, count: number, q: string): Promise<any> {
+  async search(
+    page: number,
+    count: number,
+    q: string
+  ): Promise<IPageSearchReqLogResult> {
     const allResult = await this.reqLog
       .createQueryBuilder('req_log')
       .where(`req_log.userId LIKE '%${q}%'`)
@@ -85,5 +90,12 @@ export class AdminSysReqLoginService extends BaseService {
       count: allResult.length,
       logs: result,
     };
+  }
+
+  /**
+   * 清空表中的所有数据
+   */
+  async clear(): Promise<void> {
+    await this.reqLog.clear();
   }
 }

@@ -1,5 +1,6 @@
 import SysDepartment from '../../entity/admin/sys/department';
 import SysMenu from '../../entity/admin/sys/menu';
+import SysReqLog from '../../entity/admin/sys/req_log';
 import SysRole from '../../entity/admin/sys/role';
 import SysRoleDepartment from '../../entity/admin/sys/role_department';
 import SysRoleMenu from '../../entity/admin/sys/role_menu';
@@ -84,4 +85,9 @@ export interface IPageTaskLogResult {
   finishTime: string;
   detail: string;
   status: number;
+}
+
+export interface IPageSearchReqLogResult {
+  count: number;
+  logs: SysReqLog[];
 }
