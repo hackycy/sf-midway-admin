@@ -8,7 +8,7 @@ import { UpdatePersonInfoDto } from '../../../dto/admin/verify';
 import { Utils } from '../../../common/utils';
 import { iConfigAesSecret } from '../../../interface';
 import { CreateUserDto, UpdateUserDto } from '../../../dto/admin/sys/user';
-import { getManager, In, Not } from 'typeorm';
+import { In, Not } from 'typeorm';
 import SysUserRole from '../../../entity/admin/sys/user_role';
 import SysDepartment from '../../../entity/admin/sys/department';
 import { IPageSearchUserResult } from '../interface';
@@ -109,7 +109,7 @@ export class AdminSysUserService extends BaseService {
       return false;
     }
     // 所有用户初始密码为123456
-    await getManager().transaction(async manager => {
+    await this.getManager().transaction(async manager => {
       const password = this.utils.aesEncrypt('123456', this.aesSecret.admin);
       const u = manager.create(SysUser, {
         departmentId: param.departmentId,
@@ -140,7 +140,7 @@ export class AdminSysUserService extends BaseService {
    * 更新用户信息
    */
   async update(param: UpdateUserDto): Promise<void> {
-    await getManager().transaction(async manager => {
+    await this.getManager().transaction(async manager => {
       await manager.update(SysUser, param.id, {
         departmentId: param.departmentId,
         username: param.username,

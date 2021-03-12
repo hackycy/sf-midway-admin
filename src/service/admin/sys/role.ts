@@ -2,7 +2,7 @@ import { Config, Provide } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/orm';
 import SysRole from '../../../entity/admin/sys/role';
 import { BaseService } from '../../base';
-import { Repository, Not, In, getManager } from 'typeorm';
+import { Repository, Not, In } from 'typeorm';
 import SysRoleMenu from '../../../entity/admin/sys/role_menu';
 import SysRoleDepartment from '../../../entity/admin/sys/role_department';
 import { IAddRoleResult, IRoleInfoResult } from '../interface';
@@ -52,7 +52,7 @@ export class AdminSysRoleService extends BaseService {
     if (includes(roleIds, this.rootRoleId)) {
       throw new Error('Not Support Delete Root');
     }
-    await getManager().transaction(async manager => {
+    await this.getManager().transaction(async manager => {
       await manager.delete(SysRole, roleIds);
       await manager.delete(SysRoleMenu, { roleId: In(roleIds) });
       await manager.delete(SysRoleDepartment, { roleId: In(roleIds) });
@@ -116,7 +116,7 @@ export class AdminSysRoleService extends BaseService {
     const insertDeptRowIds = difference(depts, originDeptIds);
     const deleteDeptRowIds = difference(originDeptIds, depts);
     // using transaction
-    await getManager().transaction(async manager => {
+    await this.getManager().transaction(async manager => {
       // 菜单
       if (insertMenusRowIds.length > 0) {
         // 有条目更新
