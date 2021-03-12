@@ -7,6 +7,7 @@ import { includes, isEmpty, concat, uniq } from 'lodash';
 import { AdminSysRoleService } from './role';
 import { IsNull, Not, DeleteResult } from 'typeorm';
 import { IMenuItemAndParentInfoResult } from '../interface';
+import { CreateMenuDto } from '../../../dto/admin/sys/menu';
 
 @Provide()
 export class AdminSysMenuService extends BaseService {
@@ -29,7 +30,7 @@ export class AdminSysMenuService extends BaseService {
   /**
    * 保存或新增菜单
    */
-  async save(menu: any): Promise<any> {
+  async save(menu: CreateMenuDto): Promise<any> {
     const result = await this.menu.save(menu);
     return result;
   }

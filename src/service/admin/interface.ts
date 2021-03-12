@@ -1,3 +1,4 @@
+import SysDepartment from '../../entity/admin/sys/department';
 import SysMenu from '../../entity/admin/sys/menu';
 import SysRole from '../../entity/admin/sys/role';
 import SysRoleDepartment from '../../entity/admin/sys/role_department';
@@ -56,4 +57,9 @@ export interface IPageSearchUserResult {
   updateTime: string;
   username: string;
   departmentName: string;
+}
+
+export interface IInfoDeptResult {
+  department: SysDepartment | undefined;
+  parentDepartment: SysDepartment | undefined;
 }
