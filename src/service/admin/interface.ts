@@ -75,3 +75,13 @@ export interface IOnlineInfoListResult {
   browser: string;
   disable: boolean;
 }
+
+export interface IPageTaskLogResult {
+  id: number;
+  taskId: number;
+  name: string;
+  createTime: string;
+  finishTime: string;
+  detail: string;
+  status: number;
+}
