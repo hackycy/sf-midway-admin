@@ -9,7 +9,7 @@
   ],
   "rules": {
     // disable the rule for all files
-    "@typescript-eslint/explicit-module-boundary-types": "off",
+    // "@typescript-eslint/explicit-module-boundary-types": "off",
     "node/no-extraneous-import": "off"
   },
   "env": {

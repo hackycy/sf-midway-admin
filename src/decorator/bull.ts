@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
   saveClassMetadata,
   attachClassMetadata,
@@ -49,7 +50,7 @@ interface StoreQueue {
 export class BullQueueManager {
   app: IMidwayWebApplication;
 
-  constructor(app) {
+  constructor(app: IMidwayWebApplication) {
     this.app = app;
   }
 

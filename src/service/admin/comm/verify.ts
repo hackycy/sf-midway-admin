@@ -8,7 +8,11 @@ import { InjectEntityModel } from '@midwayjs/orm';
 import SysUser from '../../../entity/admin/sys/user';
 import { Repository } from 'typeorm';
 import { AdminSysLoginLogService } from '../sys/login_log';
-import { IImageCaptchaResult, IPermMenuResult } from '../interface';
+import {
+  IImageCaptchaOptions,
+  IImageCaptchaResult,
+  IPermMenuResult,
+} from '../interface';
 import { AdminSysUserService } from '../sys/user';
 import { iConfigAesSecret } from '../../../interface';
 
@@ -35,7 +39,9 @@ export class AdminVerifyService extends BaseService {
   /**
    * 生成图片验证码
    */
-  async getImgCaptcha(params): Promise<IImageCaptchaResult> {
+  async getImgCaptcha(
+    params: IImageCaptchaOptions
+  ): Promise<IImageCaptchaResult> {
     const svg = svgCaptcha.create({
       size: 4,
       color: true,
@@ -125,7 +131,7 @@ export class AdminVerifyService extends BaseService {
   /**
    * 清除登录状态信息
    */
-  async clearLoginStatus(uid: number) {
+  async clearLoginStatus(uid: number): Promise<void> {
     await this.adminSysUserService.forbidden(uid);
   }
 

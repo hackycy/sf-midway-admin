@@ -204,7 +204,7 @@ export class AdminSysUserService extends BaseService {
   /**
    * 根据ID列表删除用户
    */
-  async delete(userIds: number[]) {
+  async delete(userIds: number[]): Promise<void> {
     await this.user.delete(userIds);
     await this.userRole.delete({ userId: In(userIds) });
   }

@@ -198,7 +198,7 @@ export class AdminSysRoleService extends BaseService {
   /**
    * 根据角色ID列表查找关联用户ID
    */
-  async countUserIdByRole(ids: number[]) {
+  async countUserIdByRole(ids: number[]): Promise<number | never> {
     if (includes(ids, this.rootRoleId)) {
       throw new Error('Not Support Delete Root');
     }
