@@ -63,3 +63,15 @@ export interface IInfoDeptResult {
   department: SysDepartment | undefined;
   parentDepartment: SysDepartment | undefined;
 }
+
+export interface IOnlineInfoListResult {
+  id: number;
+  ip: string;
+  username: string;
+  isCurrent: boolean;
+  time: string;
+  status: number;
+  os: string;
+  browser: string;
+  disable: boolean;
+}
