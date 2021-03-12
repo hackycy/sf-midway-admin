@@ -20,13 +20,13 @@ export class AdminSysOnlineService extends BaseService {
       const uid = e.split('admin:token:')[1];
       return parseInt(uid);
     });
-    return await this.findLastLoginInfo(formatNumberIds);
+    return await this.findLastLoginInfoList(formatNumberIds);
   }
 
   /**
    * 根据用户id列表查找最近登录信息和用户信息
    */
-  async findLastLoginInfo(ids: number[]): Promise<IOnlineInfoListResult[]> {
+  async findLastLoginInfoList(ids: number[]): Promise<IOnlineInfoListResult[]> {
     const result = await this.getManager().query(
       `
     SELECT n.*, u.username
