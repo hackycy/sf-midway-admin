@@ -1,4 +1,5 @@
 import 'egg';
+import { QueueOptions } from 'bull';
 
 interface Token {
   uid: number;
@@ -19,5 +20,6 @@ declare module 'egg' {
       admin: string;
       front: string;
     };
+    bull: QueueOptions;
   }
 }

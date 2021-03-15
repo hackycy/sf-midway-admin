@@ -1,9 +1,10 @@
 import { App, Configuration } from '@midwayjs/decorator';
 import { ILifeCycle, IMidwayContainer } from '@midwayjs/core';
-import { Application } from 'egg';
 import * as swagger from '@midwayjs/swagger';
 import * as orm from '@midwayjs/orm';
-import { BULL_KEY, BullQueueManager } from './decorator/bull';
+import { initBull } from './decorator/bull';
+import { IMidwayWebApplication } from '@midwayjs/web';
+import { AdminSysTaskService } from './service/admin/sys/task';
 
 @Configuration({
   imports: [
@@ -16,17 +17,13 @@ import { BULL_KEY, BullQueueManager } from './decorator/bull';
 })
 export class ContainerLifeCycle implements ILifeCycle {
   @App()
-  app: Application;
-
-  // bull manager
-  private bullQueueManager: BullQueueManager;
+  app: IMidwayWebApplication;
 
   async onReady(container: IMidwayContainer): Promise<void> {
     // init bull
-    this.bullQueueManager = new BullQueueManager(this.app);
-    container.registerDataHandler(BULL_KEY, (key: { queueKey }) => {
-      const queue = this.bullQueueManager.getQuque(key.queueKey);
-      return queue;
-    });
+    await initBull(this.app, container);
+    // 初始化系统任务
+    const taskService = await container.getAsync(AdminSysTaskService);
+    await taskService.initTask();
   }
 }

@@ -1,6 +1,4 @@
-import { App, Provide } from '@midwayjs/decorator';
-import { InjectBullQueue } from '../../../decorator/bull';
-import { SysTaskQueue } from '../../../queue/task';
+import { App, Inject, Provide } from '@midwayjs/decorator';
 import { BaseService } from '../../base';
 import { Queue } from 'bull';
 import { InjectEntityModel } from '@midwayjs/orm';
@@ -11,7 +9,7 @@ import { IMidwayApplication } from '@midwayjs/core';
 
 @Provide()
 export class AdminSysTaskService extends BaseService {
-  @InjectBullQueue(SysTaskQueue)
+  @Inject('SysTaskQueue')
   sysTaskQueue: Queue;
 
   @InjectEntityModel(SysTask)

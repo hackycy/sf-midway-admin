@@ -1,4 +1,4 @@
-import { Logger } from '@midwayjs/decorator';
+import { Inject, Logger } from '@midwayjs/decorator';
 import { Controller, Get, Provide } from '@midwayjs/decorator';
 import { ILogger } from '@midwayjs/logger';
 
@@ -8,8 +8,11 @@ export class HomeController {
   @Logger()
   logger: ILogger;
 
+  @Inject('SysTaskQueue')
+  task: any;
+
   @Get('/')
   async home(): Promise<string> {
-    return 'Hello Midwayjs!';
+    return 'Hello Midwayjs!' + this.task.name;
   }
 }

@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
   saveClassMetadata,
-  attachClassMetadata,
+  saveModule,
+  listModule,
   getClassMetadata,
+  getProviderId,
 } from '@midwayjs/core';
+import { IMidwayContainer } from '@midwayjs/core';
 import { IMidwayWebApplication } from '@midwayjs/web';
 import { Queue } from 'bull';
 
-export const BULL_QUEUE_KEY = 'bull_queue_key';
 export const BULL_KEY = 'bull:queue';
+export const BULL_QUEUE_KEY = '_bull_queue_key_';
 
 /**
  * @BullQueue注解注册队列，再使用的地方使用InjectBullQueue注入
@@ -17,6 +20,7 @@ export const BULL_KEY = 'bull:queue';
  */
 export function BullQueue(queueName: string): ClassDecorator {
   return function (target) {
+    saveModule(BULL_KEY, target);
     saveClassMetadata(
       BULL_QUEUE_KEY,
       {
@@ -27,53 +31,33 @@ export function BullQueue(queueName: string): ClassDecorator {
   };
 }
 
-export function InjectBullQueue(queueKey?: any) {
-  return function (target, propertyKey: string) {
-    attachClassMetadata(
-      BULL_KEY,
-      {
-        key: {
-          queueKey,
-        },
-        propertyName: propertyKey,
-      },
-      target
-    );
-  };
-}
-
-interface StoreQueue {
-  queue: Queue;
-  name: string;
-}
-
-export class BullQueueManager {
-  app: IMidwayWebApplication;
-
-  constructor(app: IMidwayWebApplication) {
-    this.app = app;
+/**
+ * init bull queue
+ */
+export async function initBull(
+  app: IMidwayWebApplication,
+  container: IMidwayContainer
+): Promise<void> {
+  const bulls = listModule(BULL_KEY);
+  if (!bulls || bulls.length <= 0) {
+    return;
   }
-
-  readonly queues: StoreQueue[] = [];
-
-  getQuque(target: any): Queue {
-    const metadata = getClassMetadata(BULL_QUEUE_KEY, target);
-    if (!metadata) {
-      throw Error('metadata is undefined');
+  for (let i = 0; i < bulls.length; i++) {
+    const providerId = getProviderId(bulls[i]);
+    const { name: queueName } = getClassMetadata(BULL_QUEUE_KEY, bulls[i]);
+    let queueItem: Queue | undefined = undefined;
+    if (container.registry.hasDefinition(providerId)) {
+      const handleItem: IQueue = await container.getAsync(bulls[i]);
+      queueItem = await handleItem.handle();
+      container.registry.removeDefinition(providerId);
+    } else {
+      const handleItem: IQueue = new bulls[i](app);
+      queueItem = await handleItem.handle();
     }
-    const queue = this.queues.find(q => {
-      return q.name === metadata.name;
-    });
-    if (queue) {
-      return queue.queue;
-    }
-    const targetInstance = new target(this.app);
-    const newQueue: Queue = targetInstance.handle();
-    this.queues.push({ name: metadata.name, queue: newQueue });
-    return newQueue;
+    container.registry.registerObject(queueName, queueItem);
   }
 }
 
 export interface IQueue {
-  handle(): Queue;
+  handle(): Promise<Queue>;
 }
