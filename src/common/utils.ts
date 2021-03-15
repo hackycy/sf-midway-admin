@@ -66,8 +66,8 @@ export class Utils {
     length: number,
     placeholder = '1234567890qwertyuiopasdfghjklzxcvbnm'
   ): string {
-    const nanoid = customAlphabet(placeholder, length);
-    return nanoid();
+    const customNanoid = customAlphabet(placeholder, length);
+    return customNanoid();
   }
 
   /**

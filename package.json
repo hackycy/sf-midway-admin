@@ -19,7 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mysql2": "^2.2.5",
-    "nanoid": "^2.1.11",
+    "nanoid": "^3.1.12",
     "svg-captcha": "^1.4.0",
     "swagger-ui-dist": "^3.44.0",
     "ua-parser-js": "^0.7.24"
