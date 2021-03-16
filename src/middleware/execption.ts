@@ -13,8 +13,7 @@ export class ExecptionMiddleware implements IWebMiddleware {
       try {
         await next();
       } catch (err) {
-        const { errors } = err;
-        ctx.logger.error('[Exception]', err.message, errors);
+        ctx.logger.error('[Exception]', err.message);
         ctx.set('Content-Type', 'application/json');
         // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
         const status = err.status || 500;
