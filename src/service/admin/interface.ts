@@ -5,11 +5,6 @@ import SysRole from '../../entity/admin/sys/role';
 import SysRoleDepartment from '../../entity/admin/sys/role_department';
 import SysRoleMenu from '../../entity/admin/sys/role_menu';
 
-export interface IImageCaptchaOptions {
-  width: number;
-  height: number;
-}
-
 export interface IImageCaptchaResult {
   img: string;
   id: string;

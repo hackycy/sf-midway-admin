@@ -21,11 +21,8 @@ export default (appInfo: EggAppInfo) => {
     secret: 'INnyQ50BEE6AITQraIaDGooJ',
   };
 
-  // aes密钥
-  config.aesSecret = {
-    admin: 'hXuLvp6zmhahtW1kf21DpYxm',
-    front: 'eECRYHR5Er93BijVlkMz9CIn',
-  };
+  /// 盐
+  config.salt = 'J3bbOZz95lPjGDaToU';
 
   // https://eggjs.org/zh-cn/basics/controller.html#获取上传的文件
   config.multipart = {

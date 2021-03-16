@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { isEmpty } from 'lodash';
 import { UpdatePersonInfoDto } from '../../../dto/admin/verify';
 import { Utils } from '../../../common/utils';
-import { iConfigAesSecret } from '../../../interface';
 import { CreateUserDto, UpdateUserDto } from '../../../dto/admin/sys/user';
 import { In, Not } from 'typeorm';
 import SysUserRole from '../../../entity/admin/sys/user_role';
@@ -23,9 +22,6 @@ export class AdminSysUserService extends BaseService {
 
   @InjectEntityModel(SysUserRole)
   userRole: Repository<SysUserRole>;
-
-  @Config('aesSecret')
-  aesSecret: iConfigAesSecret;
 
   @Config('rootRoleId')
   rootRoleId: number;
@@ -67,25 +63,10 @@ export class AdminSysUserService extends BaseService {
     let savePassword: string | undefined;
     if (originPassword && newPassword) {
       const user = await this.user.findOne({ id: uid });
-      const decodePassword = this.utils.aesDecrypt(
-        user!.password,
-        this.aesSecret.admin
-      );
-      const decodeOriginPassword = this.utils.aesDecrypt(
-        originPassword,
-        this.aesSecret.front
-      );
-      const decodeNewPassword = this.utils.aesDecrypt(
-        newPassword,
-        this.aesSecret.front
-      );
-      if (decodePassword === decodeOriginPassword) {
-        // 旧密码不一致
-        savePassword = this.utils.aesEncrypt(
-          decodeNewPassword,
-          this.aesSecret.admin
-        );
+      if (user!.password === originPassword) {
+        savePassword = newPassword;
       } else {
+        // 旧密码不一致
         return false;
       }
     }
@@ -110,7 +91,7 @@ export class AdminSysUserService extends BaseService {
     }
     // 所有用户初始密码为123456
     await this.getManager().transaction(async manager => {
-      const password = this.utils.aesEncrypt('123456', this.aesSecret.admin);
+      const password = this.utils.md5('123456');
       const u = manager.create(SysUser, {
         departmentId: param.departmentId,
         username: param.username,

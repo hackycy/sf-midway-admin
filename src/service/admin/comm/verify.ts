@@ -1,6 +1,6 @@
 import { BaseService } from '../../base';
 import * as svgCaptcha from 'svg-captcha';
-import { Config, Inject, Provide } from '@midwayjs/decorator';
+import { Inject, Provide } from '@midwayjs/decorator';
 import { Utils } from '../../../common/utils';
 import { isEmpty } from 'lodash';
 import { AdminSysMenuService } from '../sys/menu';
@@ -8,21 +8,14 @@ import { InjectEntityModel } from '@midwayjs/orm';
 import SysUser from '../../../entity/admin/sys/user';
 import { Repository } from 'typeorm';
 import { AdminSysLoginLogService } from '../sys/login_log';
-import {
-  IImageCaptchaOptions,
-  IImageCaptchaResult,
-  IPermMenuResult,
-} from '../interface';
+import { IImageCaptchaResult, IPermMenuResult } from '../interface';
 import { AdminSysUserService } from '../sys/user';
-import { iConfigAesSecret } from '../../../interface';
+import { LoginImageCaptchaDto } from '../../../dto/admin/verify';
 
 @Provide()
 export class AdminVerifyService extends BaseService {
   @Inject()
   utils: Utils;
-
-  @Config('aesSecret')
-  aesSecret: iConfigAesSecret;
 
   @Inject()
   adminSysMenuService: AdminSysMenuService;
@@ -38,16 +31,17 @@ export class AdminVerifyService extends BaseService {
 
   /**
    * 生成图片验证码
+   * 预览：https://www.bejson.com/ui/svg_editor/
    */
   async getImgCaptcha(
-    params: IImageCaptchaOptions
+    captcha: LoginImageCaptchaDto
   ): Promise<IImageCaptchaResult> {
     const svg = svgCaptcha.create({
       size: 4,
       color: true,
       noise: 4,
-      width: params.width ?? 100,
-      height: params.height ?? 50,
+      width: isEmpty(captcha.width) ? 100 : parseInt(captcha.width),
+      height: isEmpty(captcha.height) ? 50 : parseInt(captcha.height),
     });
     const result = {
       img: `data:image/svg+xml;base64,${Buffer.from(svg.data).toString(
@@ -86,25 +80,14 @@ export class AdminVerifyService extends BaseService {
    * 返回null则账号密码有误，不存在该用户
    */
   async getLoginSign(username: string, password: string): Promise<string> {
-    const decodeUserName = this.utils.aesDecrypt(
-      username,
-      this.aesSecret.front
-    );
-    const decodePassword = this.utils.aesDecrypt(
-      password,
-      this.aesSecret.front
-    );
     const user = await this.user.findOne({
-      username: decodeUserName,
+      username: username,
       status: 1,
     });
     if (isEmpty(user)) {
       return null;
     }
-    if (
-      this.utils.aesDecrypt(user!.password, this.aesSecret.admin) !==
-      decodePassword
-    ) {
+    if (user!.password !== password) {
       return null;
     }
     const perms = await this.adminSysMenuService.getPerms(user!.id);

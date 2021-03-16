@@ -4,6 +4,28 @@ import * as CryptoJS from 'crypto-js';
 import { customAlphabet, nanoid } from 'nanoid';
 import ErrorConstants from './error_constants';
 import * as JsonWebToken from 'jsonwebtoken';
+import { ResOp } from '../interface';
+
+/**
+ * 返回数据
+ * @param op 返回配置，返回失败需要单独配置
+ */
+export function res(op?: ResOp): ResOp {
+  return {
+    data: op?.data ?? null,
+    code: op?.code ?? 200,
+    message: op?.code
+      ? getErrorMessageByCode(op!.code) || op?.message || 'unknown error'
+      : op?.message || 'success',
+  };
+}
+
+/**
+ * 根据code获取错误信息
+ */
+export function getErrorMessageByCode(code: number): string {
+  return ErrorConstants[code];
+}
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
@@ -22,13 +44,6 @@ export class Utils {
       req.socket.remoteAddress || // 判断后端的 socket 的 IP
       req.connection.socket.remoteAddress
     ).replace('::ffff:', '');
-  }
-
-  /**
-   * 根据code获取错误信息
-   */
-  getErrorMessageByCode(code: number): string {
-    return ErrorConstants[code];
   }
 
   /**
