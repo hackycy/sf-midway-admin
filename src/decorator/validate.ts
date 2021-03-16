@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { getMethodParamTypes } from '@midwayjs/decorator';
 import { validateSync, ValidatorOptions } from 'class-validator';
 import { ClassTransformOptions, plainToClass } from 'class-transformer';
@@ -25,7 +26,7 @@ export function Validate(
   validatorOptions?: ValidatorOptions
 ) {
   return function (
-    target,
+    target: any,
     propertyKey: string | symbol,
     descriptor: PropertyDescriptor
   ) {
