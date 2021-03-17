@@ -5,6 +5,7 @@ import {
   IMidwayWebNext,
 } from '@midwayjs/web';
 import { Context } from 'egg';
+import { res } from '../common/utils';
 
 @Provide()
 export class ExecptionMiddleware implements IWebMiddleware {
@@ -22,10 +23,7 @@ export class ExecptionMiddleware implements IWebMiddleware {
             ? '服务器好像出了点问题...稍后再试试'
             : err.message;
         ctx.status = status;
-        ctx.body = JSON.stringify({
-          errorCode: err.errorCode || 500,
-          message,
-        });
+        ctx.body = res({ message, code: 500 });
       }
     };
   }
