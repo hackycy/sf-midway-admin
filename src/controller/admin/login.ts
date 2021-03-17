@@ -167,7 +167,7 @@ export class AdminLoginController extends BaseController {
       this.ctx.admin.uid,
       personInfo
     );
-    if (isEmpty(result)) {
+    if (!result) {
       return res({ code: 10011 });
     }
     return res();
