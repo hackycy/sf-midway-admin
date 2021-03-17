@@ -25,7 +25,7 @@
     "ua-parser-js": "^0.7.24"
   },
   "devDependencies": {
-    "@midwayjs/cli": "^1.0.0",
+    "@midwayjs/cli": "^1.2.52",
     "@midwayjs/egg-ts-helper": "^1.0.1",
     "@midwayjs/luckyeye": "^1.0.0",
     "@midwayjs/mock": "^2.3.0",
