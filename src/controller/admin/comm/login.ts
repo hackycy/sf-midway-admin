@@ -9,18 +9,18 @@ import {
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { isEmpty } from 'lodash';
-import { res } from '../../common/utils';
-import { AdminController } from '../../decorator/controller';
-import { Validate } from '../../decorator/validate';
+import { res } from '../../../common/utils';
+import { AdminController } from '../../../decorator/controller';
+import { Validate } from '../../../decorator/validate';
 import {
   LoginImageCaptchaDto,
   LoginInfoDto,
   UpdatePersonInfoDto,
-} from '../../dto/admin/verify';
-import { ResOp } from '../../interface';
-import { AdminVerifyService } from '../../service/admin/comm/verify';
-import { AdminSysUserService } from '../../service/admin/sys/user';
-import { BaseController } from '../base';
+} from '../../../dto/admin/verify';
+import { ResOp } from '../../../interface';
+import { AdminVerifyService } from '../../../service/admin/comm/verify';
+import { AdminSysUserService } from '../../../service/admin/sys/user';
+import { BaseController } from '../../base';
 
 @Provide()
 @AdminController('/', { tagName: 'AdminLogin', description: '后台登录模块' })
