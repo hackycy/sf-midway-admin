@@ -40,7 +40,7 @@ export class AdminSysMenuService extends BaseService {
    */
   async getMenus(uid: number): Promise<SysMenu[]> {
     const roleIds = await this.adminSysRoleService.getRoleIdByUser(uid);
-    let menus: any = [];
+    let menus: SysMenu[] = [];
     if (includes(roleIds, this.rootRoleId)) {
       // root find all
       menus = await this.menu.find();

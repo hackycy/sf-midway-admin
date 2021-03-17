@@ -28,12 +28,21 @@ export class AdminAuthMiddleware implements IWebMiddleware {
           await next();
           return;
         }
+        if (isEmpty(token)) {
+          // 无法通过token校验
+          this.reject(ctx, 401, { code: 11001 });
+          return;
+        }
         const utils = await ctx.requestContext.getAsync(Utils);
         try {
           // 挂载对象到当前请求上
           ctx.admin = utils.jwtVerify(token);
         } catch (e) {
           // 无法通过token校验
+          this.reject(ctx, 401, { code: 11001 });
+          return;
+        }
+        if (!ctx.admin) {
           this.reject(ctx, 401, { code: 11001 });
           return;
         }

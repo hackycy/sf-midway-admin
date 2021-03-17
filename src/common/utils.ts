@@ -100,6 +100,6 @@ export class Utils {
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   jwtVerify(token: string, options?: any): any {
-    return `${JsonWebToken.verify(token, this.jwt.secret, options)}`;
+    return JsonWebToken.verify(token, this.jwt.secret, options);
   }
 }
