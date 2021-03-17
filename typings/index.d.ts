@@ -8,7 +8,7 @@ interface Token {
 
 declare module 'egg' {
   interface Context {
-    token: Token;
+    admin: Token;
   }
 
   interface EggAppConfig {

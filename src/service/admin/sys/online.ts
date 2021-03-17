@@ -48,13 +48,13 @@ export class AdminSysOnlineService extends BaseService {
           id: e.user_id,
           ip: e.ip,
           username: e.username,
-          isCurrent: this.ctx.token.uid === e.user_id,
+          isCurrent: this.ctx.admin.uid === e.user_id,
           time: e.createTime,
           status: 1,
           os: `${u.os.name} ${u.os.version}`,
           browser: `${u.browser.name} ${u.browser.version}`,
           disable:
-            this.ctx.token.uid === e.user_id || e.user_id === this.rootRoleId,
+            this.ctx.admin.uid === e.user_id || e.user_id === this.rootRoleId,
         };
       });
     }

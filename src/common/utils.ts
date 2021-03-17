@@ -99,7 +99,7 @@ export class Utils {
    * https://github.com/auth0/node-jsonwebtoken
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  jwtVerify(token: string, options?: any): string {
+  jwtVerify(token: string, options?: any): any {
     return `${JsonWebToken.verify(token, this.jwt.secret, options)}`;
   }
 }

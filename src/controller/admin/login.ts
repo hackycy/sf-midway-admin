@@ -87,21 +87,21 @@ export class AdminLoginController extends BaseController {
     .build())
   @Post('/logout')
   async logout(): Promise<ResOp> {
-    await this.adminVerifyService.clearLoginStatus(this.ctx.token.uid);
+    await this.adminVerifyService.clearLoginStatus(this.ctx.admin.uid);
     return res();
   }
 
   @Get('/permmenu')
   async permmenu(): Promise<ResOp> {
     return res({
-      data: await this.adminVerifyService.getPermMenu(this.ctx.token.uid),
+      data: await this.adminVerifyService.getPermMenu(this.ctx.admin.uid),
     });
   }
 
   @Get('/person')
   async person(): Promise<ResOp> {
     return res({
-      data: await this.adminSysUserService.person(this.ctx.token.uid),
+      data: await this.adminSysUserService.person(this.ctx.admin.uid),
     });
   }
 
@@ -110,7 +110,7 @@ export class AdminLoginController extends BaseController {
     @Body(ALL) personInfo: UpdatePersonInfoDto
   ): Promise<ResOp> {
     const result = await this.adminSysUserService.personUpdate(
-      this.ctx.token.uid,
+      this.ctx.admin.uid,
       personInfo
     );
     if (isEmpty(result)) {
