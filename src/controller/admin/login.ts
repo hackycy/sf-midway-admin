@@ -91,6 +91,33 @@ export class AdminLoginController extends BaseController {
     return res();
   }
 
+  @(CreateApiDoc()
+    .summary('获取菜单列表及权限列表')
+    .respond(200, '', 'json', {
+      example: res({
+        data: {
+          menus: [
+            {
+              createTime: '2020-08-28T10:09:26.322Z',
+              updateTime: '2020-10-12T06:35:18.000Z',
+              id: 1,
+              parentId: null,
+              name: '系统',
+              router: '/sys',
+              perms: null,
+              type: 0,
+              icon: 'system',
+              orderNum: 255,
+              viewPath: null,
+              keepalive: true,
+              isShow: true,
+            },
+          ],
+          perms: ['sys:user:add', 'sys:user:delete'],
+        },
+      }),
+    })
+    .build())
   @Get('/permmenu')
   async permmenu(): Promise<ResOp> {
     return res({
@@ -98,6 +125,26 @@ export class AdminLoginController extends BaseController {
     });
   }
 
+  @(CreateApiDoc()
+    .summary('获取管理员资料')
+    .respond(200, '', 'json', {
+      example: res({
+        data: {
+          createTime: '2020-08-27T03:38:30.000Z',
+          updateTime: '2020-10-07T07:17:14.000Z',
+          id: 1,
+          name: 'hackycy',
+          username: 'rootadmin',
+          psalt: 'adsbadwasasdwasdasd',
+          nickName: '',
+          headImg: 'http://xxx.png',
+          email: 'qa894178522@qq.com',
+          phone: '13124314551',
+          remark: null,
+        },
+      }),
+    })
+    .build())
   @Get('/person')
   async person(): Promise<ResOp> {
     return res({
@@ -105,6 +152,13 @@ export class AdminLoginController extends BaseController {
     });
   }
 
+  @(CreateApiDoc()
+    .summary('更改管理员资料')
+    .param('需要更改的管理员资料参数')
+    .respond(200, '', 'json', {
+      example: res(),
+    })
+    .build())
   @Post('/person')
   async personUpdate(
     @Body(ALL) personInfo: UpdatePersonInfoDto

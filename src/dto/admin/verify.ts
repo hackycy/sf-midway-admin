@@ -47,14 +47,17 @@ export class LoginInfoDto {
 }
 
 export class UpdatePersonInfoDto {
+  @CreateApiPropertyDoc('管理员名称', { example: 'hackycy' })
   @Length(2, 20)
   @Expose()
   name: string;
 
+  @CreateApiPropertyDoc('管理员昵称', { example: '源b' })
   @Allow()
   @Expose()
   nickName: string;
 
+  @CreateApiPropertyDoc('邮箱', { example: 'qa894178522@qq.com' })
   @ValidateIf((_o, v) => {
     return !(v === '' || v === undefined || v === null);
   })
@@ -62,22 +65,27 @@ export class UpdatePersonInfoDto {
   @Expose()
   email: string;
 
+  @CreateApiPropertyDoc('手机号码', { example: '13124314551' })
   @Allow()
   @Expose()
   phone: string;
 
+  @CreateApiPropertyDoc('更改前的密码', { example: '123456' })
   @Allow()
   @Expose()
   originPassword: string;
 
+  @CreateApiPropertyDoc('新密码', { example: '12345678' })
   @Allow()
   @Expose()
   newPassword: string;
 
+  @CreateApiPropertyDoc('备注', { example: '这是xxx管理员的备注' })
   @Allow()
   @Expose()
   remark: string;
 
+  @CreateApiPropertyDoc('头像连接', { example: 'https://img.png' })
   @Allow()
   @Expose()
   headImg: string;
