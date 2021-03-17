@@ -40,16 +40,17 @@ export default () => {
 
   // bull config
   config.bull = {
-    default: {
-      redis: {
-        port: 6379,
-        host: '127.0.0.1',
-        password: '123456',
-        db: 0,
-      },
-      prefix: 'admin:task',
+    redis: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '123456',
+      db: 0,
     },
+    prefix: 'admin:task',
   };
+
+  // Root角色对应ID
+  config.rootRoleId = 1;
 
   /**
    * typeorm 配置

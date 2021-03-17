@@ -63,8 +63,9 @@ export class AdminSysUserService extends BaseService {
     let savePassword: string | undefined;
     if (originPassword && newPassword) {
       const user = await this.user.findOne({ id: uid });
-      if (user!.password === originPassword) {
-        savePassword = newPassword;
+      const comparePassword = this.utils.md5(`${originPassword}${user.psalt}`);
+      if (user!.password === comparePassword) {
+        savePassword = this.utils.md5(`${newPassword}${user.psalt}`);
       } else {
         // 旧密码不一致
         return false;
@@ -91,7 +92,8 @@ export class AdminSysUserService extends BaseService {
     }
     // 所有用户初始密码为123456
     await this.getManager().transaction(async manager => {
-      const password = this.utils.md5('123456');
+      const salt = this.utils.generateRandomValue(32);
+      const password = this.utils.md5(`123456:${salt}`);
       const u = manager.create(SysUser, {
         departmentId: param.departmentId,
         username: param.username,
@@ -102,6 +104,7 @@ export class AdminSysUserService extends BaseService {
         phone: param.phone,
         remark: param.remark,
         status: param.status,
+        psalt: salt,
       });
       const result = await manager.save(u);
       const { roles } = param;

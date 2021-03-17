@@ -21,9 +21,6 @@ export default (appInfo: EggAppInfo) => {
     secret: 'INnyQ50BEE6AITQraIaDGooJ',
   };
 
-  /// 盐
-  config.salt = 'J3bbOZz95lPjGDaToU';
-
   // https://eggjs.org/zh-cn/basics/controller.html#获取上传的文件
   config.multipart = {
     mode: 'file',

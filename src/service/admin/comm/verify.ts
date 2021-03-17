@@ -87,7 +87,10 @@ export class AdminVerifyService extends BaseService {
     if (isEmpty(user)) {
       return null;
     }
-    if (user!.password !== password) {
+    const comparePassword = this.utils.md5(`${password}${user!.psalt}`);
+    console.log(comparePassword);
+    console.log(user!.password);
+    if (user!.password !== comparePassword) {
       return null;
     }
     const perms = await this.adminSysMenuService.getPerms(user!.id);

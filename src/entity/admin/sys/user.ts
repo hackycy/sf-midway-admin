@@ -19,6 +19,9 @@ export default class SysUser extends BaseEntity {
   @Column()
   password: string;
 
+  @Column({ length: 32 })
+  psalt: string;
+
   @Column({ name: 'nick_name', nullable: true })
   nickName: string;
 

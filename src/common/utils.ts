@@ -79,7 +79,7 @@ export class Utils {
    */
   generateRandomValue(
     length: number,
-    placeholder = '1234567890qwertyuiopasdfghjklzxcvbnm'
+    placeholder = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
   ): string {
     const customNanoid = customAlphabet(placeholder, length);
     return customNanoid();
