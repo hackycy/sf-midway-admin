@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { getMethodParamTypes } from '@midwayjs/decorator';
+import {
+  getClassMetadata,
+  getMethodParamTypes,
+  RULES_KEY,
+} from '@midwayjs/decorator';
 import { validateSync, ValidatorOptions } from 'class-validator';
+import * as Joi from 'joi';
 import { ClassTransformOptions, plainToClass } from 'class-transformer';
 
 export class ValidateError extends Error {
@@ -49,18 +54,26 @@ export function Validate(
     descriptor.value = function (...args: any[]) {
       for (let i = 0; i < paramTypes.length; i++) {
         const type = paramTypes[i];
+
         args[i] = plainToClass(type, args[i], classTransformOptions);
 
         if (args[i]) {
-          const errors = validateSync(args[i], originValidatorOptions);
-          if (errors && errors.length > 0) {
-            throw new ValidateError(
-              `validate error, parameter ${errors[0].property} is invalid`,
-              errors[0].property
-            );
+          const rules = getClassMetadata(RULES_KEY, type);
+
+          if (rules) {
+            // support joi
+            const schema = Joi.object(rules);
+            const result = schema.validate(args[i]);
+            if (result.error) {
+              throw new ValidateError(`${result.error.message}`);
+            }
+          } else {
+            // support class-validator
+            const errors = validateSync(args[i], originValidatorOptions);
+            if (errors && errors.length > 0) {
+              throw new ValidateError(`${errors[0]}`);
+            }
           }
-        } else {
-          throw new ValidateError('validate error, args is undefined');
         }
       }
       return origin.call(this, ...args);

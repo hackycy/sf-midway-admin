@@ -23,7 +23,7 @@ export class ExecptionMiddleware implements IWebMiddleware {
             ? '服务器好像出了点问题...稍后再试试'
             : err.message;
         ctx.status = status;
-        ctx.body = res({ message, code: 500 });
+        ctx.body = res({ message, code: status });
       }
     };
   }
