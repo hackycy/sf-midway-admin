@@ -1,13 +1,14 @@
 import {
   IsInt,
   IsNumberString,
-  ArrayNotEmpty,
+  // ArrayNotEmpty,
   IsString,
   Min,
   IsOptional,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { CreateApiPropertyDoc } from '@midwayjs/swagger';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
 export class CreateDeptDto {
   @CreateApiPropertyDoc('系统部门名称', { example: '技术部' })
@@ -67,13 +68,11 @@ export class InfoDeptDto {
 }
 
 export class TransferDeptDto {
-  @CreateApiPropertyDoc('系统管理员ID列表', { example: [1, 2] })
-  @ArrayNotEmpty()
+  @Rule(RuleType.array().min(1).items(RuleType.number()).required())
   @Expose()
   userIds: number[];
 
-  @CreateApiPropertyDoc('转移的系统部门编号', { example: 1 })
-  @IsInt()
+  @Rule(RuleType.number().required())
   @Expose()
   departmentId: number;
 }
