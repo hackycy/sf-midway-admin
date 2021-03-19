@@ -6,10 +6,6 @@ import ErrorConstants from './error_constants';
 import * as JsonWebToken from 'jsonwebtoken';
 import { ResOp } from '../interface';
 
-/**
- * 返回数据
- * @param op 返回配置，返回失败需要单独配置
- */
 export function res(op?: ResOp): ResOp {
   return {
     data: op?.data ?? null,
@@ -18,6 +14,24 @@ export function res(op?: ResOp): ResOp {
       ? getErrorMessageByCode(op!.code) || op?.message || 'unknown error'
       : op?.message || 'success',
   };
+}
+
+export function resByPage<V>(
+  list: V,
+  total: number,
+  page: number,
+  size: number
+): ResOp {
+  return res({
+    data: {
+      list,
+      pagination: {
+        total,
+        page,
+        size,
+      },
+    },
+  });
 }
 
 /**
