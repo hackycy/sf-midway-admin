@@ -1,81 +1,116 @@
-import {
-  IsInt,
-  Min,
-  Max,
-  MinLength,
-  IsString,
-  IsBoolean,
-  Allow,
-  IsNumberString,
-  ValidateIf,
-} from 'class-validator';
 import { Expose } from 'class-transformer';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
 /**
  * 增加菜单
  */
 export class CreateMenuDto {
-  @IsInt()
-  @Min(0)
-  @Max(2)
+  @Rule(RuleType.number().integer().min(0).max(2).required())
   @Expose()
   type: number;
 
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   parentId: number;
 
-  @MinLength(2)
+  @Rule(RuleType.string().min(2).required())
   @Expose()
   name: string;
 
-  @IsInt()
-  @Min(0)
+  @Rule(RuleType.number().integer().min(0))
   @Expose()
   orderNum: number;
 
-  @ValidateIf(o => {
-    return o.type === 1 || o.type === 0;
-  })
-  @IsString()
+  @Rule(
+    RuleType.string().when('type', {
+      switch: [
+        {
+          is: 1,
+          then: RuleType.required(),
+        },
+        {
+          is: 0,
+          then: RuleType.required(),
+        },
+      ],
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   router: string;
 
-  @ValidateIf(o => {
-    return o.type === 1 || o.type === 0;
-  })
-  @IsBoolean()
+  @Rule(
+    RuleType.boolean().when('type', {
+      switch: [
+        {
+          is: 1,
+          then: RuleType.required(),
+        },
+        {
+          is: 0,
+          then: RuleType.required(),
+        },
+      ],
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   isShow: boolean;
 
-  @ValidateIf(o => {
-    return o.type === 1 || o.type === 0;
-  })
-  @IsBoolean()
+  @Rule(
+    RuleType.boolean().when('type', {
+      switch: [
+        {
+          is: 1,
+          then: RuleType.required(),
+        },
+        {
+          is: 0,
+          then: RuleType.required(),
+        },
+      ],
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   keepalive: boolean;
 
-  @ValidateIf(o => {
-    return o.type === 1 || o.type === 0;
-  })
-  @IsString()
+  @Rule(
+    RuleType.string().when('type', {
+      switch: [
+        {
+          is: 1,
+          then: RuleType.required(),
+        },
+        {
+          is: 0,
+          then: RuleType.required(),
+        },
+      ],
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   icon: string;
 
-  @ValidateIf(o => {
-    return o.type === 2;
-  })
-  @IsString()
+  @Rule(
+    RuleType.string().when('type', {
+      is: 2,
+      then: RuleType.required(),
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   perms: string;
 
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   viewPath: string;
 }
 
+@Rule(CreateMenuDto)
 export class UpdateMenuDto extends CreateMenuDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   menuId: number;
 }
@@ -84,7 +119,7 @@ export class UpdateMenuDto extends CreateMenuDto {
  * 删除菜单
  */
 export class DeleteMenuDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   menuId: number;
 }
@@ -93,7 +128,7 @@ export class DeleteMenuDto {
  * 查询菜单
  */
 export class InfoMenuDto {
-  @IsNumberString()
+  @Rule(RuleType.number().integer().required())
   @Expose()
-  menuId: string;
+  menuId: number;
 }

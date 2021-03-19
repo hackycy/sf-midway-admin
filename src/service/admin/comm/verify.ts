@@ -40,8 +40,8 @@ export class AdminVerifyService extends BaseService {
       size: 4,
       color: true,
       noise: 4,
-      width: isEmpty(captcha.width) ? 100 : parseInt(captcha.width),
-      height: isEmpty(captcha.height) ? 50 : parseInt(captcha.height),
+      width: isEmpty(captcha.width) ? 100 : captcha.width,
+      height: isEmpty(captcha.height) ? 50 : captcha.height,
     });
     const result = {
       img: `data:image/svg+xml;base64,${Buffer.from(svg.data).toString(

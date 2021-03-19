@@ -1,40 +1,33 @@
-import {
-  IsNumberString,
-  IsInt,
-  ArrayNotEmpty,
-  ArrayMinSize,
-  Length,
-} from 'class-validator';
 import { Expose } from 'class-transformer';
-import { PageGetDto } from '../../comm';
+import { PageSearchDto } from '../../comm';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
 export class DeleteTypeDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   typeId: number;
 }
 
 export class CreateTypeDto {
-  @Length(2)
+  @Rule(RuleType.string().min(2).required())
   @Expose()
   name: string;
 }
 
-export class QueryImageDto extends PageGetDto {
-  @IsNumberString()
+export class QueryImageDto extends PageSearchDto {
+  @Rule(RuleType.number().integer().required())
   @Expose()
-  typeId: string;
+  typeId: number;
 }
 
 export class DeleteImageDto {
-  @ArrayNotEmpty()
-  @ArrayMinSize(1)
+  @Rule(RuleType.array().items(RuleType.number()).min(1).required())
   @Expose()
   imageIds: number[];
 }
 
 export class UploadImageDto {
-  @IsNumberString()
+  @Rule(RuleType.string().required())
   @Expose()
   typeId: string;
 }

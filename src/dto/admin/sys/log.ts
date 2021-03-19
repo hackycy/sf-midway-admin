@@ -1,9 +1,10 @@
-import { IsString } from 'class-validator';
+import { Rule, RuleType } from '@midwayjs/decorator';
 import { Expose } from 'class-transformer';
-import { PageGetDto } from '../../comm';
+import { PageSearchDto } from '../../comm';
 
-export class SearchLogDto extends PageGetDto {
-  @IsString()
+@Rule(PageSearchDto)
+export class SearchLogDto extends PageSearchDto {
+  @Rule(RuleType.string().required())
   @Expose()
   q: string;
 }

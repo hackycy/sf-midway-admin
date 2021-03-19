@@ -11,7 +11,6 @@
     "@midwayjs/swagger": "^1.0.6",
     "@midwayjs/web": "^2.8.11",
     "bull": "^3.20.1",
-    "class-validator": "^0.13.1",
     "crypto-js": "^4.0.0",
     "egg": "^2.29.3",
     "egg-redis": "^2.4.0",

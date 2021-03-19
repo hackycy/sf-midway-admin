@@ -1,143 +1,88 @@
-import {
-  Length,
-  IsString,
-  IsIn,
-  IsDate,
-  IsInt,
-  Validate,
-  IsOptional,
-  ValidateIf,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-  ValidationArguments,
-} from 'class-validator';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import * as parser from 'cron-parser';
+import { CustomHelpers } from 'joi';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
-// cron 表达式验证，bull lib下引用了cron-parser
-@ValidatorConstraint({ name: 'isCronExpression', async: false })
-export class IsCronExpression implements ValidatorConstraintInterface {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  validate(text: string, args: ValidationArguments) {
-    try {
-      const op: any = { iterator: true };
-      let needOp = false;
-      if ((args.object as any).startTime) {
-        needOp = true;
-        op.startDate = (args.object as any).startTime;
-      }
-      if ((args.object as any).endTime) {
-        needOp = true;
-        op.endDate = (args.object as any).endTime;
-      }
-      if (needOp) {
-        const tmp = parser.parseExpression(text, op);
-        if (!tmp.hasNext()) {
-          throw new Error();
-        }
-      } else {
-        parser.parseExpression(text);
-      }
-      return true;
-    } catch (e) {
-      return false;
-    }
+// cron validate
+export const IsCronExpression = (
+  value: string,
+  helpers: CustomHelpers
+): any => {
+  try {
+    parser.parseExpression(value);
+    return value;
+  } catch (e) {
+    return helpers.error('cron expression invalid');
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  defaultMessage(_args: ValidationArguments) {
-    // here you can provide default error message if validation failed
-    return 'this cron expression ($value) invalid';
-  }
-}
+};
 
 export class CreateTaskDto {
-  @Length(2, 50)
+  @Rule(RuleType.string().min(2).max(50).required())
   @Expose()
   name: string;
 
-  @IsString()
+  @Rule(RuleType.string().required())
   @Expose()
   service: string;
 
-  @IsIn([0, 1])
+  @Rule(RuleType.number().integer().valid(0, 1).required())
   @Expose()
   type: number;
 
-  @IsIn([0, 1, 2])
+  @Rule(RuleType.number().integer().valid(0, 1, 2).required())
   @Expose()
   status: number;
 
-  @ValidateIf((_o, v) => {
-    return !(v === '' || v === undefined || v === null);
-  })
-  @IsDate()
+  @Rule(RuleType.date().optional())
   @Expose()
-  @Transform(
-    value => {
-      if (value) {
-        return new Date(value);
-      }
-      return null;
-    },
-    { toClassOnly: true }
-  )
   startTime: Date;
 
-  @ValidateIf((_o, v) => {
-    return !(v === '' || v === undefined || v === null);
-  })
-  @IsDate()
+  @Rule(RuleType.date().optional())
   @Expose()
-  @Transform(
-    value => {
-      if (value) {
-        return new Date(value);
-      }
-      return null;
-    },
-    { toClassOnly: true }
-  )
   endTime: Date;
 
-  @IsInt()
-  @IsOptional()
+  @Rule(RuleType.number().integer().optional())
   @Expose()
   limit: number;
 
-  @ValidateIf(o => {
-    return o.type === 0;
-  })
-  @Validate(IsCronExpression)
+  @Rule(
+    RuleType.string().custom(IsCronExpression).when('type', {
+      is: 0,
+      then: RuleType.required(),
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   cron: string;
 
-  @IsInt()
-  @ValidateIf(o => {
-    return o.type === 1;
-  })
+  @Rule(
+    RuleType.number().integer().when('type', {
+      is: 1,
+      then: RuleType.required(),
+      otherwise: RuleType.optional(),
+    })
+  )
   @Expose()
   every: number;
 
-  @IsOptional()
-  @IsString()
+  @Rule(RuleType.string())
   @Expose()
   data: string;
 
-  @IsOptional()
-  @IsString()
+  @Rule(RuleType.string())
   @Expose()
   remark: string;
 }
 
+@Rule(CreateTaskDto)
 export class UpdateTaskDto extends CreateTaskDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   id: number;
 }
 
 export class CheckIdTaskDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   id: number;
 }

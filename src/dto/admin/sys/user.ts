@@ -1,81 +1,73 @@
-import {
-  IsInt,
-  Length,
-  Matches,
-  Allow,
-  IsEmail,
-  ArrayNotEmpty,
-  ValidateIf,
-  IsOptional,
-  IsIn,
-  IsNumberString,
-} from 'class-validator';
 import { Expose } from 'class-transformer';
-import { PageGetDto } from '../../comm';
+import { PageSearchDto } from '../../comm';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
 export class CreateUserDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   departmentId: number;
 
-  @Length(2)
+  @Rule(RuleType.string().min(2).required())
   @Expose()
   name: string;
 
-  @Matches(/^[a-z0-9A-Z]+$/)
-  @Length(6, 20)
+  @Rule(
+    RuleType.string()
+      .min(6)
+      .max(20)
+      .pattern(/^[a-z0-9A-Z]+$/)
+      .required()
+  )
   @Expose()
   username: string;
 
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   nickName: string;
 
-  @ArrayNotEmpty()
+  @Rule(RuleType.array().items(RuleType.number()).min(1).required())
   @Expose()
   roles: number[];
 
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   remark: string;
 
-  @ValidateIf((_o, v) => {
-    return !(v === '' || v === undefined || v === null);
-  })
-  @IsEmail()
+  @Rule(RuleType.string().email().optional())
   @Expose()
   email: string;
 
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   phone: string;
 
-  @IsOptional()
-  @IsIn([0, 1])
+  @Rule(RuleType.number().integer().valid(0, 1).optional())
   @Expose()
   status: number;
 }
 
+@Rule(CreateUserDto)
 export class UpdateUserDto extends CreateUserDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   id: number;
 }
 
 export class InfoUserDto {
-  @IsNumberString()
+  @Rule(RuleType.number().integer().required())
   @Expose()
-  userId: string;
+  userId: number;
 }
 
 export class DeleteUserDto {
-  @ArrayNotEmpty()
+  @Rule(RuleType.array().items(RuleType.number()).min(1).required())
   @Expose()
   userIds: number[];
 }
 
-export class QueryUserDto extends PageGetDto {
-  @IsNumberString()
+@Rule(PageSearchDto)
+export class QueryUserDto extends PageSearchDto {
+  @Rule(RuleType.number().integer().required())
   @Expose()
-  departmentId: string;
+  departmentId: number;
 }

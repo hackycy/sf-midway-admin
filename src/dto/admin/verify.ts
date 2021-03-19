@@ -1,92 +1,79 @@
-import {
-  Length,
-  IsString,
-  IsEmail,
-  ValidateIf,
-  Allow,
-  IsNumberString,
-  IsOptional,
-} from 'class-validator';
 import { Expose } from 'class-transformer';
 import { CreateApiPropertyDoc } from '@midwayjs/swagger';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
 export class LoginImageCaptchaDto {
-  @CreateApiPropertyDoc('验证码宽度', { example: '100' })
-  @IsOptional()
-  @IsNumberString()
+  @CreateApiPropertyDoc('验证码宽度', { example: 100 })
+  @Rule(RuleType.number().integer())
   @Expose()
-  width: string;
+  width: number;
 
-  @CreateApiPropertyDoc('验证码高度', { example: '50' })
-  @IsOptional()
-  @IsNumberString()
+  @CreateApiPropertyDoc('验证码高度', { example: 50 })
+  @Rule(RuleType.number().integer())
   @Expose()
-  height: string;
+  height: number;
 }
 
 export class LoginInfoDto {
   @CreateApiPropertyDoc('管理员用户名', { example: 'root' })
-  @IsString()
+  @Rule(RuleType.string().required())
   @Expose()
   username: string;
 
   @CreateApiPropertyDoc('管理员密码', { example: '123456' })
-  @IsString()
+  @Rule(RuleType.string().required())
   @Expose()
   password: string;
 
   @CreateApiPropertyDoc('验证码标识ID', { example: '0CRq2jthWUp7DiLCftB-P' })
-  @IsString()
+  @Rule(RuleType.string().required())
   @Expose()
   captchaId: string;
 
   @CreateApiPropertyDoc('登录验证码', { example: 'xfDp' })
-  @Length(4)
+  @Rule(RuleType.string().max(4).min(4).required())
   @Expose()
   verifyCode: string;
 }
 
 export class UpdatePersonInfoDto {
   @CreateApiPropertyDoc('管理员名称', { example: 'hackycy' })
-  @Length(2, 20)
+  @Rule(RuleType.string().min(2).max(20).required())
   @Expose()
   name: string;
 
   @CreateApiPropertyDoc('管理员昵称', { example: '源b' })
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   nickName: string;
 
   @CreateApiPropertyDoc('邮箱', { example: 'qa894178522@qq.com' })
-  @ValidateIf((_o, v) => {
-    return !(v === '' || v === undefined || v === null);
-  })
-  @IsEmail()
+  @Rule(RuleType.string().email())
   @Expose()
   email: string;
 
   @CreateApiPropertyDoc('手机号码', { example: '13124314551' })
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   phone: string;
 
   @CreateApiPropertyDoc('更改前的密码', { example: '123456' })
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   originPassword: string;
 
   @CreateApiPropertyDoc('新密码', { example: '12345678' })
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   newPassword: string;
 
   @CreateApiPropertyDoc('备注', { example: '这是xxx管理员的备注' })
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   remark: string;
 
   @CreateApiPropertyDoc('头像连接', { example: 'https://img.png' })
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   headImg: string;
 }

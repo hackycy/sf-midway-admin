@@ -125,9 +125,7 @@ export class AdminSysDeptController extends BaseController {
   @Validate()
   async info(@Query(ALL) infoDeptDto: InfoDeptDto): Promise<ResOp> {
     return res({
-      data: await this.adminSysDeptService.info(
-        parseInt(infoDeptDto.departmentId)
-      ),
+      data: await this.adminSysDeptService.info(infoDeptDto.departmentId),
     });
   }
 

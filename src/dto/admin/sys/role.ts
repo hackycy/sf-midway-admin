@@ -1,53 +1,47 @@
-import {
-  ArrayNotEmpty,
-  ArrayMinSize,
-  IsOptional,
-  IsNumberString,
-  Length,
-  Matches,
-  IsInt,
-  Allow,
-} from 'class-validator';
 import { Expose } from 'class-transformer';
+import { Rule, RuleType } from '@midwayjs/decorator';
 
 export class DeleteRoleDto {
-  @ArrayNotEmpty()
+  @Rule(RuleType.array().items(RuleType.number()).min(1))
   @Expose()
   roleIds: number[];
 }
 
 export class CreateRoleDto {
-  @Length(2)
+  @Rule(RuleType.string().min(2).required())
   @Expose()
   name: string;
 
-  @Matches(/^[a-z0-9A-Z]+$/)
+  @Rule(
+    RuleType.string()
+      .pattern(/^[a-z0-9A-Z]+$/)
+      .required()
+  )
   @Expose()
   label: string;
 
-  @Allow()
+  @Rule(RuleType.string())
   @Expose()
   remark: string;
 
-  @IsOptional()
-  @ArrayMinSize(0)
+  @Rule(RuleType.array().items(RuleType.number()).min(0).optional())
   @Expose()
   menus: number[];
 
-  @IsOptional()
-  @ArrayMinSize(0)
+  @Rule(RuleType.array().items(RuleType.number()).min(0).optional())
   @Expose()
   depts: number[];
 }
 
+@Rule(CreateRoleDto)
 export class UpdateRoleDto extends CreateRoleDto {
-  @IsInt()
+  @Rule(RuleType.number().integer().required())
   @Expose()
   roleId: number;
 }
 
 export class InfoRoleDto {
-  @IsNumberString()
+  @Rule(RuleType.number().integer().required())
   @Expose()
-  roleId: string;
+  roleId: number;
 }
