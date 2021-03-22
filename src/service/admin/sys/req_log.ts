@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { IPageSearchReqLogResult } from '../interface';
 
 @Provide()
-export class AdminSysReqLoginService extends BaseService {
+export class AdminSysReqLogService extends BaseService {
   @Inject()
   utils: Utils;
 
