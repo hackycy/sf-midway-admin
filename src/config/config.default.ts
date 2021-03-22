@@ -54,8 +54,12 @@ export default (appInfo: EggAppInfo) => {
     },
   };
 
-  // add your config here
-  config.middleware = ['execptionMiddleware', 'adminAuthMiddleware'];
+  // middleware config
+  config.middleware = [
+    'adminReqLogMiddleware',
+    'execptionMiddleware',
+    'adminAuthMiddleware',
+  ];
 
   config.midwayFeature = {
     // true 代表使用 midway logger
