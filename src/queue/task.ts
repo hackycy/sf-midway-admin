@@ -13,7 +13,6 @@ export class SysTaskQueue implements IQueue {
     this.app = app;
   }
 
-  // 不允许在handle方法动态获取service
   async handle(): Promise<Queue> {
     const bullConfig = this.app.getConfig('bull');
     const tq = new Bull('sys-task', bullConfig);
