@@ -19,7 +19,7 @@ export class AdminSysLoginLogController extends BaseController {
   adminSysLoginLogService: AdminSysLoginLogService;
 
   @(CreateApiDoc()
-    .summary('更新系统管理员')
+    .summary('分页查询登录日志')
     .respond(200, '', 'json', {
       example: resByPage(
         [

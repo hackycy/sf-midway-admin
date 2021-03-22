@@ -1,4 +1,5 @@
 import { ALL, Get, Inject, Provide, Query } from '@midwayjs/decorator';
+import { CreateApiDoc } from '@midwayjs/swagger';
 import { resByPage } from '../../../common/utils';
 import { AdminController } from '../../../decorator/controller';
 import { Validate } from '../../../decorator/validate';
@@ -17,6 +18,30 @@ export class AdminSysReqLogController extends BaseController {
   @Inject()
   adminSysReqLogService: AdminSysReqLogService;
 
+  @(CreateApiDoc()
+    .summary('分页查询请求追踪日志')
+    .respond(200, '', 'json', {
+      example: resByPage(
+        [
+          {
+            createTime: '2021-03-22T08:27:13.506Z',
+            updateTime: '2021-03-22T08:27:13.506Z',
+            id: 1,
+            ip: '127.0.0.1',
+            userId: 1,
+            params: '{}',
+            action: '/admin/captcha/img',
+            method: 'GET',
+            status: 200,
+            consumeTime: 11,
+          },
+        ],
+        1,
+        1,
+        10
+      ),
+    })
+    .build())
   @Get('/page')
   @Validate()
   async page(@Query(ALL) dto: PageSearchDto): Promise<ResOp> {
@@ -25,6 +50,30 @@ export class AdminSysReqLogController extends BaseController {
     return resByPage(list, count, dto.page, dto.limit);
   }
 
+  @(CreateApiDoc()
+    .summary('根据条件查询请求追踪日志')
+    .respond(200, '', 'json', {
+      example: resByPage(
+        [
+          {
+            createTime: '2021-03-22T08:27:13.506Z',
+            updateTime: '2021-03-22T08:27:13.506Z',
+            id: 1,
+            ip: '127.0.0.1',
+            userId: 1,
+            params: '{}',
+            action: '/admin/captcha/img',
+            method: 'GET',
+            status: 200,
+            consumeTime: 11,
+          },
+        ],
+        1,
+        1,
+        10
+      ),
+    })
+    .build())
   @Get('/search')
   @Validate()
   async search(@Query(ALL) dto: SearchReqLogDto): Promise<ResOp> {
