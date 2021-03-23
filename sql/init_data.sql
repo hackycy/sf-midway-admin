@@ -41,9 +41,9 @@ INSERT INTO `sf-admin`.sys_menu (createTime,updateTime,parent_id,name,router,per
 	 ('2020-10-12 10:00:49.463487000','2020-10-12 10:00:49.463487000',37,'在线用户','/sys/monitor/online',NULL,1,'people',0,'views/system/monitor/online',1,1),
 	 ('2020-10-13 03:01:13.787832000','2020-10-13 03:01:13.787832000',51,'查询','','sys:online:list',2,'',0,'',1,1),
 	 ('2020-10-13 03:01:51.480667000','2020-10-13 03:01:51.480667000',51,'下线','','sys:online:kick',2,'',0,'',1,1),
-	 ('2020-10-13 09:37:29.097828000','2020-10-13 09:37:29.097828000',38,'查询','','sys:req-log:page,sys:req-log:search',2,'',0,'',1,1),
+	 ('2020-10-13 09:37:29.097828000','2020-10-13 09:37:29.097828000',38,'查询','','sys:log:req:page,sys:log:req:search',2,'',0,'',1,1),
 	 ('2020-10-13 09:52:08.932501000','2020-10-13 09:53:44',37,'登录日志','/sys/monitor/login-log',NULL,1,'guide',0,'views/system/monitor/login-log',1,1),
-	 ('2020-10-13 09:56:13.285772000','2020-10-13 09:56:13.285772000',55,'查询','','sys:login-log:page',2,'',0,'',1,1),
+	 ('2020-10-13 09:56:13.285772000','2020-10-13 09:56:13.285772000',55,'查询','','sys:log:login:page',2,'',0,'',1,1),
 	 ('2020-10-19 03:07:18.221647000','2020-10-19 07:26:37',1,'任务调度','/sys/schedule',NULL,0,'task',0,'',1,1),
 	 ('2020-10-19 03:08:15.925726000','2020-10-19 07:21:04',57,'定时任务','/sys/schedule/task',NULL,1,'schedule',0,'views/system/schedule/task',1,1),
 	 ('2020-10-19 03:08:36.247678000','2020-10-19 03:08:36.247678000',58,'查询','','sys:task:page,sys:task:info',2,'',0,'',1,1),
@@ -55,7 +55,7 @@ INSERT INTO `sf-admin`.sys_menu (createTime,updateTime,parent_id,name,router,per
 	 ('2020-10-19 05:46:23.694028000','2020-10-19 05:46:23.694028000',58,'暂停','','sys:task:stop',2,'',0,'',1,1),
 	 ('2020-10-19 06:25:52.225518000','2020-10-19 06:25:52.225518000',58,'删除','','sys:task:delete',2,'',0,'',1,1),
 	 ('2020-10-19 07:30:18.456330000','2020-10-19 07:30:18.456330000',57,'任务日志','/sys/schedule/log',NULL,1,'schedule-log',0,'views/system/schedule/log',1,1),
-	 ('2020-10-19 08:09:49.063343000','2020-10-19 08:09:49.063343000',66,'查询','','sys:task-log:page',2,'',0,'',1,1);INSERT INTO `sf-admin`.sys_role (createTime,updateTime,userId,name,label,remark) VALUES
+	 ('2020-10-19 08:09:49.063343000','2020-10-19 08:09:49.063343000',66,'查询','','sys:log:task:page',2,'',0,'',1,1);INSERT INTO `sf-admin`.sys_role (createTime,updateTime,userId,name,label,remark) VALUES
 	 ('2020-08-27 03:35:05','2020-08-27 03:35:05','root','root','超级管理员',NULL),
 	 ('2020-09-14 07:39:02.423786000','2020-10-13 07:29:33','1','测试角色','testrole','');INSERT INTO `sf-admin`.sys_role_department (createTime,updateTime,role_id,department_id) VALUES
 	 ('2020-09-14 07:39:02.445216000','2020-09-14 07:39:02.445216000',2,1),

@@ -16,7 +16,7 @@ export class AdminReqLogMiddleware implements IWebMiddleware {
       const reportTime = Date.now() - startTime;
       ctx.set('X-Response-Time', reportTime.toString());
       const { url } = ctx;
-      if (url.startsWith('/admin/')) {
+      if (url.startsWith('/admin/') && !url.startsWith('/admin/sys/log/')) {
         ctx.requestContext.getAsync(AdminSysReqLogService).then(service => {
           service.save(
             url.split('?')[0],
