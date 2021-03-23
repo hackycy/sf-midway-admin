@@ -25,7 +25,7 @@ import { BaseController } from '../../base';
 @Provide()
 @AdminController('/sys/dept', {
   tagName: 'AdminSysDept',
-  description: '后台系统部门模块',
+  description: '后台系统部门控制器',
 })
 export class AdminSysDeptController extends BaseController {
   @Inject()

@@ -12,7 +12,7 @@ import { BaseController } from '../../base';
 @Provide()
 @AdminController('/sys/login-log', {
   tagName: 'AdminSysLoginLog',
-  description: '后台登录日志模块',
+  description: '后台登录日志控制器',
 })
 export class AdminSysLoginLogController extends BaseController {
   @Inject()

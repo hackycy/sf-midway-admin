@@ -23,7 +23,7 @@ import { AdminSysUserService } from '../../../service/admin/sys/user';
 import { BaseController } from '../../base';
 
 @Provide()
-@AdminController('/', { tagName: 'AdminLogin', description: '后台登录模块' })
+@AdminController('/', { tagName: 'AdminLogin', description: '后台登录控制器' })
 export class AdminLoginController extends BaseController {
   @Inject()
   adminVerifyService: AdminVerifyService;

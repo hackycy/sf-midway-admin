@@ -26,7 +26,7 @@ import { BaseController } from '../../base';
 @Provide()
 @AdminController('/sys/user', {
   tagName: 'AdminSysUser',
-  description: '后台系统管理员模块',
+  description: '后台系统管理员控制器',
 })
 export class AdminSysUserController extends BaseController {
   @Inject()

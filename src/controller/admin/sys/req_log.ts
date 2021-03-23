@@ -12,7 +12,7 @@ import { BaseController } from '../../base';
 @Provide()
 @AdminController('/sys/req-log', {
   tagName: 'AdminSysReqLog',
-  description: '后台请求追踪日志模块',
+  description: '后台请求追踪日志控制器',
 })
 export class AdminSysReqLogController extends BaseController {
   @Inject()
