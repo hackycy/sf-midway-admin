@@ -280,3 +280,19 @@ export const GetUserInDeptByPageExample = res({
     },
   },
 });
+
+//--------------------------------------------------online
+
+export const GetOnlineAdminListExample = res({
+  data: {
+    id: 1,
+    ip: '127.0.0.1',
+    username: 'rootadmin',
+    isCurrent: true,
+    time: '2021-03-23T02:32:15.396Z',
+    status: 1,
+    os: 'undefined undefined',
+    browser: 'undefined undefined',
+    disable: true,
+  },
+});
