@@ -21,6 +21,11 @@ import {
 import { ResOp } from '../../../interface';
 import { AdminSysDeptService } from '../../../service/admin/sys/dept';
 import { BaseController } from '../../base';
+import {
+  GetInfoDeptExample,
+  GetListDeptExample,
+  NormalExample,
+} from '../swagger';
 
 @Provide()
 @AdminController('/sys/dept', {
@@ -34,18 +39,7 @@ export class AdminSysDeptController extends BaseController {
   @(CreateApiDoc()
     .summary('获取系统部门列表')
     .respond(200, '', 'json', {
-      example: res({
-        data: [
-          {
-            createTime: '2020-08-27T03:33:19.000Z',
-            updateTime: '2020-08-27T03:33:19.000Z',
-            id: 1,
-            parentId: 2,
-            name: '思忆技术',
-            orderNum: 0,
-          },
-        ],
-      }),
+      example: GetListDeptExample,
     })
     .build())
   @Get('/list')
@@ -58,7 +52,7 @@ export class AdminSysDeptController extends BaseController {
   @(CreateApiDoc()
     .summary('创建系统部门')
     .param('创建系统部门参数')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/add')
   @Validate()
@@ -73,7 +67,7 @@ export class AdminSysDeptController extends BaseController {
   @(CreateApiDoc()
     .summary('删除系统部门')
     .param('删除系统部门参数')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/delete')
   @Validate()
@@ -99,26 +93,7 @@ export class AdminSysDeptController extends BaseController {
     .summary('查询单个系统部门信息')
     .param('系统部门参数')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          department: {
-            createTime: '2020-09-08T05:31:32.426Z',
-            updateTime: '2020-10-07T04:25:31.000Z',
-            id: 2,
-            parentId: 1,
-            name: 'xxx部门',
-            orderNum: 0,
-          },
-          parentDepartment: {
-            createTime: '2020-08-27T03:33:19.000Z',
-            updateTime: '2020-08-27T03:33:19.000Z',
-            id: 1,
-            parentId: null,
-            name: 'xxx部门',
-            orderNum: 0,
-          },
-        },
-      }),
+      example: GetInfoDeptExample,
     })
     .build())
   @Get('/info')
@@ -131,7 +106,7 @@ export class AdminSysDeptController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新系统部门')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .param('更新部门信息参数')
     .build())
   @Post('/update')
@@ -143,7 +118,7 @@ export class AdminSysDeptController extends BaseController {
 
   @(CreateApiDoc()
     .summary('管理员部门转移')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .param('转移参数')
     .build())
   @Post('/transfer')

@@ -22,6 +22,12 @@ import { ResOp } from '../../../interface';
 import { AdminSysMenuService } from '../../../service/admin/sys/menu';
 import { AdminSysRoleService } from '../../../service/admin/sys/role';
 import { BaseController } from '../../base';
+import {
+  GetRoleInfoExample,
+  GetRoleListByPageExample,
+  GetRoleListExample,
+  NormalExample,
+} from '../swagger';
 
 @Provide()
 @AdminController('/sys/role', {
@@ -39,19 +45,7 @@ export class AdminSysRoleController extends BaseController {
   @(CreateApiDoc()
     .summary('查询所有角色信息')
     .respond(200, '', 'json', {
-      example: res({
-        data: [
-          {
-            createTime: '2020-09-14T07:39:02.423Z',
-            updateTime: '2020-10-13T07:29:33.000Z',
-            id: 2,
-            userId: '1',
-            name: '测试角色',
-            label: 'testrole',
-            remark: '',
-          },
-        ],
-      }),
+      example: GetRoleListExample,
     })
     .build())
   async list(): Promise<ResOp> {
@@ -63,22 +57,7 @@ export class AdminSysRoleController extends BaseController {
   @(CreateApiDoc()
     .summary('分页查询角色信息')
     .respond(200, '', 'json', {
-      example: resByPage(
-        [
-          {
-            createTime: '2020-09-14T07:39:02.423Z',
-            updateTime: '2020-10-13T07:29:33.000Z',
-            id: 2,
-            userId: '1',
-            name: '测试角色',
-            label: 'testrole',
-            remark: '',
-          },
-        ],
-        1,
-        1,
-        10
-      ),
+      example: GetRoleListByPageExample,
     })
     .build())
   @Get('/page')
@@ -91,7 +70,7 @@ export class AdminSysRoleController extends BaseController {
 
   @(CreateApiDoc()
     .summary('删除角色')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/delete')
   @Validate()
@@ -107,7 +86,7 @@ export class AdminSysRoleController extends BaseController {
 
   @(CreateApiDoc()
     .summary('新增角色')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/add')
   @Validate()
@@ -118,7 +97,7 @@ export class AdminSysRoleController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新角色')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/update')
   @Validate()
@@ -131,37 +110,7 @@ export class AdminSysRoleController extends BaseController {
   @(CreateApiDoc()
     .summary('获取角色信息')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          roleInfo: {
-            createTime: '2020-09-14T07:39:02.423Z',
-            updateTime: '2020-10-13T07:29:33.000Z',
-            id: 2,
-            userId: '1',
-            name: '测试角色',
-            label: 'testrole',
-            remark: '',
-          },
-          menus: [
-            {
-              createTime: '2020-09-14T07:39:02.432Z',
-              updateTime: '2020-09-14T07:39:02.432Z',
-              id: 1,
-              roleId: 2,
-              menuId: 44,
-            },
-          ],
-          depts: [
-            {
-              createTime: '2020-09-14T07:39:02.445Z',
-              updateTime: '2020-09-14T07:39:02.445Z',
-              id: 1,
-              roleId: 2,
-              departmentId: 1,
-            },
-          ],
-        },
-      }),
+      example: GetRoleInfoExample,
     })
     .build())
   @Get('/info')

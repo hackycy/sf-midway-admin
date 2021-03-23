@@ -10,6 +10,12 @@ import { AdminSysLoginLogService } from '../../../service/admin/sys/login_log';
 import { AdminSysReqLogService } from '../../../service/admin/sys/req_log';
 import { AdminSysTaskLogService } from '../../../service/admin/sys/task_log';
 import { BaseController } from '../../base';
+import {
+  GetLoginLogByPageExample,
+  GetReqLogByPageExample,
+  GetTaskLogByPageExample,
+  SearchReqLogByPageExample,
+} from '../swagger';
 
 @Provide()
 @AdminController('/sys/log', {
@@ -29,21 +35,7 @@ export class AdminSysLogController extends BaseController {
   @(CreateApiDoc()
     .summary('分页查询登录日志')
     .respond(200, '', 'json', {
-      example: resByPage(
-        [
-          {
-            id: 3,
-            ip: '127.0.0.1',
-            os: 'undefined undefined',
-            browser: 'undefined undefined',
-            time: '2021-03-22T02:28:16.836Z',
-            username: 'rootadmin',
-          },
-        ],
-        1,
-        1,
-        10
-      ),
+      example: GetLoginLogByPageExample,
     })
     .build())
   @Get('/login/page')
@@ -60,25 +52,7 @@ export class AdminSysLogController extends BaseController {
   @(CreateApiDoc()
     .summary('分页查询请求追踪日志')
     .respond(200, '', 'json', {
-      example: resByPage(
-        [
-          {
-            createTime: '2021-03-22T08:27:13.506Z',
-            updateTime: '2021-03-22T08:27:13.506Z',
-            id: 1,
-            ip: '127.0.0.1',
-            userId: 1,
-            params: '{}',
-            action: '/admin/captcha/img',
-            method: 'GET',
-            status: 200,
-            consumeTime: 11,
-          },
-        ],
-        1,
-        1,
-        10
-      ),
+      example: GetReqLogByPageExample,
     })
     .build())
   @Get('/req/page')
@@ -92,25 +66,7 @@ export class AdminSysLogController extends BaseController {
   @(CreateApiDoc()
     .summary('根据条件查询请求追踪日志')
     .respond(200, '', 'json', {
-      example: resByPage(
-        [
-          {
-            createTime: '2021-03-22T08:27:13.506Z',
-            updateTime: '2021-03-22T08:27:13.506Z',
-            id: 1,
-            ip: '127.0.0.1',
-            userId: 1,
-            params: '{}',
-            action: '/admin/captcha/img',
-            method: 'GET',
-            status: 200,
-            consumeTime: 11,
-          },
-        ],
-        1,
-        1,
-        10
-      ),
+      example: SearchReqLogByPageExample,
     })
     .build())
   @Get('/req/search')
@@ -127,22 +83,7 @@ export class AdminSysLogController extends BaseController {
   @(CreateApiDoc()
     .summary('分页查询任务日志')
     .respond(200, '', 'json', {
-      example: resByPage(
-        [
-          {
-            id: 3,
-            taskId: 2,
-            name: '日志名称',
-            createTime: '2021-03-22T08:27:13.506Z',
-            finishTime: '2021-03-22T08:27:13.506Z',
-            detail: '任务执行详情',
-            status: 1,
-          },
-        ],
-        1,
-        1,
-        10
-      ),
+      example: GetTaskLogByPageExample,
     })
     .build())
   @Get('/task/page')

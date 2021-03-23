@@ -21,6 +21,13 @@ import { ResOp } from '../../../interface';
 import { AdminVerifyService } from '../../../service/admin/comm/verify';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
 import { BaseController } from '../../base';
+import {
+  GetAdminPersonInfoExample,
+  GetLoginImgCaptchaExample,
+  GetLoginTokenExample,
+  GetPermMenuExample,
+  NormalExample,
+} from '../swagger';
 
 @Provide()
 @AdminController('/', { tagName: 'AdminLogin', description: '后台登录控制器' })
@@ -35,12 +42,7 @@ export class AdminLoginController extends BaseController {
     .summary('获取图片验证码')
     .param('验证码参数')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          img: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDxxx',
-          id: 'bfMpheAIqp4ah0QhMEomT',
-        },
-      }),
+      example: GetLoginImgCaptchaExample,
     })
     .build())
   @Get('/captcha/img')
@@ -56,7 +58,7 @@ export class AdminLoginController extends BaseController {
     .summary('管理员登录')
     .param('管理员登录信息参数')
     .respond(200, '', 'json', {
-      example: res({ data: { token: 'eyJhbGciOiJIUzI1NiI....' } }),
+      example: GetLoginTokenExample,
     })
     .build())
   @Post('/login')
@@ -82,7 +84,7 @@ export class AdminLoginController extends BaseController {
   @(CreateApiDoc()
     .summary('管理员登出')
     .respond(200, '', 'json', {
-      example: res(),
+      example: NormalExample,
     })
     .build())
   @Post('/logout')
@@ -94,28 +96,7 @@ export class AdminLoginController extends BaseController {
   @(CreateApiDoc()
     .summary('获取菜单列表及权限列表')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          menus: [
-            {
-              createTime: '2020-08-28T10:09:26.322Z',
-              updateTime: '2020-10-12T06:35:18.000Z',
-              id: 1,
-              parentId: null,
-              name: '系统',
-              router: '/sys',
-              perms: null,
-              type: 0,
-              icon: 'system',
-              orderNum: 255,
-              viewPath: null,
-              keepalive: true,
-              isShow: true,
-            },
-          ],
-          perms: ['sys:user:add', 'sys:user:delete'],
-        },
-      }),
+      example: GetPermMenuExample,
     })
     .build())
   @Get('/permmenu')
@@ -128,21 +109,7 @@ export class AdminLoginController extends BaseController {
   @(CreateApiDoc()
     .summary('获取管理员资料')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          createTime: '2020-08-27T03:38:30.000Z',
-          updateTime: '2020-10-07T07:17:14.000Z',
-          id: 1,
-          name: 'hackycy',
-          username: 'rootadmin',
-          psalt: 'adsbadwasasdwasdasd',
-          nickName: '',
-          headImg: 'http://xxx.png',
-          email: 'qa894178522@qq.com',
-          phone: '13124314551',
-          remark: null,
-        },
-      }),
+      example: GetAdminPersonInfoExample,
     })
     .build())
   @Get('/person')
@@ -156,7 +123,7 @@ export class AdminLoginController extends BaseController {
     .summary('更改管理员资料')
     .param('需要更改的管理员资料参数')
     .respond(200, '', 'json', {
-      example: res(),
+      example: NormalExample,
     })
     .build())
   @Post('/person')

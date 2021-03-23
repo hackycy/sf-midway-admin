@@ -22,6 +22,11 @@ import { ResOp } from '../../../interface';
 import { AdminSysMenuService } from '../../../service/admin/sys/menu';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
 import { BaseController } from '../../base';
+import {
+  GetAdminUserInfoExample,
+  GetUserInDeptByPageExample,
+  NormalExample,
+} from '../swagger';
 
 @Provide()
 @AdminController('/sys/user', {
@@ -37,7 +42,7 @@ export class AdminSysUserController extends BaseController {
 
   @(CreateApiDoc()
     .summary('新增系统管理员')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/add')
   @Validate()
@@ -52,25 +57,7 @@ export class AdminSysUserController extends BaseController {
   @(CreateApiDoc()
     .summary('获取系统用户信息')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          createTime: '2020-08-27T03:38:30.000Z',
-          updateTime: '2021-03-18T10:18:20.000Z',
-          id: 1,
-          departmentId: 2,
-          name: 'xxx',
-          username: 'root',
-          psalt: 'xxxxxxxxxxx',
-          nickName: '',
-          headImg: 'http://xxx.png',
-          email: 'xxx@qq.com',
-          phone: '1562xxx2415',
-          remark: null,
-          status: 1,
-          roles: [1],
-          departmentName: '管理部门',
-        },
-      }),
+      example: GetAdminUserInfoExample,
     })
     .build())
   @Get('/info')
@@ -83,7 +70,7 @@ export class AdminSysUserController extends BaseController {
 
   @(CreateApiDoc()
     .summary('删除系统管理员')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/delete')
   @Validate()
@@ -96,32 +83,7 @@ export class AdminSysUserController extends BaseController {
   @(CreateApiDoc()
     .summary('分页查询某个部门下的所有管理员')
     .respond(200, '', 'json', {
-      example: res({
-        data: {
-          list: [
-            {
-              createTime: '2020-09-14T07:41:33.732Z',
-              departmentId: 2,
-              email: 'xxxxx@qq.com',
-              headImg: '',
-              id: 2,
-              name: 'xxxx',
-              nickName: '',
-              phone: '',
-              remark: '',
-              status: 0,
-              updateTime: '2021-03-18T10:18:20.000Z',
-              username: 'xxx001',
-              departmentName: '管理部门',
-            },
-          ],
-          pagination: {
-            total: 2,
-            page: 1,
-            size: 10,
-          },
-        },
-      }),
+      example: GetUserInDeptByPageExample,
     })
     .build())
   @Get('/page')
@@ -142,7 +104,7 @@ export class AdminSysUserController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新系统管理员')
-    .respond(200, '', 'json', { example: res() })
+    .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/update')
   @Validate()
