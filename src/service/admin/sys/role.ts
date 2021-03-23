@@ -36,6 +36,14 @@ export class AdminSysRoleService extends BaseService {
   }
 
   /**
+   * 列举所有角色条数：除去超级管理员
+   */
+  async count(): Promise<number> {
+    const count = await this.role.count({ id: Not(this.rootRoleId) });
+    return count;
+  }
+
+  /**
    * 根据角色获取角色信息
    */
   async info(rid: number): Promise<IRoleInfoResult> {
