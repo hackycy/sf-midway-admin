@@ -1,4 +1,4 @@
-import { res, resByPage } from '../../common/utils';
+import { res, resByPage } from '../common/utils';
 
 // swagger doc example define
 

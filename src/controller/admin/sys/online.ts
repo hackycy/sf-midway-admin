@@ -16,7 +16,7 @@ import { ResOp } from '../../../interface';
 import { AdminSysOnlineService } from '../../../service/admin/sys/online';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
 import { BaseController } from '../../base';
-import { GetOnlineAdminListExample, NormalExample } from '../swagger';
+import { GetOnlineAdminListExample, NormalExample } from '../../swagger';
 
 @Provide()
 @AdminController('/sys/online', {

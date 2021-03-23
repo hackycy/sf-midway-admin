@@ -15,7 +15,7 @@ import {
   GetReqLogByPageExample,
   GetTaskLogByPageExample,
   SearchReqLogByPageExample,
-} from '../swagger';
+} from '../../swagger';
 
 @Provide()
 @AdminController('/sys/log', {

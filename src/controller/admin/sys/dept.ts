@@ -25,7 +25,7 @@ import {
   GetInfoDeptExample,
   GetListDeptExample,
   NormalExample,
-} from '../swagger';
+} from '../../swagger';
 
 @Provide()
 @AdminController('/sys/dept', {

@@ -27,7 +27,7 @@ import {
   GetRoleListByPageExample,
   GetRoleListExample,
   NormalExample,
-} from '../swagger';
+} from '../../swagger';
 
 @Provide()
 @AdminController('/sys/role', {

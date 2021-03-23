@@ -26,7 +26,7 @@ import {
   GetAdminUserInfoExample,
   GetUserInDeptByPageExample,
   NormalExample,
-} from '../swagger';
+} from '../../swagger';
 
 @Provide()
 @AdminController('/sys/user', {

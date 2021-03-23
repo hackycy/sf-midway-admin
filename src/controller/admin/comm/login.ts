@@ -27,7 +27,7 @@ import {
   GetLoginTokenExample,
   GetPermMenuExample,
   NormalExample,
-} from '../swagger';
+} from '../../swagger';
 
 @Provide()
 @AdminController('/', { tagName: 'AdminLogin', description: '后台登录控制器' })
