@@ -28,12 +28,10 @@ export class CreateRoleDto {
   @Expose()
   remark: string;
 
-  @CreateApiPropertyDoc('角色关联权限')
   @Rule(RuleType.array().items(RuleType.number()).min(0).optional())
   @Expose()
   menus: number[];
 
-  @CreateApiPropertyDoc('角色关联部门')
   @Rule(RuleType.array().items(RuleType.number()).min(0).optional())
   @Expose()
   depts: number[];
