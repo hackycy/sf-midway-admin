@@ -296,3 +296,50 @@ export const GetOnlineAdminListExample = res({
     disable: true,
   },
 });
+
+//--------------------------------------------------task
+
+export const GetTaskListByPageExample = resByPage(
+  [
+    {
+      createTime: '2020-10-22T07:48:10.089Z',
+      updateTime: '2020-10-23T04:21:10.000Z',
+      id: 4,
+      name: '获取逆天邪神最新章节',
+      service: 'reptile.book.getZonghengBookLastchapter',
+      type: 1,
+      status: 0,
+      startTime: null,
+      endTime: null,
+      limit: 3,
+      cron: '',
+      every: 20000,
+      data: '{"id":"408586","emails":"qa894178522@qq.com"}',
+      jobOpts: '',
+      remark: '',
+    },
+  ],
+  1,
+  1,
+  10
+);
+
+export const GetTaskInfoExample = res({
+  data: {
+    createTime: '2020-10-19T08:53:44.732Z',
+    updateTime: '2021-03-24T03:13:37.000Z',
+    id: 1,
+    name: '定时清空请求追踪日志',
+    service: 'admin.sys.reqLog.clear',
+    type: 0,
+    status: 1,
+    startTime: null,
+    endTime: null,
+    limit: 0,
+    cron: '0 0 3 ? * 1',
+    every: 1000,
+    data: '',
+    jobOpts: '{"count":1,"cron":"0 0 3 ? * 1","jobId":1}',
+    remark: '',
+  },
+});

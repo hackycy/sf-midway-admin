@@ -38,12 +38,10 @@ export class CreateTaskDto {
   @Expose()
   status: number;
 
-  @CreateApiPropertyDoc('任务开始时间')
   @Rule(RuleType.date().optional())
   @Expose()
   startTime: Date;
 
-  @CreateApiPropertyDoc('任务结束时间')
   @Rule(RuleType.date().optional())
   @Expose()
   endTime: Date;
