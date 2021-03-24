@@ -30,7 +30,9 @@ export class AdminSysMenuService extends BaseService {
   /**
    * 保存或新增菜单
    */
-  async save(menu: CreateMenuDto): Promise<any> {
+  async save(
+    menu: CreateMenuDto & { id?: number }
+  ): Promise<CreateMenuDto & SysMenu> {
     const result = await this.menu.save(menu);
     return result;
   }
@@ -63,7 +65,7 @@ export class AdminSysMenuService extends BaseService {
   /**
    * 查找当前菜单下的子菜单，目录以及菜单
    */
-  async findChildMenus(mid: number): Promise<SysMenu[]> {
+  async findChildMenus(mid: number): Promise<any> {
     const allMenus: any = [];
     const menus = await this.menu.find({ parentId: mid });
     // if (_.isEmpty(menus)) {

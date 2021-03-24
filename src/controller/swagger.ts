@@ -343,3 +343,60 @@ export const GetTaskInfoExample = res({
     remark: '',
   },
 });
+
+//--------------------------------------------------menu
+
+export const GetMenuListExample = res({
+  data: [
+    {
+      createTime: '2020-08-28T10:09:26.322Z',
+      updateTime: '2020-10-12T06:35:18.000Z',
+      id: 1,
+      parentId: null,
+      name: '系统',
+      router: '/sys',
+      perms: null,
+      type: 0,
+      icon: 'system',
+      orderNum: 255,
+      viewPath: null,
+      keepalive: true,
+      isShow: true,
+    },
+  ],
+});
+
+export const GetMenuInfoExample = res({
+  data: {
+    menu: {
+      createTime: '2020-08-01T00:00:00.000Z',
+      updateTime: '2020-09-14T03:53:31.000Z',
+      id: 3,
+      parentId: 1,
+      name: '权限管理',
+      router: '/sys/permssion',
+      perms: null,
+      type: 0,
+      icon: 'permission',
+      orderNum: 0,
+      viewPath: '',
+      keepalive: true,
+      isShow: true,
+    },
+    parentMenu: {
+      createTime: '2020-08-28T10:09:26.322Z',
+      updateTime: '2020-10-12T06:35:18.000Z',
+      id: 1,
+      parentId: null,
+      name: '系统',
+      router: '/sys',
+      perms: null,
+      type: 0,
+      icon: 'system',
+      orderNum: 255,
+      viewPath: null,
+      keepalive: true,
+      isShow: true,
+    },
+  },
+});
