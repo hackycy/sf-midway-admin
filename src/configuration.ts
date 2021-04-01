@@ -5,6 +5,7 @@ import * as orm from '@midwayjs/orm';
 import { initBull } from './decorator/bull';
 import { IMidwayWebApplication } from '@midwayjs/web';
 import { AdminSysTaskService } from './service/admin/sys/task';
+import * as moment from 'moment';
 
 @Configuration({
   imports: [
@@ -25,5 +26,11 @@ export class ContainerLifeCycle implements ILifeCycle {
     // 初始化系统任务
     const taskService = await container.getAsync(AdminSysTaskService);
     await taskService.initTask();
+
+    // Date time
+    // eslint-disable-next-line no-extend-native
+    Date.prototype.toJSON = function () {
+      return moment(this).format('YYYY-MM-DD HH:mm:ss');
+    };
   }
 }
