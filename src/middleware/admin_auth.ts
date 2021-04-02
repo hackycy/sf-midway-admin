@@ -30,7 +30,7 @@ export class AdminAuthMiddleware implements IWebMiddleware {
         }
         if (isEmpty(token)) {
           // 无法通过token校验
-          this.reject(ctx, 401, { code: 11001 });
+          this.reject(ctx, { code: 11001 });
           return;
         }
         const utils = await ctx.requestContext.getAsync(Utils);
@@ -39,11 +39,11 @@ export class AdminAuthMiddleware implements IWebMiddleware {
           ctx.admin = utils.jwtVerify(token);
         } catch (e) {
           // 无法通过token校验
-          this.reject(ctx, 401, { code: 11001 });
+          this.reject(ctx, { code: 11001 });
           return;
         }
         if (!ctx.admin) {
-          this.reject(ctx, 401, { code: 11001 });
+          this.reject(ctx, { code: 11001 });
           return;
         }
         // token校验通过，则校验权限
@@ -60,13 +60,13 @@ export class AdminAuthMiddleware implements IWebMiddleware {
         );
         if (pv !== `${ctx.admin.pv}`) {
           // 密码版本不一致，登录期间已更改过密码
-          this.reject(ctx, 401, { code: 11002 });
+          this.reject(ctx, { code: 11002 });
           return;
         }
         const redisToken = await verifyService.getRedisTokenById(ctx.admin.uid);
         if (token !== redisToken) {
           // 与redis保存不一致
-          this.reject(ctx, 401, { code: 11002 });
+          this.reject(ctx, { code: 11002 });
           return;
         }
         const perms: string = await verifyService.getRedisPermsById(
@@ -74,7 +74,7 @@ export class AdminAuthMiddleware implements IWebMiddleware {
         );
         // 安全判空
         if (isEmpty(perms)) {
-          this.reject(ctx, 403, { code: 11001 });
+          this.reject(ctx, { code: 11001 });
           return;
         }
         // 将sys:admin:user等转换成sys/admin/user
@@ -83,7 +83,7 @@ export class AdminAuthMiddleware implements IWebMiddleware {
         });
         // 遍历权限是否包含该url，不包含则无访问权限
         if (!permArray.includes(path.replace('/admin/', ''))) {
-          this.reject(ctx, 403, { code: 11003 });
+          this.reject(ctx, { code: 11003 });
           return;
         }
       }
@@ -92,8 +92,8 @@ export class AdminAuthMiddleware implements IWebMiddleware {
     };
   }
 
-  reject(ctx: Context, status: number, op: ResOp): void {
-    ctx.status = status;
+  reject(ctx: Context, op: ResOp): void {
+    ctx.status = 200;
     ctx.body = res(op);
   }
 }
