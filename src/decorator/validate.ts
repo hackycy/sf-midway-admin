@@ -19,9 +19,7 @@ export class ValidateError extends Error {
 }
 
 /**
- * 自定义Validate注解，基于class-validator
- * @param classTransformOptions 等同于ClassTransformOptions
- * @param validatorOptions 等同于ValidatorOptions
+ * 增强原有的Validate，安全转换class
  */
 export function Validate(isTransform = true) {
   return function (
