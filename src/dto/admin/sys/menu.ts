@@ -93,7 +93,7 @@ export class CreateMenuDto {
     RuleType.string().when('type', {
       is: 2,
       then: RuleType.required(),
-      otherwise: RuleType.optional(),
+      otherwise: RuleType.allow('').optional(),
     })
   )
   @Expose()
