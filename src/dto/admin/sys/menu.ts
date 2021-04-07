@@ -64,10 +64,6 @@ export class CreateMenuDto {
           is: 1,
           then: RuleType.required(),
         },
-        {
-          is: 0,
-          then: RuleType.required(),
-        },
       ],
       otherwise: RuleType.optional(),
     })
