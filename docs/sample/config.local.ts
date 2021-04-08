@@ -53,7 +53,7 @@ export default (): any => {
     database: 'sf-admin',
     synchronize: false,
     logging: true,
-    timezone: '+00:00',
+    // timezone: '+00:00',
     /**
      * JavaScript对数据库中int和bigint的区别对待：
      * 刚开始开发中，线下测试数据库id字段采用int，数据库SELECT操作返回的结果是Number，但是使用bigint，数据库返回的为String，
