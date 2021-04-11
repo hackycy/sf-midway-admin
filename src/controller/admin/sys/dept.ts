@@ -17,6 +17,7 @@ import {
   InfoDeptDto,
   TransferDeptDto,
   UpdateDeptDto,
+  MoveDeptDto,
 } from '../../../dto/admin/sys/dept';
 import { ResOp } from '../../../interface';
 import { AdminSysDeptService } from '../../../service/admin/sys/dept';
@@ -128,6 +129,18 @@ export class AdminSysDeptController extends BaseController {
       transferDeptDto.userIds,
       transferDeptDto.departmentId
     );
+    return res();
+  }
+
+  @(CreateApiDoc()
+    .summary('部门移动排序')
+    .respond(200, '', 'json', { example: NormalExample })
+    .param('移动排序参数')
+    .build())
+  @Post('/move')
+  @Validate()
+  async move(@Body(ALL) dto: MoveDeptDto): Promise<ResOp> {
+    await this.adminSysDeptService.move(dto.depts);
     return res();
   }
 }

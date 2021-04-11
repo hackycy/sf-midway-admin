@@ -65,3 +65,23 @@ export class TransferDeptDto {
   @Expose()
   departmentId: number;
 }
+
+export class MoveDeptDto {
+  @Rule(
+    RuleType.array()
+      .min(1)
+      .items(
+        RuleType.object().keys({
+          id: RuleType.number(),
+          parentId: RuleType.number().allow(null),
+        })
+      )
+  )
+  @Expose()
+  depts: MoveDept[];
+}
+
+export interface MoveDept {
+  id: number;
+  parentId: number | null;
+}

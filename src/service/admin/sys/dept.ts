@@ -4,7 +4,7 @@ import SysDepartment from '../../../entity/admin/sys/department';
 import { InjectEntityModel } from '@midwayjs/orm';
 import { IInfoDeptResult } from '../interface';
 import { Config, Inject, Provide } from '@midwayjs/decorator';
-import { UpdateDeptDto } from '../../../dto/admin/sys/dept';
+import { MoveDept, UpdateDeptDto } from '../../../dto/admin/sys/dept';
 import SysUser from '../../../entity/admin/sys/user';
 import SysRoleDepartment from '../../../entity/admin/sys/role_department';
 import { AdminSysRoleService } from './role';
@@ -69,6 +69,21 @@ export class AdminSysDeptService extends BaseService {
     await this.dept.insert({
       name: deptName,
       parentId: parentDeptId === -1 ? undefined : parentDeptId,
+    });
+  }
+
+  /**
+   * 移动排序
+   */
+  async move(depts: MoveDept[]): Promise<void> {
+    this.getManager().transaction(async manager => {
+      for (let i = 0; i < depts.length; i++) {
+        await manager.update(
+          SysDepartment,
+          { id: depts[i].id },
+          { parentId: depts[i].parentId }
+        );
+      }
     });
   }
 
