@@ -76,7 +76,7 @@ export class AdminSysDeptService extends BaseService {
    * 移动排序
    */
   async move(depts: MoveDept[]): Promise<void> {
-    this.getManager().transaction(async manager => {
+    await this.getManager().transaction(async manager => {
       for (let i = 0; i < depts.length; i++) {
         await manager.update(
           SysDepartment,
