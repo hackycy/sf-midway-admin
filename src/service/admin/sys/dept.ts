@@ -109,6 +109,13 @@ export class AdminSysDeptService extends BaseService {
   }
 
   /**
+   * 查找当前部门下的子部门数量
+   */
+  async countChildDept(id: number): Promise<number> {
+    return await this.dept.count({ parentId: id });
+  }
+
+  /**
    * 根据当前角色id获取部门列表
    */
   async getDepts(uid: number): Promise<SysDepartment[]> {

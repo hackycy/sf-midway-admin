@@ -86,6 +86,12 @@ export class AdminSysDeptController extends BaseController {
     if (count2 > 0) {
       return res({ code: 10010 });
     }
+    const count3 = await this.adminSysDeptService.countChildDept(
+      deleteDeptDto.departmentId
+    );
+    if (count3 > 0) {
+      return res({ code: 10015 });
+    }
     await this.adminSysDeptService.delete(deleteDeptDto.departmentId);
     return res();
   }
