@@ -52,6 +52,8 @@ export class AdminSysDeptService extends BaseService {
   async update(param: UpdateDeptDto): Promise<void> {
     await this.dept.update(param.id, {
       parentId: param.parentId === -1 ? undefined : param.parentId,
+      name: param.name,
+      orderNum: param.orderNum,
     });
   }
 

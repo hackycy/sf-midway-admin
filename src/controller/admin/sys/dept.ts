@@ -59,8 +59,8 @@ export class AdminSysDeptController extends BaseController {
   @Validate()
   async add(@Body(ALL) createDeptDto: CreateDeptDto): Promise<ResOp> {
     await this.adminSysDeptService.add(
-      createDeptDto.departmentName,
-      createDeptDto.parentDepartmentId
+      createDeptDto.name,
+      createDeptDto.parentId
     );
     return res();
   }

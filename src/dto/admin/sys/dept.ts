@@ -3,28 +3,6 @@ import { CreateApiPropertyDoc } from '@midwayjs/swagger';
 import { Rule, RuleType } from '@midwayjs/decorator';
 
 export class CreateDeptDto {
-  @CreateApiPropertyDoc('系统部门名称', { example: '技术部' })
-  @Rule(RuleType.string().required())
-  @Expose()
-  departmentName: string;
-
-  @CreateApiPropertyDoc('父级部门ID', { example: 1 })
-  @Rule(RuleType.number().integer().required())
-  @Expose()
-  parentDepartmentId: number;
-
-  @CreateApiPropertyDoc('排序值必须为整数，最小为0', { example: 255 })
-  @Rule(RuleType.number().integer().min(0))
-  @Expose()
-  orderNum: number;
-}
-
-export class UpdateDeptDto {
-  @CreateApiPropertyDoc('需要更新的部门id', { example: 1 })
-  @Rule(RuleType.number().integer().required())
-  @Expose()
-  id: number;
-
   @CreateApiPropertyDoc('部门名称', { example: '技术部' })
   @Rule(RuleType.string().required())
   @Expose()
@@ -39,6 +17,14 @@ export class UpdateDeptDto {
   @Rule(RuleType.number().integer().min(0))
   @Expose()
   orderNum: number;
+}
+
+@Rule(CreateDeptDto)
+export class UpdateDeptDto extends CreateDeptDto {
+  @CreateApiPropertyDoc('需要更新的部门id', { example: 1 })
+  @Rule(RuleType.number().integer().required())
+  @Expose()
+  id: number;
 }
 
 export class DeleteDeptDto {
