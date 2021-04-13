@@ -15,7 +15,7 @@ import {
   CreateUserDto,
   DeleteUserDto,
   InfoUserDto,
-  QueryUserDto,
+  PageUserDto,
   UpdateUserDto,
 } from '../../../dto/admin/sys/user';
 import { ResOp } from '../../../interface';
@@ -86,18 +86,18 @@ export class AdminSysUserController extends BaseController {
       example: GetUserInDeptByPageExample,
     })
     .build())
-  @Get('/page')
+  @Post('/page')
   @Validate()
-  async page(@Query(ALL) dto: QueryUserDto): Promise<ResOp> {
+  async page(@Body(ALL) dto: PageUserDto): Promise<ResOp> {
     const list = await this.adminSysUserService.page(
       this.ctx.admin.uid,
-      dto.departmentId,
+      dto.departmentIds,
       dto.page - 1,
       dto.limit
     );
     const total = await this.adminSysUserService.count(
       this.ctx.admin.uid,
-      dto.departmentId
+      dto.departmentIds
     );
     return resByPage(list, total, dto.page, dto.limit);
   }

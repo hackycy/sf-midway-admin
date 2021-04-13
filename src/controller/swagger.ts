@@ -258,19 +258,20 @@ export const GetUserInDeptByPageExample = res({
   data: {
     list: [
       {
-        createTime: '2020-09-14T07:41:33.732Z',
+        createTime: '2020-09-14 07:41:33',
         departmentId: 2,
-        email: 'xxxxx@qq.com',
+        email: 'qa894178522@qq.com',
         headImg: '',
         id: 2,
-        name: 'xxxx',
+        name: 'hackycy2',
         nickName: '',
         phone: '',
         remark: '',
         status: 0,
-        updateTime: '2021-03-18T10:18:20.000Z',
-        username: 'xxx001',
+        updateTime: '2020-10-12 06:04:19',
+        username: 'test001',
         departmentName: '管理部门',
+        roleNames: ['测试角色', '测试2'],
       },
     ],
     pagination: {

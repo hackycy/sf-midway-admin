@@ -53,6 +53,7 @@ export interface IPageSearchUserResult {
   updateTime: string;
   username: string;
   departmentName: string;
+  roleNames: string[];
 }
 
 export interface IInfoDeptResult {

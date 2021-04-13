@@ -77,9 +77,8 @@ export class DeleteUserDto {
 }
 
 @Rule(PageSearchDto)
-export class QueryUserDto extends PageSearchDto {
-  @CreateApiPropertyDoc('需要查询关联的管理员的部门ID')
-  @Rule(RuleType.number().integer().required())
+export class PageUserDto extends PageSearchDto {
+  @Rule(RuleType.array().items(RuleType.number()).min(1).optional())
   @Expose()
-  departmentId: number;
+  departmentIds: number[];
 }
