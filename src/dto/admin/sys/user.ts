@@ -30,7 +30,7 @@ export class CreateUserDto {
   @Expose()
   nickName: string;
 
-  @Rule(RuleType.array().items(RuleType.number()).min(1).required())
+  @Rule(RuleType.array().items(RuleType.number()).min(1).max(3).required())
   @Expose()
   roles: number[];
 
