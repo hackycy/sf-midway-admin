@@ -26,7 +26,7 @@ export class CreateUserDto {
   username: string;
 
   @CreateApiPropertyDoc('管理员别名')
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().empty('').optional())
   @Expose()
   nickName: string;
 
@@ -35,17 +35,17 @@ export class CreateUserDto {
   roles: number[];
 
   @CreateApiPropertyDoc('备注')
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().empty('').optional())
   @Expose()
   remark: string;
 
   @CreateApiPropertyDoc('邮箱')
-  @Rule(RuleType.string().email().optional())
+  @Rule(RuleType.string().empty('').email().optional())
   @Expose()
   email: string;
 
   @CreateApiPropertyDoc('手机号码')
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().empty('').optional())
   @Expose()
   phone: string;
 
