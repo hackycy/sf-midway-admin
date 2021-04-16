@@ -93,7 +93,7 @@ export class AdminSysUserService extends BaseService {
     // 所有用户初始密码为123456
     await this.getManager().transaction(async manager => {
       const salt = this.utils.generateRandomValue(32);
-      const password = this.utils.md5(`123456:${salt}`);
+      const password = this.utils.md5(`123456${salt}`);
       const u = manager.create(SysUser, {
         departmentId: param.departmentId,
         username: param.username,
