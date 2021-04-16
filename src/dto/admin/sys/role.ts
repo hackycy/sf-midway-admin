@@ -24,7 +24,7 @@ export class CreateRoleDto {
   label: string;
 
   @CreateApiPropertyDoc('角色备注')
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().empty('').empty(null).optional())
   @Expose()
   remark: string;
 

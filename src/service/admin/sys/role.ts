@@ -77,7 +77,7 @@ export class AdminSysRoleService extends BaseService {
       name,
       label,
       remark,
-      userId: String(uid),
+      userId: `${uid}`,
     });
     const { identifiers } = role;
     const roleId = parseInt(identifiers[0].id);
