@@ -6,6 +6,6 @@ export interface ResOp {
 
 export interface ExecuteData {
   id: number;
-  args: string;
+  args?: string | null;
   service: string;
 }
