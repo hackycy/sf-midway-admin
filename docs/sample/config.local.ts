@@ -28,13 +28,15 @@ export default (): any => {
 
   // bull config
   config.bull = {
-    redis: {
-      port: 6379,
-      host: '127.0.0.1',
-      password: '123456',
-      db: 0,
+    SysTask: {
+      redis: {
+        port: 6379,
+        host: '127.0.0.1',
+        password: '123456',
+        db: 0,
+      },
+      prefix: 'admin:task',
     },
-    prefix: 'admin:task',
   };
 
   // Root角色对应ID
