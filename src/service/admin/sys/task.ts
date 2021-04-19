@@ -1,16 +1,16 @@
 import { App, Inject, Provide } from '@midwayjs/decorator';
 import { BaseService } from '../../base';
-import { Queue } from 'bull';
 import { InjectEntityModel } from '@midwayjs/orm';
 import SysTask from '../../../entity/admin/sys/task';
 import { Repository } from 'typeorm';
 import { CreateTaskDto, UpdateTaskDto } from '../../../dto/admin/sys/task';
 import { IMidwayApplication } from '@midwayjs/core';
+import { BullService } from 'midway-bull';
 
 @Provide()
 export class AdminSysTaskService extends BaseService {
-  @Inject('SysTaskQueue')
-  sysTaskQueue: Queue;
+  @Inject('bull:bullService')
+  bullService: BullService;
 
   @InjectEntityModel(SysTask)
   sysTask: Repository<SysTask>;
@@ -22,14 +22,16 @@ export class AdminSysTaskService extends BaseService {
    * 初始化任务，系统启动前调用
    */
   async initTask(): Promise<void> {
-    const jobs = await this.sysTaskQueue.getJobs([
-      'active',
-      'delayed',
-      'failed',
-      'paused',
-      'waiting',
-      'completed',
-    ]);
+    const jobs = await this.bullService
+      .getQueue('SysTask')
+      .getJobs([
+        'active',
+        'delayed',
+        'failed',
+        'paused',
+        'waiting',
+        'completed',
+      ]);
     for (let i = 0; i < jobs.length; i++) {
       // 先移除所有已存在的任务
       await jobs[i].remove();
@@ -87,10 +89,12 @@ export class AdminSysTaskService extends BaseService {
    */
   async once(task: SysTask): Promise<void | never> {
     if (task) {
-      await this.sysTaskQueue.add(
-        { id: task.id, service: task.service, args: task.data },
-        { jobId: task.id, removeOnComplete: true, removeOnFail: true }
-      );
+      await this.bullService
+        .getQueue('SysTask')
+        .add(
+          { id: task.id, service: task.service, args: task.data },
+          { jobId: task.id, removeOnComplete: true, removeOnFail: true }
+        );
     } else {
       throw new Error('Task is Empty');
     }
@@ -140,10 +144,12 @@ export class AdminSysTaskService extends BaseService {
     if (task.limit > 0) {
       repeat.limit = task.limit;
     }
-    const job = await this.sysTaskQueue.add(
-      { id: task.id, service: task.service, args: task.data },
-      { jobId: task.id, removeOnComplete: true, removeOnFail: true, repeat }
-    );
+    const job = await this.bullService
+      .getQueue('SysTask')
+      .add(
+        { id: task.id, service: task.service, args: task.data },
+        { jobId: task.id, removeOnComplete: true, removeOnFail: true, repeat }
+      );
     if (job && job.opts) {
       await this.sysTask.update(task.id, {
         jobOpts: JSON.stringify(job.opts.repeat),
@@ -169,14 +175,16 @@ export class AdminSysTaskService extends BaseService {
       await this.sysTask.update(task.id, { status: 0 });
       return;
     }
-    const jobs = await this.sysTaskQueue.getJobs([
-      'active',
-      'delayed',
-      'failed',
-      'paused',
-      'waiting',
-      'completed',
-    ]);
+    const jobs = await this.bullService
+      .getQueue('SysTask')
+      .getJobs([
+        'active',
+        'delayed',
+        'failed',
+        'paused',
+        'waiting',
+        'completed',
+      ]);
     for (let i = 0; i < jobs.length; i++) {
       if (jobs[i].data.id === task.id) {
         await jobs[i].remove();
@@ -194,7 +202,7 @@ export class AdminSysTaskService extends BaseService {
    * 查看队列中任务是否存在
    */
   async existJob(jobId: string): Promise<boolean> {
-    const jobs = await this.sysTaskQueue.getRepeatableJobs();
+    const jobs = await this.bullService.getQueue('SysTask').getRepeatableJobs();
     const ids = jobs.map(e => {
       return e.id;
     });
@@ -205,7 +213,9 @@ export class AdminSysTaskService extends BaseService {
    * 更新任务完成状态
    */
   async updateTaskCompleteStatus(tid: number): Promise<void> {
-    const result = await this.sysTaskQueue.getRepeatableJobs();
+    const result = await this.bullService
+      .getQueue('SysTask')
+      .getRepeatableJobs();
     const task = await this.sysTask.findOne({ id: tid });
     const jobOpts = JSON.parse(task!.jobOpts);
     // 如果下次执行时间小于当前时间，则表示已经执行完成。

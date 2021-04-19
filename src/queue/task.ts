@@ -1,44 +1,31 @@
-import { BullQueue, IQueue } from '../decorator/bull';
-import { Queue } from 'bull';
-import * as Bull from 'bull';
 import { IMidwayWebApplication } from '@midwayjs/web';
 import { AdminSysTaskLogService } from '../service/admin/sys/task_log';
 import { AdminSysTaskService } from '../service/admin/sys/task';
+import { IQueue, Queue } from 'midway-bull';
+import { App, Provide } from '@midwayjs/decorator';
+import { ExecuteData } from '../interface';
 
-@BullQueue('SysTaskQueue')
+@Queue('SysTask')
+@Provide()
 export class SysTaskQueue implements IQueue {
+  @App()
   app: IMidwayWebApplication;
 
-  constructor(app: IMidwayWebApplication) {
-    this.app = app;
+  async excute(data: ExecuteData): Promise<void> {
+    const container = this.app.getApplicationContext();
+    const taskLogService = await container.getAsync(AdminSysTaskLogService);
+    const taskService = await container.getAsync(AdminSysTaskService);
+    let id = -1;
+    try {
+      id = await taskLogService.record(data.id, 0);
+      await taskService.callService(data.service, data.args);
+      await taskLogService.updateTaskStatus(id, 1);
+    } catch (e) {
+      if (id !== -1) {
+        await taskLogService.updateTaskStatus(id, 2, `${e.message}`);
+      }
+    }
   }
 
-  async handle(): Promise<Queue> {
-    const bullConfig = this.app.getConfig('bull');
-    const tq = new Bull('sys-task', bullConfig);
-    tq.process(
-      async (job): Promise<void> => {
-        const container = this.app.getApplicationContext();
-        const taskLogService = await container.getAsync(AdminSysTaskLogService);
-        const taskService = await container.getAsync(AdminSysTaskService);
-        let id = -1;
-        try {
-          id = await taskLogService.record(job.data.id, 0);
-          await taskService.callService(job.data.service, job.data.args);
-          await taskLogService.updateTaskStatus(id, 1);
-        } catch (e) {
-          if (id !== -1) {
-            await taskLogService.updateTaskStatus(id, 2, `${e.message}`);
-          }
-        }
-      }
-    );
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    tq.on('completed', async (job, _result) => {
-      const container = this.app.getApplicationContext();
-      const taskService = await container.getAsync(AdminSysTaskService);
-      taskService.updateTaskCompleteStatus(job.data.id);
-    });
-    return tq;
-  }
+  onEvent(): void {}
 }

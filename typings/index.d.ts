@@ -20,6 +20,5 @@ declare module 'egg' {
       admin: string;
       front: string;
     };
-    bull: QueueOptions;
   }
 }
