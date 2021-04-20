@@ -13,23 +13,18 @@ export class AdminSysTaskLogService extends BaseService {
   /**
    * 记录任务日志
    */
-  async record(tid: number, status: number): Promise<number> {
+  async record(
+    tid: number,
+    status: number,
+    time?: number,
+    err?: string
+  ): Promise<number> {
     const result = await this.taskLog.save({
       taskId: tid,
       status,
+      detail: err,
     });
     return result.id;
-  }
-
-  async updateTaskStatus(
-    id: number,
-    status: number,
-    detail?: string
-  ): Promise<void> {
-    this.taskLog.update(id, {
-      status,
-      detail,
-    });
   }
 
   /**
@@ -64,7 +59,7 @@ export class AdminSysTaskLogService extends BaseService {
         taskId: e.task_id,
         name: e.task_name,
         createTime: e.task_log_createTime,
-        finishTime: e.task_log_updateTime,
+        consumeTime: e.task_log_consume_time,
         detail: e.task_log_detail,
         status: e.task_log_status,
       };

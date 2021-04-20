@@ -163,6 +163,7 @@ INSERT INTO `sys_menu` VALUES ('2020-09-11 04:34:52.949262', '2020-10-12 08:14:5
 INSERT INTO `sys_menu` VALUES ('2020-09-11 06:12:14.621531', '2020-09-11 06:12:14.621531', 39, 4, '部门新增', '', 'sys:dept:add', 2, '', 0, '', 1, 1);
 INSERT INTO `sys_menu` VALUES ('2020-09-11 06:13:23.752133', '2020-09-11 06:13:23.752133', 40, 4, '部门删除', '', 'sys:dept:delete', 2, '', 0, '', 1, 1);
 INSERT INTO `sys_menu` VALUES ('2020-09-11 06:29:52.437621', '2020-09-11 06:29:52.437621', 41, 4, '部门更新', '', 'sys:dept:update', 2, '', 0, '', 1, 1);
+INSERT INTO `sys_menu` VALUES ('2021-04-12 04:28:03.312443', '2021-04-20 10:18:22', 20, 4, '部门移动排序', NULL, 'sys:dept:move', 2, NULL, 255, NULL, 1, 1);
 INSERT INTO `sys_menu` VALUES ('2020-09-14 03:56:24.740870', '2020-10-09 07:47:05.000000', 44, NULL, '文档', '/document', '', 0, 'documentation', 0, '', 1, 1);
 INSERT INTO `sys_menu` VALUES ('2020-09-14 06:55:17.544866', '2020-09-24 08:00:12.000000', 45, NULL, '通用权限', '/common', '', 0, '', 0, '', 1, 0);
 INSERT INTO `sys_menu` VALUES ('2020-09-23 07:31:28.700348', '2020-09-24 05:22:45.000000', 46, 45, '图片空间', '', 'space:image:type:list,space:image:type:add,space:image:type:delete,space:image:page,space:image:delete,space:image:upload', 2, '', 0, '', 1, 1);
@@ -332,15 +333,9 @@ CREATE TABLE `sys_task_log` (
   `task_id` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `detail` text,
+  `consume_time` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of sys_task_log
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_task_log` VALUES ('2020-10-26 08:52:49.759752', '2020-10-26 08:52:49.759752', 1, 4, 1, NULL);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user

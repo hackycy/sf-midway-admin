@@ -15,15 +15,15 @@ export class SysTaskQueue implements IQueue {
     const container = this.app.getApplicationContext();
     const taskLogService = await container.getAsync(AdminSysTaskLogService);
     const taskService = await container.getAsync(AdminSysTaskService);
-    let id = -1;
     try {
-      id = await taskLogService.record(data.id, 0);
+      const startTime = Date.now();
       await taskService.callService(data.service, data.args);
-      await taskLogService.updateTaskStatus(id, 1);
+      const timing = Date.now() - startTime;
+      // 任务执行成功
+      await taskLogService.record(data.id, 1, timing);
     } catch (e) {
-      if (id !== -1) {
-        await taskLogService.updateTaskStatus(id, 2, `${e.message}`);
-      }
+      // 执行失败
+      await taskLogService.record(data.id, 0);
     }
   }
 

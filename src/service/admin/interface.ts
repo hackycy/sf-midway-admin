@@ -78,7 +78,7 @@ export interface IPageTaskLogResult {
   taskId: number;
   name: string;
   createTime: string;
-  finishTime: string;
+  consumeTime: number;
   detail: string;
   status: number;
 }

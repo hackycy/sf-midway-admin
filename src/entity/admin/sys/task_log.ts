@@ -15,4 +15,7 @@ export default class SysTaskLog extends BaseEntity {
 
   @Column({ type: 'text', nullable: true })
   detail: string;
+
+  @Column({ type: 'int', nullable: true, name: 'consume_time', default: 0 })
+  consumeTime: number;
 }
