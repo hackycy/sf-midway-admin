@@ -73,9 +73,9 @@ export class AdminSysTaskController extends BaseController {
     .summary('根据任务ID查询')
     .respond(200, '', 'json', { example: GetTaskInfoExample })
     .build())
-  @Post('/info')
+  @Get('/info')
   @Validate()
-  async info(@Body(ALL) dto: CheckIdTaskDto): Promise<ResOp> {
+  async info(@Query(ALL) dto: CheckIdTaskDto): Promise<ResOp> {
     return res({
       data: await this.adminSysTaskService.info(dto.id),
     });

@@ -94,7 +94,7 @@ export class UpdateTaskDto extends CreateTaskDto {
 
 export class CheckIdTaskDto {
   @CreateApiPropertyDoc('任务ID')
-  @Rule(RuleType.number().integer().required())
+  @Rule(RuleType.number().min(0).integer().required())
   @Expose()
   id: number;
 }
