@@ -210,27 +210,25 @@ export class AdminSysTaskService extends BaseService {
   }
 
   /**
-   * 更新任务完成状态
+   * 更新是否已经完成，完成则移除该任务并修改状态
    */
   async updateTaskCompleteStatus(tid: number): Promise<void> {
-    const result = await this.bullService
-      .getQueue('SysTask')
-      .getRepeatableJobs();
+    const jobs = await this.bullService.getQueue('SysTask').getRepeatableJobs();
     const task = await this.sysTask.findOne({ id: tid });
     const jobOpts = JSON.parse(task!.jobOpts);
     // 如果下次执行时间小于当前时间，则表示已经执行完成。
-    for (const task of result) {
+    for (const job of jobs) {
       const currentTime = new Date().getTime();
       if (
         task.id &&
-        task.id === tid.toString() &&
+        job.id === tid.toString() &&
         (jobOpts.cron
           ? task.cron === jobOpts.cron
           : task.every === jobOpts.every) &&
-        task.next < currentTime
+        job.next < currentTime
       ) {
         // 如果下次执行时间小于当前时间，则表示已经执行完成。
-        await this.sysTask.update(tid, { status: 2 });
+        await this.stop(task);
       }
     }
   }
