@@ -217,7 +217,6 @@ export class AdminSysUserService extends BaseService {
     page: number,
     count: number
   ): Promise<IPageSearchUserResult[]> {
-    console.log(deptIds);
     const queryAll: boolean = isEmpty(deptIds);
     const result = await this.user
       .createQueryBuilder('user')
