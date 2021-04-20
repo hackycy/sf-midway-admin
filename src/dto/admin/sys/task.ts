@@ -1,15 +1,19 @@
 import { Expose } from 'class-transformer';
 import * as parser from 'cron-parser';
-import { CustomHelpers } from 'joi';
+import { CustomHelpers, ErrorReport } from 'joi';
 import { Rule, RuleType } from '@midwayjs/decorator';
 import { CreateApiPropertyDoc } from '@midwayjs/swagger';
+import { isEmpty } from 'lodash';
 
 // cron validate
 export const IsCronExpression = (
   value: string,
   helpers: CustomHelpers
-): any => {
+): string | ErrorReport => {
   try {
+    if (isEmpty(value)) {
+      throw new Error('cron expression is empty');
+    }
     parser.parseExpression(value);
     return value;
   } catch (e) {
@@ -34,15 +38,15 @@ export class CreateTaskDto {
   type: number;
 
   @CreateApiPropertyDoc('任务状态')
-  @Rule(RuleType.number().integer().valid(0, 1, 2).required())
+  @Rule(RuleType.number().integer().valid(0, 1).required())
   @Expose()
   status: number;
 
-  @Rule(RuleType.date().optional())
+  @Rule(RuleType.date().empty('').optional())
   @Expose()
   startTime: Date;
 
-  @Rule(RuleType.date().optional())
+  @Rule(RuleType.date().empty('').optional())
   @Expose()
   endTime: Date;
 
@@ -53,9 +57,9 @@ export class CreateTaskDto {
 
   @CreateApiPropertyDoc('cron表达式')
   @Rule(
-    RuleType.string().custom(IsCronExpression).when('type', {
+    RuleType.string().when('type', {
       is: 0,
-      then: RuleType.required(),
+      then: RuleType.custom(IsCronExpression, 'cron expression validate'),
       otherwise: RuleType.optional(),
     })
   )
@@ -74,12 +78,12 @@ export class CreateTaskDto {
   every: number;
 
   @CreateApiPropertyDoc('执行参数')
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().empty('').allow(null).optional())
   @Expose()
   data: string;
 
   @CreateApiPropertyDoc('任务备注')
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().empty('').allow(null).optional())
   @Expose()
   remark: string;
 }

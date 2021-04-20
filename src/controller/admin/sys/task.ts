@@ -49,7 +49,7 @@ export class AdminSysTaskController extends BaseController {
   }
 
   @(CreateApiDoc()
-    .summary('添加任务列表')
+    .summary('添加任务')
     .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/add')
@@ -60,10 +60,11 @@ export class AdminSysTaskController extends BaseController {
   }
 
   @(CreateApiDoc()
-    .summary('更新任务列表')
+    .summary('更新任务')
     .respond(200, '', 'json', { example: NormalExample })
     .build())
   @Post('/update')
+  @Validate()
   async update(@Body(ALL) dto: UpdateTaskDto): Promise<ResOp> {
     await this.adminSysTaskService.addOrUpdate(dto);
     return res();
