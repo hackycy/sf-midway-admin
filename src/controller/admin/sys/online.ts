@@ -6,11 +6,11 @@ import {
   Inject,
   Post,
   Provide,
+  Validate,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res } from '../../../common/utils';
 import { AdminController } from '../../../decorator/controller';
-import { Validate } from '../../../decorator/validate';
 import { KickDto } from '../../../dto/admin/sys/online';
 import { ResOp } from '../../../interface';
 import { AdminSysOnlineService } from '../../../service/admin/sys/online';

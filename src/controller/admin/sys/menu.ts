@@ -6,12 +6,12 @@ import {
   Post,
   Provide,
   Query,
+  Validate,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { flattenDeep, isEmpty } from 'lodash';
 import { res } from '../../../common/utils';
 import { AdminController } from '../../../decorator/controller';
-import { Validate } from '../../../decorator/validate';
 import {
   CreateMenuDto,
   DeleteMenuDto,

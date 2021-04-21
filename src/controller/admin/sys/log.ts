@@ -1,8 +1,14 @@
-import { ALL, Get, Inject, Provide, Query } from '@midwayjs/decorator';
+import {
+  ALL,
+  Get,
+  Inject,
+  Provide,
+  Query,
+  Validate,
+} from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { resByPage } from '../../../common/utils';
 import { AdminController } from '../../../decorator/controller';
-import { Validate } from '../../../decorator/validate';
 import { SearchReqLogDto } from '../../../dto/admin/sys/log';
 import { PageSearchDto } from '../../../dto/comm';
 import { ResOp } from '../../../interface';

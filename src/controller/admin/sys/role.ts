@@ -6,11 +6,11 @@ import {
   Post,
   Provide,
   Query,
+  Validate,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res, resByPage } from '../../../common/utils';
 import { AdminController } from '../../../decorator/controller';
-import { Validate } from '../../../decorator/validate';
 import {
   CreateRoleDto,
   DeleteRoleDto,
