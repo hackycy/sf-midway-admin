@@ -35,6 +35,15 @@ export interface IRoleInfoResult {
   depts: SysRoleDepartment[];
 }
 
+export interface IAccountInfo {
+  name: string;
+  nickName: string;
+  email: string;
+  phone: string;
+  remark: string;
+  headImg: string;
+}
+
 export interface IAddRoleResult {
   roleId: number;
 }

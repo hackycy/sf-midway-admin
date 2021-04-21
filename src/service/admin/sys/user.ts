@@ -10,7 +10,7 @@ import { CreateUserDto, UpdateUserDto } from '../../../dto/admin/sys/user';
 import { In, Not } from 'typeorm';
 import SysUserRole from '../../../entity/admin/sys/user_role';
 import SysDepartment from '../../../entity/admin/sys/department';
-import { IPageSearchUserResult } from '../interface';
+import { IAccountInfo, IPageSearchUserResult } from '../interface';
 
 @Provide()
 export class AdminSysUserService extends BaseService {
@@ -32,52 +32,36 @@ export class AdminSysUserService extends BaseService {
   /**
    * 查询用户个人信息
    */
-  async person(uid: number): Promise<SysUser | undefined> {
-    const user: any = await this.user.findOne({ id: uid });
+  async getAccountInfo(uid: number): Promise<IAccountInfo | null> {
+    const user: SysUser | undefined = await this.user.findOne({ id: uid });
     if (!isEmpty(user)) {
-      delete user.departmentId;
-      delete user.status;
-      // delete user.remark;
-      delete user.password;
+      return {
+        name: user.name,
+        nickName: user.nickName,
+        email: user.email,
+        phone: user.phone,
+        remark: user.remark,
+        headImg: user.headImg,
+      };
     }
-    return user;
+    return null;
   }
 
   /**
    * 更新个人信息
    */
-  async personUpdate(
-    uid: number,
-    param: UpdatePersonInfoDto
-  ): Promise<boolean> {
-    const {
-      name,
-      nickName,
-      email,
-      phone,
-      originPassword,
-      newPassword,
-      remark,
-      headImg,
-    } = param;
-    let savePassword: string | undefined;
-    if (originPassword && newPassword) {
-      const user = await this.user.findOne({ id: uid });
-      const comparePassword = this.utils.md5(`${originPassword}${user.psalt}`);
-      if (user!.password === comparePassword) {
-        savePassword = this.utils.md5(`${newPassword}${user.psalt}`);
-      } else {
-        // 旧密码不一致
-        return false;
-      }
-    }
-    const obj: any = { name, nickName, email, phone, remark, headImg };
-    if (savePassword) {
-      await this.upgradePasswordV(uid);
-      obj.password = savePassword;
-    }
-    await this.user.update(uid, obj);
-    return true;
+  async personUpdate(uid: number, param: UpdatePersonInfoDto): Promise<void> {
+    // if (originPassword && newPassword) {
+    //   const user = await this.user.findOne({ id: uid });
+    //   const comparePassword = this.utils.md5(`${originPassword}${user.psalt}`);
+    //   if (user!.password === comparePassword) {
+    //     savePassword = this.utils.md5(`${newPassword}${user.psalt}`);
+    //   } else {
+    //     // 旧密码不一致
+    //     return false;
+    //   }
+    // }
+    await this.user.update(uid, param);
   }
 
   /**

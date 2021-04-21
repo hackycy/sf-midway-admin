@@ -9,12 +9,11 @@ import { isEmpty } from 'lodash';
 import { res, Utils } from '../common/utils';
 import { ResOp } from '../interface';
 import { AdminVerifyService } from '../service/admin/comm/verify';
-
-// 无需token的地址
-const noTokenUrl = ['/admin/captcha/img', '/admin/login'];
-
-// 无需权限的url
-const noPermUrl = ['/admin/permmenu', '/admin/person', '/admin/logout'];
+import {
+  ADMIN_PREFIX_URL,
+  NOPERM_PREFIX_URL,
+  NOAUTH_PREFIX_URL,
+} from '../controller/base';
 
 @Provide()
 export class AdminAuthMiddleware implements IWebMiddleware {
@@ -23,8 +22,8 @@ export class AdminAuthMiddleware implements IWebMiddleware {
       const url = ctx.url;
       const path = url.split('?')[0];
       const token = ctx.get('Authorization');
-      if (url.startsWith('/admin/')) {
-        if (noTokenUrl.includes(path)) {
+      if (url.startsWith(`${ADMIN_PREFIX_URL}/`)) {
+        if (url.startsWith(`${ADMIN_PREFIX_URL}${NOAUTH_PREFIX_URL}/`)) {
           await next();
           return;
         }
@@ -47,7 +46,7 @@ export class AdminAuthMiddleware implements IWebMiddleware {
           return;
         }
         // token校验通过，则校验权限
-        if (noPermUrl.includes(path)) {
+        if (url.startsWith(`${ADMIN_PREFIX_URL}${NOPERM_PREFIX_URL}/`)) {
           // 无需权限，则pass
           await next();
           return;

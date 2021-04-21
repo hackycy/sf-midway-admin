@@ -37,43 +37,23 @@ export class LoginInfoDto {
 }
 
 export class UpdatePersonInfoDto {
-  @CreateApiPropertyDoc('管理员名称', { example: 'hackycy' })
-  @Rule(RuleType.string().min(2).max(20).required())
-  @Expose()
-  name: string;
-
   @CreateApiPropertyDoc('管理员昵称', { example: '源b' })
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().allow('').allow(null))
   @Expose()
   nickName: string;
 
   @CreateApiPropertyDoc('邮箱', { example: 'qa894178522@qq.com' })
-  @Rule(RuleType.string().email())
+  @Rule(RuleType.string().email().allow('').allow(null))
   @Expose()
   email: string;
 
   @CreateApiPropertyDoc('手机号码', { example: '13124314551' })
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().allow('').allow(null))
   @Expose()
   phone: string;
 
-  @CreateApiPropertyDoc('更改前的密码', { example: '123456' })
-  @Rule(RuleType.string())
-  @Expose()
-  originPassword: string;
-
-  @CreateApiPropertyDoc('新密码', { example: '12345678' })
-  @Rule(RuleType.string())
-  @Expose()
-  newPassword: string;
-
   @CreateApiPropertyDoc('备注', { example: '这是xxx管理员的备注' })
-  @Rule(RuleType.string())
+  @Rule(RuleType.string().allow('').allow(null))
   @Expose()
   remark: string;
-
-  @CreateApiPropertyDoc('头像连接', { example: 'https://img.png' })
-  @Rule(RuleType.string())
-  @Expose()
-  headImg: string;
 }
