@@ -6,6 +6,7 @@ import {
 } from '@midwayjs/web';
 import { Context } from 'egg';
 import { res } from '../common/utils';
+import { ValidationError } from 'joi';
 
 @Provide()
 export class ExecptionMiddleware implements IWebMiddleware {
@@ -17,7 +18,8 @@ export class ExecptionMiddleware implements IWebMiddleware {
         ctx.logger.error(`[Exception] ${err}`);
         ctx.set('Content-Type', 'application/json');
         // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
-        const status = err.status || 500;
+        const status =
+          (err instanceof ValidationError ? 422 : err.status) || 500;
         const message =
           status === 500 && ctx.app.config.env === 'prod'
             ? '服务器好像出了点问题...稍后再试试'
