@@ -6,6 +6,7 @@ import {
   Inject,
   Post,
   Provide,
+  Validate,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res } from '../../../common/utils';
@@ -60,6 +61,7 @@ export class AdminAccountController extends BaseController {
     })
     .build())
   @Post('/update')
+  @Validate()
   async update(@Body(ALL) personInfo: UpdatePersonInfoDto): Promise<ResOp> {
     await this.adminSysUserService.updatePersonInfo(
       this.ctx.admin.uid,
@@ -76,6 +78,7 @@ export class AdminAccountController extends BaseController {
     })
     .build())
   @Post('/password')
+  @Validate()
   async password(@Body(ALL) dto: UpdatePasswordDto): Promise<ResOp> {
     const result = await this.adminSysUserService.updatePassword(
       this.ctx.admin.uid,
