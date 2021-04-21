@@ -130,7 +130,7 @@ CREATE TABLE `sys_menu` (
   `keepalive` tinyint(4) DEFAULT '1',
   `isShow` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -184,6 +184,7 @@ INSERT INTO `sys_menu` VALUES ('2020-10-19 05:46:23.694028', '2020-10-19 05:46:2
 INSERT INTO `sys_menu` VALUES ('2020-10-19 06:25:52.225518', '2020-10-19 06:25:52.225518', 65, 58, '删除', '', 'sys:task:delete', 2, '', 0, '', 1, 1);
 INSERT INTO `sys_menu` VALUES ('2020-10-19 07:30:18.456330', '2020-10-19 07:30:18.456330', 66, 57, '任务日志', '/sys/schedule/log', NULL, 1, 'schedule-log', 0, 'views/system/schedule/log', 1, 1);
 INSERT INTO `sys_menu` VALUES ('2020-10-19 08:09:49.063343', '2020-10-19 08:09:49.063343', 67, 66, '查询', '', 'sys:log:task:page', 2, '', 0, '', 1, 1);
+INSERT INTO `sys_menu` VALUES('2021-04-21 08:54:41.018924000', '2021-04-21 08:54:41.018924000', 68, 4, '更改密码', NULL, 'sys:user:password', 2, NULL, 255, NULL, 1, 1);
 COMMIT;
 
 -- ----------------------------
