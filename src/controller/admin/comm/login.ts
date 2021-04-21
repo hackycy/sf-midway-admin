@@ -20,7 +20,7 @@ import {
 import { ResOp } from '../../../interface';
 import { AdminVerifyService } from '../../../service/admin/comm/verify';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
-import { BaseController } from '../../base';
+import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetAdminPersonInfoExample,
   GetLoginImgCaptchaExample,
@@ -30,7 +30,10 @@ import {
 } from '../../swagger';
 
 @Provide()
-@Controller('/', { tagName: 'AdminLogin', description: '后台登录控制器' })
+@Controller(`${ADMIN_PREFIX_URL}/`, {
+  tagName: 'AdminLogin',
+  description: '后台登录控制器',
+})
 export class AdminLoginController extends BaseController {
   @Inject()
   adminVerifyService: AdminVerifyService;
