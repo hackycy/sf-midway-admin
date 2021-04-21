@@ -28,5 +28,11 @@ export class SysTaskQueue implements IQueue {
     }
   }
 
-  onEvent(): void {}
+  async onEvent(e: string, ...args: any[]): Promise<void> {
+    if (e === 'completed') {
+      const container = this.app.getApplicationContext();
+      const taskService = await container.getAsync(AdminSysTaskService);
+      taskService.updateTaskCompleteStatus(args[0].data.id);
+    }
+  }
 }
