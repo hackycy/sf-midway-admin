@@ -4,7 +4,10 @@ import SysUser from '../../../entity/admin/sys/user';
 import { BaseService } from '../../base';
 import { Repository } from 'typeorm';
 import { isEmpty, findIndex } from 'lodash';
-import { UpdatePersonInfoDto } from '../../../dto/admin/verify';
+import {
+  UpdatePasswordDto,
+  UpdatePersonInfoDto,
+} from '../../../dto/admin/verify';
 import { Utils } from '../../../common/utils';
 import { CreateUserDto, UpdateUserDto } from '../../../dto/admin/sys/user';
 import { In, Not } from 'typeorm';
@@ -50,18 +53,32 @@ export class AdminSysUserService extends BaseService {
   /**
    * 更新个人信息
    */
-  async personUpdate(uid: number, param: UpdatePersonInfoDto): Promise<void> {
-    // if (originPassword && newPassword) {
-    //   const user = await this.user.findOne({ id: uid });
-    //   const comparePassword = this.utils.md5(`${originPassword}${user.psalt}`);
-    //   if (user!.password === comparePassword) {
-    //     savePassword = this.utils.md5(`${newPassword}${user.psalt}`);
-    //   } else {
-    //     // 旧密码不一致
-    //     return false;
-    //   }
-    // }
+  async updatePersonInfo(
+    uid: number,
+    param: UpdatePersonInfoDto
+  ): Promise<void> {
     await this.user.update(uid, param);
+  }
+
+  /**
+   * 更改管理员密码
+   */
+  async updatePassword(uid: number, dto: UpdatePasswordDto): Promise<boolean> {
+    const user = await this.user.findOne({ id: uid });
+    if (isEmpty(user)) {
+      throw new Error('update password user is not exist');
+    }
+    const comparePassword = this.utils.md5(
+      `${dto.originPassword}${user.psalt}`
+    );
+    // 原密码不一致，不允许更改
+    if (user.password !== comparePassword) {
+      return false;
+    }
+    const password = this.utils.md5(`${dto.newPassword}${user.psalt}`);
+    await this.user.update({ id: uid }, { password });
+    await this.upgradePasswordV(user.id);
+    return true;
   }
 
   /**

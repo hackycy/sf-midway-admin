@@ -9,7 +9,10 @@ import {
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res } from '../../../common/utils';
-import { UpdatePersonInfoDto } from '../../../dto/admin/verify';
+import {
+  UpdatePasswordDto,
+  UpdatePersonInfoDto,
+} from '../../../dto/admin/verify';
 import { ResOp } from '../../../interface';
 import { AdminVerifyService } from '../../../service/admin/comm/verify';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
@@ -57,11 +60,31 @@ export class AdminAccountController extends BaseController {
     })
     .build())
   @Post('/update')
-  async personUpdate(
-    @Body(ALL) personInfo: UpdatePersonInfoDto
-  ): Promise<ResOp> {
-    await this.adminSysUserService.personUpdate(this.ctx.admin.uid, personInfo);
+  async update(@Body(ALL) personInfo: UpdatePersonInfoDto): Promise<ResOp> {
+    await this.adminSysUserService.updatePersonInfo(
+      this.ctx.admin.uid,
+      personInfo
+    );
     return res();
+  }
+
+  @(CreateApiDoc()
+    .summary('更改管理员密码')
+    .param('需要更改的管理员密码参数')
+    .respond(200, '', 'json', {
+      example: NormalExample,
+    })
+    .build())
+  @Post('/password')
+  async password(@Body(ALL) dto: UpdatePasswordDto): Promise<ResOp> {
+    const result = await this.adminSysUserService.updatePassword(
+      this.ctx.admin.uid,
+      dto
+    );
+    if (result) {
+      return res();
+    }
+    return res({ code: 10011 });
   }
 
   @(CreateApiDoc()

@@ -57,3 +57,18 @@ export class UpdatePersonInfoDto {
   @Expose()
   remark: string;
 }
+
+export class UpdatePasswordDto {
+  @CreateApiPropertyDoc('原密码', { example: 'xxxx' })
+  @Rule(RuleType.string().min(6).required())
+  originPassword: string;
+
+  @CreateApiPropertyDoc('新密码', { example: 'xxxxx' })
+  @Rule(
+    RuleType.string()
+      .min(6)
+      .pattern(/^[a-z0-9A-Z~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\\"]+$/)
+      .required()
+  )
+  newPassword: string;
+}
