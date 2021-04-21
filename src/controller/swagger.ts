@@ -42,17 +42,12 @@ export const GetPermMenuExample = res({
 
 export const GetAdminPersonInfoExample = res({
   data: {
-    createTime: '2020-08-27T03:38:30.000Z',
-    updateTime: '2020-10-07T07:17:14.000Z',
-    id: 1,
     name: 'hackycy',
-    username: 'rootadmin',
-    psalt: 'adsbadwasasdwasdasd',
     nickName: '',
     headImg: 'http://xxx.png',
     email: 'qa894178522@qq.com',
     phone: '13124314551',
-    remark: null,
+    remark: '',
   },
 });
 
