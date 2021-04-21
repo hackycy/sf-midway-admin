@@ -6,6 +6,7 @@ import * as bull from 'midway-bull';
 import { IMidwayWebApplication } from '@midwayjs/web';
 import { AdminSysTaskService } from './service/admin/sys/task';
 import * as moment from 'moment';
+import axios from 'axios';
 
 @Configuration({
   imports: [
@@ -22,12 +23,14 @@ export class ContainerLifeCycle implements ILifeCycle {
   app: IMidwayWebApplication;
 
   async onReady(container: IMidwayContainer): Promise<void> {
+    // register
+    this.app.getApplicationContext().registerObject('httpclient', axios);
+
     // 初始化系统任务
     const taskService = await container.getAsync(AdminSysTaskService);
     await taskService.initTask();
 
     // Date time
-    // eslint-disable-next-line no-extend-native
     Date.prototype.toJSON = function () {
       return moment(this).format('YYYY-MM-DD HH:mm:ss');
     };
