@@ -82,6 +82,19 @@ export class AdminSysUserService extends BaseService {
   }
 
   /**
+   * 直接更改管理员密码
+   */
+  async forceUpdatePassword(uid: number, password: string): Promise<void> {
+    const user = await this.user.findOne({ id: uid });
+    if (isEmpty(user)) {
+      throw new Error('update password user is not exist');
+    }
+    const newPassword = this.utils.md5(`${password}${user.psalt}`);
+    await this.user.update({ id: uid }, { password: newPassword });
+    await this.upgradePasswordV(user.id);
+  }
+
+  /**
    * 增加系统用户，如果返回false则表示已存在该用户
    * @param param Object 对应SysUser实体类
    */

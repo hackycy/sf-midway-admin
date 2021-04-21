@@ -16,6 +16,7 @@ import {
   DeleteUserDto,
   InfoUserDto,
   PageUserDto,
+  PasswordUserDto,
   UpdateUserDto,
 } from '../../../dto/admin/sys/user';
 import { ResOp } from '../../../interface';
@@ -111,6 +112,23 @@ export class AdminSysUserController extends BaseController {
   async update(@Body(ALL) dto: UpdateUserDto): Promise<ResOp> {
     await this.adminSysUserService.update(dto);
     await this.adminSysMenuService.refreshPerms(dto.id);
+    return res();
+  }
+
+  @(CreateApiDoc()
+    .summary('更改管理员密码')
+    .param('需要更改的管理员密码参数')
+    .respond(200, '', 'json', {
+      example: NormalExample,
+    })
+    .build())
+  @Post('/password')
+  @Validate()
+  async password(@Body(ALL) dto: PasswordUserDto): Promise<ResOp> {
+    await this.adminSysUserService.forceUpdatePassword(
+      dto.userId,
+      dto.password
+    );
     return res();
   }
 }

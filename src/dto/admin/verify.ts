@@ -67,7 +67,7 @@ export class UpdatePasswordDto {
   @Rule(
     RuleType.string()
       .min(6)
-      .pattern(/^[a-z0-9A-Z~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\\"]+$/)
+      .pattern(/^[a-z0-9A-Z`~!#%^&*=+\\|{};:'\\",<>/?]+$/)
       .required()
   )
   newPassword: string;

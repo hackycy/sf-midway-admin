@@ -70,6 +70,23 @@ export class InfoUserDto {
   userId: number;
 }
 
+export class PasswordUserDto {
+  @CreateApiPropertyDoc('需要更改密码的管理员ID')
+  @Rule(RuleType.number().integer().required())
+  @Expose()
+  userId: number;
+
+  @CreateApiPropertyDoc('更改的新密码')
+  @Rule(
+    RuleType.string()
+      .min(6)
+      .pattern(/^[a-z0-9A-Z`~!#%^&*=+\\|{};:'\\",<>/?]+$/)
+      .required()
+  )
+  @Expose()
+  password: string;
+}
+
 export class DeleteUserDto {
   @Rule(RuleType.array().items(RuleType.number()).min(1).required())
   @Expose()
