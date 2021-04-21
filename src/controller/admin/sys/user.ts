@@ -7,10 +7,10 @@ import {
   Provide,
   Query,
   Validate,
+  Controller,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res, resByPage } from '../../../common/utils';
-import { AdminController } from '../../../decorator/controller';
 import {
   CreateUserDto,
   DeleteUserDto,
@@ -21,7 +21,7 @@ import {
 import { ResOp } from '../../../interface';
 import { AdminSysMenuService } from '../../../service/admin/sys/menu';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
-import { BaseController } from '../../base';
+import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetAdminUserInfoExample,
   GetUserInDeptByPageExample,
@@ -29,7 +29,7 @@ import {
 } from '../../swagger';
 
 @Provide()
-@AdminController('/sys/user', {
+@Controller(`${ADMIN_PREFIX_URL}/sys/user`, {
   tagName: 'AdminSysUser',
   description: '后台系统管理员控制器',
 })

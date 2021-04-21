@@ -7,10 +7,10 @@ import {
   Provide,
   Query,
   Validate,
+  Controller,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res, resByPage } from '../../../common/utils';
-import { AdminController } from '../../../decorator/controller';
 import {
   CreateRoleDto,
   DeleteRoleDto,
@@ -21,7 +21,7 @@ import { PageSearchDto } from '../../../dto/comm';
 import { ResOp } from '../../../interface';
 import { AdminSysMenuService } from '../../../service/admin/sys/menu';
 import { AdminSysRoleService } from '../../../service/admin/sys/role';
-import { BaseController } from '../../base';
+import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetRoleInfoExample,
   GetRoleListByPageExample,
@@ -30,7 +30,7 @@ import {
 } from '../../swagger';
 
 @Provide()
-@AdminController('/sys/role', {
+@Controller(`${ADMIN_PREFIX_URL}/sys/role`, {
   tagName: 'AdminSysRole',
   description: '后台角色控制器',
 })

@@ -7,10 +7,10 @@ import {
   Provide,
   Query,
   Validate,
+  Controller,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { res } from '../../../common/utils';
-import { AdminController } from '../../../decorator/controller';
 import {
   CreateDeptDto,
   DeleteDeptDto,
@@ -21,7 +21,7 @@ import {
 } from '../../../dto/admin/sys/dept';
 import { ResOp } from '../../../interface';
 import { AdminSysDeptService } from '../../../service/admin/sys/dept';
-import { BaseController } from '../../base';
+import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetInfoDeptExample,
   GetListDeptExample,
@@ -29,7 +29,7 @@ import {
 } from '../../swagger';
 
 @Provide()
-@AdminController('/sys/dept', {
+@Controller(`${ADMIN_PREFIX_URL}/sys/dept`, {
   tagName: 'AdminSysDept',
   description: '后台系统部门控制器',
 })

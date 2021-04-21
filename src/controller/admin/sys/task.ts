@@ -7,11 +7,11 @@ import {
   Post,
   Body,
   Validate,
+  Controller,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { isEmpty } from 'lodash';
 import { res, resByPage } from '../../../common/utils';
-import { AdminController } from '../../../decorator/controller';
 import {
   CheckIdTaskDto,
   CreateTaskDto,
@@ -20,7 +20,7 @@ import {
 import { PageSearchDto } from '../../../dto/comm';
 import { ResOp } from '../../../interface';
 import { AdminSysTaskService } from '../../../service/admin/sys/task';
-import { BaseController } from '../../base';
+import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetTaskInfoExample,
   GetTaskListByPageExample,
@@ -28,7 +28,7 @@ import {
 } from '../../swagger';
 
 @Provide()
-@AdminController('/sys/task', {
+@Controller(`${ADMIN_PREFIX_URL}/sys/task`, {
   tagName: 'AdminSysTask',
   description: '后台系统定时任务控制器',
 })

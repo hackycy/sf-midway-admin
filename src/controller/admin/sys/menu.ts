@@ -7,11 +7,11 @@ import {
   Provide,
   Query,
   Validate,
+  Controller,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { flattenDeep, isEmpty } from 'lodash';
 import { res } from '../../../common/utils';
-import { AdminController } from '../../../decorator/controller';
 import {
   CreateMenuDto,
   DeleteMenuDto,
@@ -20,7 +20,7 @@ import {
 } from '../../../dto/admin/sys/menu';
 import { ResOp } from '../../../interface';
 import { AdminSysMenuService } from '../../../service/admin/sys/menu';
-import { BaseController } from '../../base';
+import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetMenuInfoExample,
   GetMenuListExample,
@@ -28,7 +28,7 @@ import {
 } from '../../swagger';
 
 @Provide()
-@AdminController('/sys/menu', {
+@Controller(`${ADMIN_PREFIX_URL}/sys/menu`, {
   tagName: 'AdminSysMenu',
   description: '后台菜单控制器',
 })

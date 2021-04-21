@@ -7,11 +7,11 @@ import {
   Post,
   Body,
   Validate,
+  Controller,
 } from '@midwayjs/decorator';
 import { CreateApiDoc } from '@midwayjs/swagger';
 import { isEmpty } from 'lodash';
 import { res } from '../../../common/utils';
-import { AdminController } from '../../../decorator/controller';
 import {
   LoginImageCaptchaDto,
   LoginInfoDto,
@@ -30,7 +30,7 @@ import {
 } from '../../swagger';
 
 @Provide()
-@AdminController('/', { tagName: 'AdminLogin', description: '后台登录控制器' })
+@Controller('/', { tagName: 'AdminLogin', description: '后台登录控制器' })
 export class AdminLoginController extends BaseController {
   @Inject()
   adminVerifyService: AdminVerifyService;
