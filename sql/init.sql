@@ -18,49 +18,6 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for image_space_info
--- ----------------------------
-DROP TABLE IF EXISTS `image_space_info`;
-CREATE TABLE `image_space_info` (
-  `createTime` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `updateTime` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_id` int(11) NOT NULL,
-  `url` varchar(500) NOT NULL,
-  `extra` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of image_space_info
--- ----------------------------
-BEGIN;
-INSERT INTO `image_space_info` VALUES ('2020-09-24 06:11:00.706996', '2020-09-24 06:11:00.706996', 2, 2, 'http://image.si-yee.com/思忆/20200924_021100.png', '{\"key\":\"思忆/20200924_021100.png\",\"hash\":\"FlcrAvWiCZQvsBTU7XKaDwpv0sSF\"}');
-INSERT INTO `image_space_info` VALUES ('2020-09-24 06:20:44.617766', '2020-09-24 06:20:44.617766', 3, 1, 'http://image.si-yee.com/头像/20200924_022044.jpeg', '{\"key\":\"头像/20200924_022044.jpeg\",\"hash\":\"Fikim5OW0KWgyLqRXktE0FqJQr6Y\"}');
-COMMIT;
-
--- ----------------------------
--- Table structure for image_space_type
--- ----------------------------
-DROP TABLE IF EXISTS `image_space_type`;
-CREATE TABLE `image_space_type` (
-  `createTime` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `updateTime` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `IDX_91decef4a2b88cb59caf658d44` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of image_space_type
--- ----------------------------
-BEGIN;
-INSERT INTO `image_space_type` VALUES ('2020-09-24 06:04:51.708064', '2020-09-24 06:04:51.708064', 1, '头像');
-INSERT INTO `image_space_type` VALUES ('2020-09-24 06:10:36.509527', '2020-09-24 06:10:36.509527', 2, '思忆');
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_department
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_department`;
@@ -96,20 +53,6 @@ CREATE TABLE `sys_login_log` (
   `ua` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of sys_login_log
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_login_log` VALUES ('2020-10-20 05:52:09.267588', '2020-10-20 05:52:09.267588', 1, 1, '127.0.0.1', '2020-10-20 05:52:09', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.80 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-22 07:43:12.063370', '2020-10-22 07:43:12.063370', 2, 1, '127.0.0.1', '2020-10-22 07:43:12', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-22 07:45:31.359047', '2020-10-22 07:45:31.359047', 3, 1, '127.0.0.1', '2020-10-22 07:45:31', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-23 02:39:50.682860', '2020-10-23 02:39:50.682860', 4, 1, '127.0.0.1', '2020-10-23 02:39:51', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-26 08:51:05.538341', '2020-10-26 08:51:05.538341', 5, 1, '127.0.0.1', '2020-10-26 08:51:06', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-26 09:24:23.451278', '2020-10-26 09:24:23.451278', 6, 3, '127.0.0.1', '2020-10-26 09:24:23', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-26 09:24:59.196689', '2020-10-26 09:24:59.196689', 7, 1, '127.0.0.1', '2020-10-26 09:24:59', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-INSERT INTO `sys_login_log` VALUES ('2020-10-26 09:29:59.322557', '2020-10-26 09:29:59.322557', 8, 1, '127.0.0.1', '2020-10-26 09:29:59', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -223,14 +166,6 @@ CREATE TABLE `sys_role` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of sys_role
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_role` VALUES ('2020-08-27 03:35:05.000000', '2020-08-27 03:35:05.000000', 1, 'root', 'root', '超级管理员', NULL);
-INSERT INTO `sys_role` VALUES ('2020-09-14 07:39:02.423786', '2020-10-13 07:29:33.000000', 2, '1', '测试角色', 'testrole', '');
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_role_department
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_department`;
@@ -244,14 +179,6 @@ CREATE TABLE `sys_role_department` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of sys_role_department
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_role_department` VALUES ('2020-09-14 07:39:02.445216', '2020-09-14 07:39:02.445216', 1, 2, 1);
-INSERT INTO `sys_role_department` VALUES ('2020-09-14 07:39:02.445216', '2020-09-14 07:39:02.445216', 2, 2, 2);
-COMMIT;
-
--- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
@@ -263,31 +190,6 @@ CREATE TABLE `sys_role_menu` (
   `menu_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of sys_role_menu
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_role_menu` VALUES ('2020-09-14 07:39:02.432650', '2020-09-14 07:39:02.432650', 1, 2, 44);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-14 07:39:02.432650', '2020-09-14 07:39:02.432650', 2, 2, 26);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-14 07:39:02.432650', '2020-09-14 07:39:02.432650', 3, 2, 27);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 4, 2, 4);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 7, 2, 33);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 8, 2, 34);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 10, 2, 36);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 11, 2, 39);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 13, 2, 41);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 14, 2, 37);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 15, 2, 38);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 16, 2, 43);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 17, 2, 1);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-15 08:05:45.986899', '2020-09-15 08:05:45.986899', 18, 2, 3);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-21 06:29:29.232489', '2020-09-21 06:29:29.232489', 19, 2, 8);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-21 06:29:29.232489', '2020-09-21 06:29:29.232489', 20, 2, 10);
-INSERT INTO `sys_role_menu` VALUES ('2020-09-21 06:29:29.232489', '2020-09-21 06:29:29.232489', 21, 2, 7);
-INSERT INTO `sys_role_menu` VALUES ('2020-10-12 03:22:35.019793', '2020-10-12 03:22:35.019793', 22, 2, 45);
-INSERT INTO `sys_role_menu` VALUES ('2020-10-12 03:22:35.019793', '2020-10-12 03:22:35.019793', 23, 2, 46);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -365,8 +267,6 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_user` VALUES ('2020-08-27 03:38:30.000000', '2020-10-07 07:17:14.000000', 1, 1, 'hackycy', 'rootadmin', 'ccdb5f7e5be14fe0c0528974428f79f9', '', 'http://image.si-yee.com/思忆/20200924_021100.png', 'qa894178522@qq.com', '15622472425', NULL, 'xQYCspvFb8cAW6GG1pOoUGTLqsuUSO3d',1);
-INSERT INTO `sys_user` VALUES ('2020-09-14 07:41:33.732000', '2020-10-12 06:04:19.000000', 2, 2, 'hackycy', 'test001', 'e2874895736525a9d7a912e9d409a2c2', '', '', 'qa894178522@qq.com', '', '', 'kuH2z88vsjQ0CtWXOhKohXL94xExCwcD', 0);
-INSERT INTO `sys_user` VALUES ('2020-10-12 03:23:14.611864', '2020-10-12 06:12:20.000000', 3, 2, 'hackycy', 'openadmin', 'ba118b16577ba67aefdcb7eba3610c47', '', NULL, '', '', '', '8WF5wLxm7DNBK8O2bKJqdjI9UmsjnF80', 1);
 COMMIT;
 
 -- ----------------------------
@@ -381,14 +281,5 @@ CREATE TABLE `sys_user_role` (
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of sys_user_role
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_user_role` VALUES ('2020-09-14 04:10:34.371646', '2020-09-14 04:10:34.371646', 1, 1, 1);
-INSERT INTO `sys_user_role` VALUES ('2020-10-12 06:04:19.072876', '2020-10-12 06:04:19.072876', 17, 2, 2);
-INSERT INTO `sys_user_role` VALUES ('2020-10-12 06:12:20.149960', '2020-10-12 06:12:20.149960', 18, 3, 2);
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
