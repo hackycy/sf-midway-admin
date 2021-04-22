@@ -5,7 +5,7 @@ import { IQueue, Queue } from 'midway-bull';
 import { App, Provide } from '@midwayjs/decorator';
 import { ExecuteData } from '../interface';
 
-@Queue('SysTask')
+@Queue('SysTask', ['completed'])
 @Provide()
 export class SysTaskQueue implements IQueue {
   @App()

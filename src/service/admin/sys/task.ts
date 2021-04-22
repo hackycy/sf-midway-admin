@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateTaskDto, UpdateTaskDto } from '../../../dto/admin/sys/task';
 import { IMidwayApplication } from '@midwayjs/core';
 import { BullService } from 'midway-bull';
+import { SysTaskQueue } from '../../../queue/task';
 
 @Provide()
 export class AdminSysTaskService extends BaseService {
@@ -23,7 +24,7 @@ export class AdminSysTaskService extends BaseService {
    */
   async initTask(): Promise<void> {
     const jobs = await this.bullService
-      .getQueue('SysTask')
+      .getQueue(SysTaskQueue)
       .getJobs([
         'active',
         'delayed',
@@ -90,7 +91,7 @@ export class AdminSysTaskService extends BaseService {
   async once(task: SysTask): Promise<void | never> {
     if (task) {
       await this.bullService
-        .getQueue('SysTask')
+        .getQueue(SysTaskQueue)
         .add(
           { id: task.id, service: task.service, args: task.data },
           { jobId: task.id, removeOnComplete: true, removeOnFail: true }
@@ -145,7 +146,7 @@ export class AdminSysTaskService extends BaseService {
       repeat.limit = task.limit;
     }
     const job = await this.bullService
-      .getQueue('SysTask')
+      .getQueue(SysTaskQueue)
       .add(
         { id: task.id, service: task.service, args: task.data },
         { jobId: task.id, removeOnComplete: true, removeOnFail: true, repeat }
@@ -176,7 +177,7 @@ export class AdminSysTaskService extends BaseService {
       return;
     }
     const jobs = await this.bullService
-      .getQueue('SysTask')
+      .getQueue(SysTaskQueue)
       .getJobs([
         'active',
         'delayed',
@@ -202,7 +203,9 @@ export class AdminSysTaskService extends BaseService {
    * 查看队列中任务是否存在
    */
   async existJob(jobId: string): Promise<boolean> {
-    const jobs = await this.bullService.getQueue('SysTask').getRepeatableJobs();
+    const jobs = await this.bullService
+      .getQueue(SysTaskQueue)
+      .getRepeatableJobs();
     const ids = jobs.map(e => {
       return e.id;
     });
@@ -213,7 +216,9 @@ export class AdminSysTaskService extends BaseService {
    * 更新是否已经完成，完成则移除该任务并修改状态
    */
   async updateTaskCompleteStatus(tid: number): Promise<void> {
-    const jobs = await this.bullService.getQueue('SysTask').getRepeatableJobs();
+    const jobs = await this.bullService
+      .getQueue(SysTaskQueue)
+      .getRepeatableJobs();
     const task = await this.sysTask.findOne({ id: tid });
     const jobOpts = JSON.parse(task!.jobOpts);
     // 如果下次执行时间小于当前时间，则表示已经执行完成。
