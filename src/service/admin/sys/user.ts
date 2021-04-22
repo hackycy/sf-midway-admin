@@ -202,7 +202,11 @@ export class AdminSysUserService extends BaseService {
   /**
    * 根据ID列表删除用户
    */
-  async delete(userIds: number[]): Promise<void> {
+  async delete(userIds: number[]): Promise<void | never> {
+    const rootUserId = await this.findRootUserId();
+    if (userIds.includes(rootUserId)) {
+      throw new Error('can not delete root user!');
+    }
     await this.user.delete(userIds);
     await this.userRole.delete({ userId: In(userIds) });
   }
@@ -241,7 +245,7 @@ export class AdminSysUserService extends BaseService {
     count: number
   ): Promise<IPageSearchUserResult[]> {
     const queryAll: boolean = isEmpty(deptIds);
-    const rootUserId = this.findRootUserId();
+    const rootUserId = await this.findRootUserId();
     const result = await this.user
       .createQueryBuilder('user')
       .innerJoinAndSelect(
