@@ -1,5 +1,5 @@
 import { Config, Inject, Provide } from '@midwayjs/decorator';
-import { BaseService } from '../base';
+import { BaseService } from '../../base';
 import { AxiosInstance } from 'axios';
 import {
   AmapConfig,
@@ -47,9 +47,9 @@ export class AmapWebService extends BaseService {
         output: 'JSON',
       },
     });
-    const { data } = result.data;
+    const { data } = result;
     // 返回状态说明,10000代表正确
-    if (data.infocode !== 10000) {
+    if (data.infocode !== '10000') {
       throw new Error(data.info);
     }
     if (extensions === 'base') {
@@ -73,9 +73,9 @@ export class AmapWebService extends BaseService {
         output: 'JSON',
       },
     });
-    const { data } = result.data;
+    const { data } = result;
     // 返回状态说明,10000代表正确
-    if (data.infocode !== 10000) {
+    if (data.infocode !== '10000') {
       throw new Error(data.info);
     }
     return {

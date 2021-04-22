@@ -1,3 +1,5 @@
+import 'egg';
+
 export interface ResOp {
   data?: any;
   code?: number;
@@ -8,4 +10,26 @@ export interface ExecuteData {
   id: number;
   args?: string | null;
   service: string;
+}
+
+export interface Token {
+  uid: number;
+  pv: number;
+}
+
+declare module 'egg' {
+  interface Context {
+    admin: Token;
+  }
+
+  interface EggAppConfig {
+    rootRoleId: number;
+    jwt: {
+      secret: string;
+    };
+    aesSecret: {
+      admin: string;
+      front: string;
+    };
+  }
 }
