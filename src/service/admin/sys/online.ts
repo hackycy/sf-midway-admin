@@ -3,6 +3,7 @@ import { BaseService } from '../../base';
 import { UAParser } from 'ua-parser-js';
 import { IOnlineInfoListResult } from '../interface';
 import { Context } from 'egg';
+import { AdminSysUserService } from './user';
 
 @Provide()
 export class AdminSysOnlineService extends BaseService {
@@ -11,6 +12,9 @@ export class AdminSysOnlineService extends BaseService {
 
   @Config('rootRoleId')
   rootRoleId: number;
+
+  @Inject()
+  adminSysUserService: AdminSysUserService;
 
   async list(): Promise<IOnlineInfoListResult[]> {
     const onlineUserIds: string[] = await this.getAdminRedis().keys(
@@ -27,6 +31,7 @@ export class AdminSysOnlineService extends BaseService {
    * 根据用户id列表查找最近登录信息和用户信息
    */
   async findLastLoginInfoList(ids: number[]): Promise<IOnlineInfoListResult[]> {
+    const rootUserId = await this.adminSysUserService.findRootUserId();
     const result = await this.getManager().query(
       `
     SELECT n.*, u.username
@@ -53,8 +58,7 @@ export class AdminSysOnlineService extends BaseService {
           status: 1,
           os: `${u.os.name} ${u.os.version}`,
           browser: `${u.browser.name} ${u.browser.version}`,
-          disable:
-            this.ctx.admin.uid === e.user_id || e.user_id === this.rootRoleId,
+          disable: this.ctx.admin.uid === e.user_id || e.user_id === rootUserId,
         };
       });
     }

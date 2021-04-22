@@ -212,13 +212,22 @@ export class AdminSysUserService extends BaseService {
    */
   async count(uid: number, deptIds: number[]): Promise<number> {
     const queryAll: boolean = isEmpty(deptIds);
+    const rootUserId = await this.findRootUserId();
     if (queryAll) {
-      return await this.user.count({ id: Not(In([this.rootRoleId, uid])) });
+      return await this.user.count({ id: Not(In([rootUserId, uid])) });
     }
     return await this.user.count({
-      id: Not(In([this.rootRoleId, uid])),
+      id: Not(In([rootUserId, uid])),
       departmentId: In(deptIds),
     });
+  }
+
+  /**
+   * 查找超管的用户ID
+   */
+  async findRootUserId(): Promise<number> {
+    const result = await this.userRole.findOne({ id: this.rootRoleId });
+    return result.userId;
   }
 
   /**
@@ -232,6 +241,7 @@ export class AdminSysUserService extends BaseService {
     count: number
   ): Promise<IPageSearchUserResult[]> {
     const queryAll: boolean = isEmpty(deptIds);
+    const rootUserId = this.findRootUserId();
     const result = await this.user
       .createQueryBuilder('user')
       .innerJoinAndSelect(
@@ -245,7 +255,7 @@ export class AdminSysUserService extends BaseService {
         'user_role.user_id = user.id'
       )
       .innerJoinAndSelect('sys_role', 'role', 'role.id = user_role.role_id')
-      .where('user.id NOT IN (:...ids)', { ids: [this.rootRoleId, uid] })
+      .where('user.id NOT IN (:...ids)', { ids: [rootUserId, uid] })
       .andWhere(queryAll ? '1 = 1' : 'user.departmentId IN (:...deptIds)', {
         deptIds,
       })

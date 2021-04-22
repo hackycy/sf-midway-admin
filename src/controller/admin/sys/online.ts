@@ -58,7 +58,8 @@ export class AdminSysOnlineController extends BaseController {
     if (dto.id === this.ctx.admin.uid) {
       return res({ code: 10012 });
     }
-    if (dto.id === this.rootRoleId) {
+    const rootUserId = await this.adminSysUserService.findRootUserId();
+    if (dto.id === rootUserId) {
       return res({ code: 10013 });
     }
     await this.adminSysUserService.forbidden(dto.id);
