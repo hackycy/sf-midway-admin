@@ -4,26 +4,21 @@ export default (): any => {
   const config: PowerPartial<EggAppConfig> = {};
 
   /**
-   * https://github.com/puppeteer/puppeteer
-   */
-  config.puppeteer = {
-    launchOptions: {
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath:
-        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      ignoreHTTPSErrors: true,
-    },
-  };
-
-  /**
    * 邮件推送配置
    */
   config.mailer = {
-    host: 'xxx',
+    host: 'xxx host',
     port: 80,
-    user: 'xxx',
-    pass: 'xxx',
+    auth: {
+      user: 'xxx@qq.com',
+      pass: 'xxxxxxx',
+    },
     secure: false,
+  };
+
+  // 高德开放平台应用Key
+  config.amap = {
+    key: 'xxxxxxxxxxxxxxxxxxxxx',
   };
 
   // bull config
