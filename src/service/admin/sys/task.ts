@@ -220,20 +220,13 @@ export class AdminSysTaskService extends BaseService {
       .getQueue(SysTaskQueue)
       .getRepeatableJobs();
     const task = await this.sysTask.findOne({ id: tid });
-    const jobOpts = JSON.parse(task!.jobOpts);
     // 如果下次执行时间小于当前时间，则表示已经执行完成。
     for (const job of jobs) {
       const currentTime = new Date().getTime();
-      if (
-        task.id &&
-        job.id === tid.toString() &&
-        (jobOpts.cron
-          ? task.cron === jobOpts.cron
-          : task.every === jobOpts.every) &&
-        job.next < currentTime
-      ) {
+      if (job.id === tid.toString() && job.next < currentTime) {
         // 如果下次执行时间小于当前时间，则表示已经执行完成。
         await this.stop(task);
+        break;
       }
     }
   }
