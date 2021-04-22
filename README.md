@@ -88,7 +88,7 @@ $ npm run dev
 
 ![](https://raw.githubusercontent.com/hackycy/sf-midway-admin/master/docs/screenshot/2.png)
 
-![](https://raw.githubusercontent.com/hackycy/sf-midway-admin/master/docs/screenshot/2.png)
+![](https://raw.githubusercontent.com/hackycy/sf-midway-admin/master/docs/screenshot/3.png)
 
 ![](https://raw.githubusercontent.com/hackycy/sf-midway-admin/master/docs/screenshot/4.png)
 
