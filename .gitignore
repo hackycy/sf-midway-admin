@@ -15,6 +15,7 @@ run/
 .tsbuildinfo.*
 
 src/config/config.local.*
+docs/sample/mysql/
 
 typings/*
 
