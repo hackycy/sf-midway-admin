@@ -49,6 +49,7 @@
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=sf-midway-admin --framework=@midwayjs/web",
+    "start_no_daemon": "egg-scripts start --title=sf-midway-admin --framework=@midwayjs/web",
     "stop": "egg-scripts stop --title=sf-midway-admin",
     "start_build": "npm run build && cross-env NODE_ENV=development midway-bin dev",
     "dev": "cross-env ets && cross-env NODE_ENV=local midway-bin dev --ts",
