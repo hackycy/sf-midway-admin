@@ -4,7 +4,7 @@ WORKDIR /sf-midway-admin
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo 'Asia/Shanghai' > /etc/timezone
 
-RUN npm set registry https://registry.npm.taobao.org
+# RUN npm set registry https://registry.npm.taobao.org
 # cache step
 COPY package.json /sf-midway-admin/package.json
 RUN npm install
