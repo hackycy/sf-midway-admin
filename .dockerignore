@@ -15,7 +15,6 @@ run/
 .tsbuildinfo.*
 
 src/config/config.local.*
-src/config/config.prod.*
 
 typings/*
 
