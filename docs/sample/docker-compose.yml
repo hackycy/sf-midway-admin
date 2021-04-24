@@ -44,7 +44,6 @@ services:
       MAILER_PORT: "xxx"
       MAILER_USER: "xxx"
       MAILER_PASS: "xxx"
-      MAILER_SECURE: "xxx"
       AMAP_KEY: "xxx"
 
   sfvue:

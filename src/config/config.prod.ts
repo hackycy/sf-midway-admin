@@ -13,7 +13,7 @@ export default (): any => {
       user: process.env.MAILER_USER || '',
       pass: process.env.MAILER_PASS || '',
     },
-    secure: JSON.parse(process.env.MAILER_SECURE || 'false'),
+    secure: false,
   };
 
   // bull config
