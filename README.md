@@ -61,6 +61,16 @@
 - Vue、Vue-Router、VueX
 - Element-UI
 
+### 使用Docker快速体验项目
+
+``` sh
+git clone https://github.com/hackycy/sf-midway-admin.git
+cd sf-midway-admin/docs/sample/
+docker-compose -f "docker-compose.yml" up -d --build
+```
+
+> 等待执行完成后，浏览器打开`http://localhost:7002/`即可体验
+
 ### 本地开发
 
 #### 初始化数据库，以及服务启动
