@@ -1,12 +1,9 @@
-name: ci
+name: Build Stable Image
 
 on:
   push:
     branches:
       - 'main'
-  create:
-    tags:
-      - '*'
 
 jobs:
   docker:
@@ -30,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_IMAGENAME }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sfmidwayadmin:stable
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
