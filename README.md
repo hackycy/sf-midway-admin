@@ -160,7 +160,7 @@ server
 - Node.js 12.x+
 - Typescript 2.8+
 - MYSQL 5.7+
-- Redis 6.0+
+- Redis 5.0+
 
 ### 欢迎Star && PR
 
