@@ -1,4 +1,5 @@
 import { EggAppConfig, PowerPartial } from 'egg';
+const redisStore = require('cache-manager-ioredis');
 
 export default (): any => {
   const config: PowerPartial<EggAppConfig> = {};
@@ -53,20 +54,15 @@ export default (): any => {
     logging: false,
   };
 
-  /**
-   * redis 配置
-   * https://github.com/eggjs/egg-redis
-   */
-  config.redis = {
-    clients: {
-      // instanceName. See below
-      admin: {
-        port: parseInt(process.env.REDIS_PORT) || 6379,
-        host: process.env.REDIS_HOST || '127.0.0.1',
-        username: process.env.REDIS_USERNAME,
-        password: process.env.REDIS_PASSWORD || '123456',
-        db: 0,
-      },
+  // midway cache
+  config.cache = {
+    store: redisStore,
+    options: {
+      host: process.env.REDIS_HOST || '127.0.0.1', // default value
+      port: parseInt(process.env.REDIS_PORT) || 6379, // default value
+      password: process.env.REDIS_PASSWORD || '123456',
+      db: 0,
+      ttl: 60,
     },
   };
 
