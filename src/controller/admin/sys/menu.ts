@@ -134,6 +134,11 @@ export class AdminSysMenuController extends BaseController {
   @Post('/delete')
   @Validate()
   async delete(@Body(ALL) dto: DeleteMenuDto): Promise<ResOp> {
+    // 68为内置init.sql中插入最后的索引编号
+    if (dto.menuId <= 68) {
+      // 系统内置功能不提供删除
+      return res({ code: 10016 });
+    }
     // 如果有子目录，一并删除
     const childMenus = await this.adminSysMenuService.findChildMenus(
       dto.menuId
@@ -141,6 +146,7 @@ export class AdminSysMenuController extends BaseController {
     await this.adminSysMenuService.deleteMenuItem(
       flattenDeep([dto.menuId, childMenus])
     );
+    // 刷新在线用户权限
     await this.adminSysMenuService.refreshOnlineUserPerms();
     return res();
   }
