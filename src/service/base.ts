@@ -1,5 +1,5 @@
-import { Plugin } from '@midwayjs/decorator';
-import { Singleton } from 'egg';
+import { CacheManager } from '@midwayjs/cache';
+import { Inject } from '@midwayjs/decorator';
 import { Redis } from 'ioredis';
 import { getConnection, getManager, Connection, EntityManager } from 'typeorm';
 
@@ -7,11 +7,15 @@ import { getConnection, getManager, Connection, EntityManager } from 'typeorm';
  * BaseService
  */
 export class BaseService {
-  @Plugin('redis')
-  redis: Singleton<Redis>;
+  @Inject('cache:cacheManager')
+  cacheManager: CacheManager;
 
   getAdminRedis(): Redis {
-    return this.redis.get('admin');
+    return (this.cacheManager.cache.store as any).getClient();
+  }
+
+  getAdminCacheManager(): CacheManager {
+    return this.cacheManager;
   }
 
   getConnection(): Connection {

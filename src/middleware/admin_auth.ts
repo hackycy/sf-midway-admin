@@ -45,12 +45,6 @@ export class AdminAuthMiddleware implements IWebMiddleware {
           this.reject(ctx, { code: 11001 });
           return;
         }
-        // token校验通过，则校验权限
-        if (url.startsWith(`${ADMIN_PREFIX_URL}${NOPERM_PREFIX_URL}/`)) {
-          // 无需权限，则pass
-          await next();
-          return;
-        }
         const verifyService = await ctx.requestContext.getAsync(
           AdminVerifyService
         );
@@ -68,6 +62,13 @@ export class AdminAuthMiddleware implements IWebMiddleware {
           this.reject(ctx, { code: 11002 });
           return;
         }
+        // Token校验身份通过，判断是否需要权限的url，不需要权限则pass
+        if (url.startsWith(`${ADMIN_PREFIX_URL}${NOPERM_PREFIX_URL}/`)) {
+          // 无需权限，则pass
+          await next();
+          return;
+        }
+        // 后续校验权限
         const perms: string = await verifyService.getRedisPermsById(
           ctx.admin.uid
         );
