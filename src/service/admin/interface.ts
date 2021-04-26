@@ -96,3 +96,20 @@ export interface IPageSearchReqLogResult {
   count: number;
   logs: SysReqLog[];
 }
+
+export type FileType = 'file' | 'dir';
+
+export interface iFileListResult {
+  list: IFileInfo[];
+  market?: string;
+}
+
+export interface IFileInfo {
+  type: FileType;
+  name: string;
+  putTime?: string;
+  fsize?: string;
+  status?: number;
+  mimeType?: string;
+  hash?: string;
+}

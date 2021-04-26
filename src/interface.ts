@@ -27,9 +27,10 @@ declare module 'egg' {
     jwt: {
       secret: string;
     };
-    aesSecret: {
-      admin: string;
-      front: string;
+    qiniu: {
+      accessKey: string;
+      secretKey: string;
+      bucket: string;
     };
   }
 }
