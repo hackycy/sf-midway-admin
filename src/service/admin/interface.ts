@@ -101,7 +101,7 @@ export type FileType = 'file' | 'dir';
 
 export interface iFileListResult {
   list: IFileInfo[];
-  market?: string;
+  marker?: string;
 }
 
 export interface IFileInfo {
@@ -109,7 +109,5 @@ export interface IFileInfo {
   name: string;
   putTime?: string;
   fsize?: string;
-  status?: number;
   mimeType?: string;
-  hash?: string;
 }
