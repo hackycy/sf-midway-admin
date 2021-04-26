@@ -21,7 +21,7 @@ import {
   ADMIN_PREFIX_URL,
   NOAUTH_PREFIX_URL,
 } from '../../base';
-import { GetLoginImgCaptchaExample, GetLoginTokenExample } from '../../swagger';
+import { GetLoginImgCaptchaExample, GetLoginTokenExample } from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}${NOAUTH_PREFIX_URL}/`, {

@@ -22,11 +22,7 @@ import {
   ADMIN_PREFIX_URL,
   NOPERM_PREFIX_URL,
 } from '../../base';
-import {
-  GetAdminPersonInfoExample,
-  GetPermMenuExample,
-  NormalExample,
-} from '../../swagger';
+import { GetAdminPersonInfoExample, GetPermMenuExample } from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}${NOPERM_PREFIX_URL}/account`, {
@@ -57,7 +53,7 @@ export class AdminAccountController extends BaseController {
     .summary('更改管理员资料')
     .param('需要更改的管理员资料参数')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/update')
@@ -74,7 +70,7 @@ export class AdminAccountController extends BaseController {
     .summary('更改管理员密码')
     .param('需要更改的管理员密码参数')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/password')
@@ -93,7 +89,7 @@ export class AdminAccountController extends BaseController {
   @(CreateApiDoc()
     .summary('管理员登出')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/logout')

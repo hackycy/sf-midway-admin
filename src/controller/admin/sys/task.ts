@@ -21,11 +21,7 @@ import { PageSearchDto } from '../../../dto/comm';
 import { ResOp } from '../../../interface';
 import { AdminSysTaskService } from '../../../service/admin/sys/task';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
-import {
-  GetTaskInfoExample,
-  GetTaskListByPageExample,
-  NormalExample,
-} from '../../swagger';
+import { GetTaskInfoExample, GetTaskListByPageExample } from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/task`, {
@@ -50,7 +46,7 @@ export class AdminSysTaskController extends BaseController {
 
   @(CreateApiDoc()
     .summary('添加任务')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/add')
   @Validate()
@@ -61,7 +57,7 @@ export class AdminSysTaskController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新任务')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/update')
   @Validate()
@@ -84,7 +80,7 @@ export class AdminSysTaskController extends BaseController {
 
   @(CreateApiDoc()
     .summary('手动执行一次任务')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/once')
   @Validate()
@@ -98,7 +94,7 @@ export class AdminSysTaskController extends BaseController {
 
   @(CreateApiDoc()
     .summary('停止任务')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/stop')
   @Validate()
@@ -112,7 +108,7 @@ export class AdminSysTaskController extends BaseController {
 
   @(CreateApiDoc()
     .summary('启动任务')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/start')
   @Validate()
@@ -126,7 +122,7 @@ export class AdminSysTaskController extends BaseController {
 
   @(CreateApiDoc()
     .summary('删除任务')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/delete')
   @Validate()

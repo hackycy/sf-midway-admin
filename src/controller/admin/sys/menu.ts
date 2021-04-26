@@ -21,11 +21,7 @@ import {
 import { ResOp } from '../../../interface';
 import { AdminSysMenuService } from '../../../service/admin/sys/menu';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
-import {
-  GetMenuInfoExample,
-  GetMenuListExample,
-  NormalExample,
-} from '../../swagger';
+import { GetMenuInfoExample, GetMenuListExample } from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/menu`, {
@@ -52,7 +48,7 @@ export class AdminSysMenuController extends BaseController {
   @(CreateApiDoc()
     .summary('新增菜单或权限')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/add')
@@ -88,7 +84,7 @@ export class AdminSysMenuController extends BaseController {
   @(CreateApiDoc()
     .summary('更新菜单或权限')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/update')
@@ -128,7 +124,7 @@ export class AdminSysMenuController extends BaseController {
   @(CreateApiDoc()
     .summary('删除菜单或权限')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/delete')

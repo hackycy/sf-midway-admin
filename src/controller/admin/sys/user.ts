@@ -26,8 +26,7 @@ import { BaseController, ADMIN_PREFIX_URL } from '../../base';
 import {
   GetAdminUserInfoExample,
   GetUserInDeptByPageExample,
-  NormalExample,
-} from '../../swagger';
+} from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/user`, {
@@ -43,7 +42,7 @@ export class AdminSysUserController extends BaseController {
 
   @(CreateApiDoc()
     .summary('新增系统管理员')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/add')
   @Validate()
@@ -71,7 +70,7 @@ export class AdminSysUserController extends BaseController {
 
   @(CreateApiDoc()
     .summary('删除系统管理员')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/delete')
   @Validate()
@@ -105,7 +104,7 @@ export class AdminSysUserController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新系统管理员')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/update')
   @Validate()
@@ -119,7 +118,7 @@ export class AdminSysUserController extends BaseController {
     .summary('更改管理员密码')
     .param('需要更改的管理员密码参数')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/password')
