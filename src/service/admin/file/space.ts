@@ -62,13 +62,17 @@ export class AdminFileSpaceService extends BaseService {
             if (!isEmpty(respBody.items)) {
               // file
               for (const item of respBody.items) {
-                fileList.push({
-                  name: item.key.replace(prefix, ''),
-                  type: 'file',
-                  fsize: item.fsize,
-                  mimeType: item.mimeType,
-                  putTime: moment(parseInt(item.putTime) / 10000).toDate(),
-                });
+                const key = item.key.replace(prefix, '');
+                // 模拟目录
+                if (!isEmpty(key)) {
+                  fileList.push({
+                    name: key,
+                    type: 'file',
+                    fsize: item.fsize,
+                    mimeType: item.mimeType,
+                    putTime: moment(parseInt(item.putTime) / 10000).toDate(),
+                  });
+                }
               }
             }
             resolve({
