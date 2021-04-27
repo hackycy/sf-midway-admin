@@ -107,7 +107,7 @@ export interface iFileListResult {
 export interface IFileInfo {
   type: FileType;
   name: string;
-  putTime?: string;
+  putTime?: Date;
   fsize?: string;
   mimeType?: string;
 }

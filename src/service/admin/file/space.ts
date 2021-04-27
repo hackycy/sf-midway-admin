@@ -4,10 +4,12 @@ import { BaseService } from '../../base';
 import * as qiniu from 'qiniu';
 import { rs, conf } from 'qiniu';
 import { IFileInfo, iFileListResult } from '../interface';
+import { isEmpty } from 'lodash';
+import * as moment from 'moment';
 
 // 目录分隔符
 export const DELIMITER = '/';
-export const LIMIT = 100;
+export const LIMIT = 5;
 
 @Provide()
 export class AdminFileSpaceService extends BaseService {
@@ -46,33 +48,39 @@ export class AdminFileSpaceService extends BaseService {
             // 如果这个nextMarker不为空，那么还有未列举完毕的文件列表，下次调用listPrefix的时候，
             // 指定options里面的marker为这个值
             const fileList: IFileInfo[] = [];
-            if (respBody.commonPrefixes && respBody.commonPrefixes.length > 0) {
+            if (!isEmpty(respBody.commonPrefixes)) {
               // dir
               for (const dirPath of respBody.commonPrefixes) {
                 fileList.push({
-                  name: (dirPath as string).replace('/', ''),
+                  name: (dirPath as string)
+                    .substr(0, dirPath.length - 1)
+                    .replace(prefix, ''),
                   type: 'dir',
                 });
               }
             }
-            if (respBody.items && respBody.items.length > 0) {
+            if (!isEmpty(respBody.items)) {
               // file
               for (const item of respBody.items) {
                 fileList.push({
-                  name: item.key,
+                  name: item.key.replace(prefix, ''),
                   type: 'file',
                   fsize: item.fsize,
                   mimeType: item.mimeType,
-                  putTime: item.putTime,
+                  putTime: moment(parseInt(item.putTime) / 10000).toDate(),
                 });
               }
             }
             resolve({
               list: fileList,
-              marker: respBody.marker,
+              marker: respBody.marker || null,
             });
           } else {
-            reject(respInfo.statusCode);
+            reject(
+              new Error(
+                `Upload By Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+              )
+            );
           }
         }
       );
