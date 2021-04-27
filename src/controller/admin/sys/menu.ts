@@ -107,7 +107,7 @@ export class AdminSysMenuController extends BaseController {
       }
     }
     if (dto.parentId === -1) {
-      dto.parentId = undefined;
+      dto.parentId = null;
     }
     const insertData: CreateMenuDto & { id: number } = {
       ...dto,
