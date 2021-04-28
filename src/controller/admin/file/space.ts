@@ -1,14 +1,16 @@
 import {
   ALL,
+  Body,
   Controller,
   Get,
   Inject,
+  Post,
   Provide,
   Query,
   Validate,
 } from '@midwayjs/decorator';
 import { res } from '../../../common/utils';
-import { GetFileListDto } from '../../../dto/admin/file/space';
+import { GetFileListDto, MKDirDto } from '../../../dto/admin/file/space';
 import { ResOp } from '../../../interface';
 import { AdminFileSpaceService } from '../../../service/admin/file/space';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
@@ -30,5 +32,16 @@ export class AdminFileSpaceController extends BaseController {
       dto.marker
     );
     return res({ data: result });
+  }
+
+  @Post('/mkdir')
+  @Validate()
+  async mkdir(@Body(ALL) dto: MKDirDto): Promise<ResOp> {
+    const result = await this.adminFileSpaceService.createDir(dto.dirName);
+    if (result) {
+      return res();
+    } else {
+      return res({ code: 20001 });
+    }
   }
 }

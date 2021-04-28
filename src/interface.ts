@@ -1,4 +1,5 @@
 import 'egg';
+import { conf } from 'qiniu';
 
 export interface ResOp {
   data?: any;
@@ -31,6 +32,7 @@ declare module 'egg' {
       accessKey: string;
       secretKey: string;
       bucket: string;
+      zone: conf.Zone;
     };
   }
 }

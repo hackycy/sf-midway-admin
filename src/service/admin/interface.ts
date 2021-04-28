@@ -99,7 +99,7 @@ export interface IPageSearchReqLogResult {
 
 export type FileType = 'file' | 'dir';
 
-export interface iFileListResult {
+export interface IFileListResult {
   list: IFileInfo[];
   marker?: string;
 }

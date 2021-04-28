@@ -3,7 +3,7 @@ import { EggAppConfig } from 'egg';
 import { BaseService } from '../../base';
 import * as qiniu from 'qiniu';
 import { rs, conf } from 'qiniu';
-import { IFileInfo, iFileListResult } from '../interface';
+import { IFileInfo, IFileListResult } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
 import { Utils } from '../../../common/utils';
@@ -20,6 +20,10 @@ export class AdminFileSpaceService extends BaseService {
   @Inject()
   utils: Utils;
 
+  config: conf.ConfigOptions;
+
+  uploadToken: string;
+
   bucketManager: rs.BucketManager;
 
   @Init()
@@ -28,12 +32,25 @@ export class AdminFileSpaceService extends BaseService {
       this.qiniuConfig.accessKey,
       this.qiniuConfig.secretKey
     );
-    const config = new qiniu.conf.Config();
-    (config as conf.ConfigOptions).zone = qiniu.zone.Zone_z2;
-    this.bucketManager = new qiniu.rs.BucketManager(mac, config);
+    this.config = new qiniu.conf.Config({
+      zone: this.qiniuConfig.zone,
+    });
+    // upload token
+    const policy = new qiniu.rs.PutPolicy({
+      scope: this.qiniuConfig.bucket,
+    });
+    this.uploadToken = policy.uploadToken(mac);
+    // bucket manager
+    this.bucketManager = new qiniu.rs.BucketManager(mac, this.config);
   }
 
-  async getFileList(prefix = '', marker = ''): Promise<iFileListResult> {
+  /**
+   * 获取文件列表
+   * @param prefix 当前文件夹路径
+   * @param marker 下一页标识
+   * @returns iFileListResult
+   */
+  async getFileList(prefix = '', marker = ''): Promise<IFileListResult> {
     return new Promise((resolve, reject) => {
       this.bucketManager.listPrefix(
         this.qiniuConfig.bucket,
@@ -88,12 +105,80 @@ export class AdminFileSpaceService extends BaseService {
           } else {
             reject(
               new Error(
-                `Upload By Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
               )
             );
           }
         }
       );
+    });
+  }
+
+  /**
+   * 创建文件夹
+   * @returns true创建成功
+   */
+  async createDir(dirName: string): Promise<boolean> {
+    const path = dirName.endsWith('/') ? dirName : `${dirName}/`;
+    return new Promise((resolve, reject) => {
+      // fix path end must a /
+
+      // 检测文件夹是否存在
+      this.bucketManager.stat(
+        this.qiniuConfig.bucket,
+        path,
+        (respErr, respBody, respInfo) => {
+          if (respErr) {
+            reject(respErr);
+            return;
+          }
+          if (respInfo.statusCode === 200) {
+            // 文件夹存在
+            resolve(true);
+          } else if (respInfo.statusCode === 612) {
+            // 文件夹不存在
+            resolve(false);
+          } else {
+            reject(
+              new Error(
+                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+              )
+            );
+          }
+        }
+      );
+    }).then(hasDir => {
+      return new Promise((resolve, reject) => {
+        if (hasDir) {
+          // 如果已存在则返回false
+          resolve(false);
+          return;
+        }
+        // 上传一个空文件以用于显示文件夹效果
+        const formUploader = new qiniu.form_up.FormUploader(this.config);
+        const putExtra = new qiniu.form_up.PutExtra();
+        formUploader.put(
+          this.uploadToken,
+          path,
+          ' ',
+          putExtra,
+          (respErr, respBody, respInfo) => {
+            if (respErr) {
+              reject(respErr);
+              return;
+            }
+            if (respInfo.statusCode === 200) {
+              resolve(true);
+            } else {
+              reject(
+                new Error(
+                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+                )
+              );
+            }
+          }
+        );
+      });
     });
   }
 }

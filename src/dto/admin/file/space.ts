@@ -7,3 +7,8 @@ export class GetFileListDto {
   @Rule(RuleType.string().allow('').required())
   path: string;
 }
+
+export class MKDirDto {
+  @Rule(RuleType.string().required())
+  dirName: string;
+}
