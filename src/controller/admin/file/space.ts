@@ -47,10 +47,9 @@ export class AdminFileSpaceController extends BaseController {
 
   @Get('/token')
   async token(): Promise<ResOp> {
-    const token = this.adminFileSpaceService.uploadToken;
     return res({
       data: {
-        token,
+        token: this.adminFileSpaceService.createUploadToken(),
       },
     });
   }

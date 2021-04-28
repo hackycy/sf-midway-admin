@@ -2,7 +2,7 @@ import { Config, Init, Inject, Provide } from '@midwayjs/decorator';
 import { EggAppConfig } from 'egg';
 import { BaseService } from '../../base';
 import * as qiniu from 'qiniu';
-import { rs, conf } from 'qiniu';
+import { rs, conf, auth } from 'qiniu';
 import { IFileInfo, IFileListResult } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
@@ -21,27 +21,20 @@ export class AdminFileSpaceService extends BaseService {
   utils: Utils;
 
   config: conf.ConfigOptions;
-
-  uploadToken: string;
-
+  mac: auth.digest.Mac;
   bucketManager: rs.BucketManager;
 
   @Init()
   async init(): Promise<void> {
-    const mac = new qiniu.auth.digest.Mac(
+    this.mac = new qiniu.auth.digest.Mac(
       this.qiniuConfig.accessKey,
       this.qiniuConfig.secretKey
     );
     this.config = new qiniu.conf.Config({
       zone: this.qiniuConfig.zone,
     });
-    // upload token
-    const policy = new qiniu.rs.PutPolicy({
-      scope: this.qiniuConfig.bucket,
-    });
-    this.uploadToken = policy.uploadToken(mac);
     // bucket manager
-    this.bucketManager = new qiniu.rs.BucketManager(mac, this.config);
+    this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config);
   }
 
   /**
@@ -158,7 +151,7 @@ export class AdminFileSpaceService extends BaseService {
         const formUploader = new qiniu.form_up.FormUploader(this.config);
         const putExtra = new qiniu.form_up.PutExtra();
         formUploader.put(
-          this.uploadToken,
+          this.createUploadToken(),
           path,
           ' ',
           putExtra,
@@ -180,5 +173,17 @@ export class AdminFileSpaceService extends BaseService {
         );
       });
     });
+  }
+
+  /**
+   * 创建Upload Token, 默认过期时间一小时
+   * @returns upload token
+   */
+  createUploadToken(): string {
+    const policy = new qiniu.rs.PutPolicy({
+      scope: this.qiniuConfig.bucket,
+    });
+    const uploadToken = policy.uploadToken(this.mac);
+    return uploadToken;
   }
 }
