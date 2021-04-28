@@ -1,4 +1,4 @@
-import { Config, Init, Provide } from '@midwayjs/decorator';
+import { Config, Init, Inject, Provide } from '@midwayjs/decorator';
 import { EggAppConfig } from 'egg';
 import { BaseService } from '../../base';
 import * as qiniu from 'qiniu';
@@ -6,15 +6,19 @@ import { rs, conf } from 'qiniu';
 import { IFileInfo, iFileListResult } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
+import { Utils } from '../../../common/utils';
 
 // 目录分隔符
 export const DELIMITER = '/';
-export const LIMIT = 5;
+export const LIMIT = 100;
 
 @Provide()
 export class AdminFileSpaceService extends BaseService {
   @Config('qiniu')
   qiniuConfig: EggAppConfig['qiniu'];
+
+  @Inject()
+  utils: Utils;
 
   bucketManager: rs.BucketManager;
 
@@ -56,6 +60,7 @@ export class AdminFileSpaceService extends BaseService {
                     .substr(0, dirPath.length - 1)
                     .replace(prefix, ''),
                   type: 'dir',
+                  id: this.utils.generateRandomValue(22),
                 });
               }
             }
@@ -66,6 +71,7 @@ export class AdminFileSpaceService extends BaseService {
                 // 模拟目录
                 if (!isEmpty(key)) {
                   fileList.push({
+                    id: item.hash,
                     name: key,
                     type: 'file',
                     fsize: item.fsize,
