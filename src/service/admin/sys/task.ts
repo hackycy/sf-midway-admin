@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateTaskDto, UpdateTaskDto } from '../../../dto/admin/sys/task';
 import { IMidwayApplication } from '@midwayjs/core';
 import { BullService } from 'midway-bull';
-import { SysTaskQueue } from '../../../queue/task';
+import { SysTaskQueue } from '../../../task/sys-task';
 
 @Provide()
 export class AdminSysTaskService extends BaseService {
