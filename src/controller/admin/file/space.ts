@@ -37,7 +37,21 @@ export class AdminFileSpaceController extends BaseController {
   @Post('/mkdir')
   @Validate()
   async mkdir(@Body(ALL) dto: MKDirDto): Promise<ResOp> {
-    const result = await this.adminFileSpaceService.createDir(dto.dirName);
+    let result = false;
+    if (dto.dirName.includes('/')) {
+      // 多级目录
+      const paths: string[] = dto.dirName.split('/');
+      for (let index = 1; index <= paths.length; index++) {
+        const dir = paths.slice(0, index).join('/');
+        const tmp = await this.adminFileSpaceService.createDir(dir);
+        if (index === paths.length) {
+          result = tmp;
+        }
+      }
+    } else {
+      // 单目录
+      result = await this.adminFileSpaceService.createDir(dto.dirName);
+    }
     if (result) {
       return res();
     } else {

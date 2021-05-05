@@ -17,6 +17,9 @@ export const IsLegalDirExpression = (
     if (/([\\/])\1/.test(value)) {
       throw new Error('// this is not allow');
     }
+    if (value.endsWith('/')) {
+      throw new Error('dir name not allow / end');
+    }
     return value;
   } catch (e) {
     return helpers.error('dir name invalid');
