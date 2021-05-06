@@ -7,6 +7,7 @@ import { IFileInfo, IFileListResult } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
 import { Utils } from '../../../common/utils';
+import { join } from 'path';
 
 // 目录分隔符
 export const DELIMITER = '/';
@@ -176,6 +177,41 @@ export class AdminFileSpaceService extends BaseService {
   }
 
   /**
+   * 检查文件是否存在，同可检查目录
+   */
+  async checkFileExist(filePath: string): Promise<boolean> {
+    const path = filePath.endsWith('/') ? filePath : `${filePath}/`;
+    return new Promise((resolve, reject) => {
+      // fix path end must a /
+
+      // 检测文件夹是否存在
+      this.bucketManager.stat(
+        this.qiniuConfig.bucket,
+        path,
+        (respErr, respBody, respInfo) => {
+          if (respErr) {
+            reject(respErr);
+            return;
+          }
+          if (respInfo.statusCode === 200) {
+            // 文件夹存在
+            resolve(true);
+          } else if (respInfo.statusCode === 612) {
+            // 文件夹不存在
+            resolve(false);
+          } else {
+            reject(
+              new Error(
+                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+              )
+            );
+          }
+        }
+      );
+    });
+  }
+
+  /**
    * 创建Upload Token, 默认过期时间一小时
    * @returns upload token
    */
@@ -186,5 +222,117 @@ export class AdminFileSpaceService extends BaseService {
     });
     const uploadToken = policy.uploadToken(this.mac);
     return uploadToken;
+  }
+
+  /**
+   * 重命名文件
+   * @param dir 文件路径
+   * @param name 文件名称
+   */
+  async renameFile(dir: string, name: string, toname: string): Promise<void> {
+    const fileName = join(dir, name);
+    const toFileName = join(dir, toname);
+    const op = {
+      force: true,
+    };
+    return new Promise((resolve, reject) => {
+      this.bucketManager.move(
+        this.qiniuConfig.bucket,
+        fileName,
+        this.qiniuConfig.bucket,
+        toFileName,
+        op,
+        (err, respBody, respInfo) => {
+          if (err) {
+            reject(err);
+          } else {
+            if (respInfo.statusCode === 200) {
+              resolve();
+            } else {
+              reject(
+                new Error(
+                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+                )
+              );
+            }
+          }
+        }
+      );
+    });
+  }
+
+  /**
+   * 重命名文件夹，数量过多可能会导致超时
+   */
+  async renameDir(path: string, name: string, toName: string): Promise<void> {
+    const dirName = join(path, name);
+    const toDirName = join(path, toName);
+    let hasFile = true;
+    let marker = '';
+    const op = {
+      force: true,
+    };
+    const bucketName = this.qiniuConfig.bucket;
+    while (hasFile) {
+      await new Promise<void>((resolve, reject) => {
+        // 列举当前目录下的所有文件
+        this.bucketManager.listPrefix(
+          this.qiniuConfig.bucket,
+          {
+            prefix: dirName,
+            limit: 1000,
+            marker,
+          },
+          (err, respBody, respInfo) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+            if (respInfo.statusCode === 200) {
+              const moveOperations = respBody.items.map(item => {
+                const { key } = item;
+                const destKey = key.replace(dirName, toDirName);
+                return qiniu.rs.moveOp(
+                  bucketName,
+                  key,
+                  bucketName,
+                  destKey,
+                  op
+                );
+              });
+              this.bucketManager.batch(
+                moveOperations,
+                (err2, respBody2, respInfo2) => {
+                  if (err2) {
+                    reject(err2);
+                    return;
+                  }
+                  if (respInfo2.statusCode === 200) {
+                    if (isEmpty(respBody.marker)) {
+                      hasFile = false;
+                    } else {
+                      marker = respBody.marker;
+                    }
+                    resolve();
+                  } else {
+                    reject(
+                      new Error(
+                        `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`
+                      )
+                    );
+                  }
+                }
+              );
+            } else {
+              reject(
+                new Error(
+                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+                )
+              );
+            }
+          }
+        );
+      });
+    }
   }
 }

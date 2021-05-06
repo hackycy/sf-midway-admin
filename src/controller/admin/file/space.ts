@@ -10,10 +10,15 @@ import {
   Validate,
 } from '@midwayjs/decorator';
 import { res } from '../../../common/utils';
-import { GetFileListDto, MKDirDto } from '../../../dto/admin/file/space';
+import {
+  GetFileListDto,
+  MKDirDto,
+  RenameDto,
+} from '../../../dto/admin/file/space';
 import { ResOp } from '../../../interface';
 import { AdminFileSpaceService } from '../../../service/admin/file/space';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
+import { join } from 'path';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/file/space`, {
@@ -66,5 +71,34 @@ export class AdminFileSpaceController extends BaseController {
         token: this.adminFileSpaceService.createUploadToken(),
       },
     });
+  }
+
+  @Post('/rename')
+  @Validate()
+  async rename(@Body(ALL) dto: RenameDto): Promise<ResOp> {
+    const fileOrDirPath = join(dto.path, dto.name);
+    const result = await this.adminFileSpaceService.checkFileExist(
+      fileOrDirPath
+    );
+    if (result) {
+      return res({
+        code: 20001,
+      });
+    }
+    if (dto.type === 'file') {
+      await this.adminFileSpaceService.renameFile(
+        dto.path,
+        dto.name,
+        dto.toName
+      );
+      return res();
+    } else {
+      await this.adminFileSpaceService.renameDir(
+        dto.path,
+        dto.name,
+        dto.toName
+      );
+      return res();
+    }
   }
 }
