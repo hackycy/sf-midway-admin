@@ -70,7 +70,7 @@ export class AdminFileSpaceService extends BaseService {
                     .substr(0, dirPath.length - 1)
                     .replace(prefix, ''),
                   type: 'dir',
-                  id: this.utils.generateRandomValue(22),
+                  id: this.utils.generateRandomValue(12),
                 });
               }
             }
@@ -81,7 +81,7 @@ export class AdminFileSpaceService extends BaseService {
                 // 模拟目录
                 if (!isEmpty(key)) {
                   fileList.push({
-                    id: item.hash,
+                    id: this.utils.generateRandomValue(12),
                     name: key,
                     type: 'file',
                     fsize: item.fsize,
@@ -182,6 +182,7 @@ export class AdminFileSpaceService extends BaseService {
   createUploadToken(): string {
     const policy = new qiniu.rs.PutPolicy({
       scope: this.qiniuConfig.bucket,
+      insertOnly: 1,
     });
     const uploadToken = policy.uploadToken(this.mac);
     return uploadToken;
