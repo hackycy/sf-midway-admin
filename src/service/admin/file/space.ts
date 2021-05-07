@@ -352,4 +352,33 @@ export class AdminFileSpaceService extends BaseService {
     }
     throw new Error('qiniu config access not support');
   }
+
+  /**
+   * 删除文件
+   * @param dir 删除的文件夹目录
+   * @param name 文件名
+   */
+  async deleteFile(dir: string, name: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.bucketManager.delete(
+        this.qiniuConfig.bucket,
+        `${dir}${name}`,
+        (err, respBody, respInfo) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          if (respInfo.statusCode === 200) {
+            resolve();
+          } else {
+            reject(
+              new Error(
+                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+              )
+            );
+          }
+        }
+      );
+    });
+  }
 }

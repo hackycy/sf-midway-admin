@@ -68,3 +68,18 @@ export class DownloadDto {
   @Rule(RuleType.string().allow('').required())
   path: string;
 }
+
+export class DeleteDto {
+  @Rule(
+    RuleType.string()
+      .pattern(/(^file$)|(^dir$)/)
+      .required()
+  )
+  type: string;
+
+  @Rule(RuleType.string().required())
+  name: string;
+
+  @Rule(RuleType.string().allow('').required())
+  path: string;
+}

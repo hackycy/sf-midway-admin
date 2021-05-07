@@ -11,6 +11,7 @@ import {
 } from '@midwayjs/decorator';
 import { res } from '../../../common/utils';
 import {
+  DeleteDto,
   DownloadDto,
   GetFileListDto,
   MKDirDto,
@@ -90,15 +91,14 @@ export class AdminFileSpaceController extends BaseController {
         dto.name,
         dto.toName
       );
-      return res();
     } else {
       await this.adminFileSpaceService.renameDir(
         dto.path,
         dto.name,
         dto.toName
       );
-      return res();
     }
+    return res();
   }
 
   @Post('/download')
@@ -109,5 +109,16 @@ export class AdminFileSpaceController extends BaseController {
         `${dto.path}${dto.name}`
       ),
     });
+  }
+
+  @Post('/delete')
+  @Validate()
+  async delete(@Body(ALL) dto: DeleteDto): Promise<ResOp> {
+    if (dto.type === 'file') {
+      await this.adminFileSpaceService.deleteFile(dto.path, dto.name);
+      return res();
+    } else {
+      throw new Error('un support');
+    }
   }
 }
