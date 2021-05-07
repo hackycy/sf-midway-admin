@@ -1,4 +1,5 @@
-import { Inject, Provide } from '@midwayjs/decorator';
+import { App, Provide } from '@midwayjs/decorator';
+import { IMidwayWebApplication } from '@midwayjs/web';
 import { IQueue, Queue } from 'midway-bull';
 import { AdminFileSpaceService } from '../service/admin/file/space';
 
@@ -13,17 +14,17 @@ export interface ExecArgs {
 
 @Queue('default')
 @Provide()
-export class QiniuTask implements IQueue {
-  @Inject()
-  adminFileSpaceService: AdminFileSpaceService;
+export class QiniuTaskQueue implements IQueue {
+  @App()
+  app: IMidwayWebApplication;
 
   async excute(data: ExecArgs): Promise<void> {
+    const container = this.app.getApplicationContext();
+    const adminFileSpaceService = await container.getAsync(
+      AdminFileSpaceService
+    );
     if (data.action === 'rename') {
-      await this.adminFileSpaceService.renameDir(
-        data.path,
-        data.name,
-        data.toName
-      );
+      await adminFileSpaceService.renameDir(data.path, data.name, data.toName);
     } else if (data.action === 'delete') {
       //
     }

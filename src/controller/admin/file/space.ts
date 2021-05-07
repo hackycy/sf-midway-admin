@@ -93,11 +93,12 @@ export class AdminFileSpaceController extends BaseController {
         dto.toName
       );
     } else {
-      await this.adminFileSpaceService.renameDir(
-        dto.path,
-        dto.name,
-        dto.toName
-      );
+      await this.adminFileSpaceService.createQiniuTask({
+        action: 'rename',
+        path: dto.path,
+        name: dto.name,
+        toName: dto.toName,
+      });
     }
     return res();
   }

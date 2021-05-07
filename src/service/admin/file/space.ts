@@ -7,6 +7,8 @@ import { IFileInfo, IFileListResult, IQiniuTaskStatusInfo } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
 import { Utils } from '../../../common/utils';
+import { BullService } from 'midway-bull';
+import { ExecArgs, QiniuTaskQueue } from '../../../task/qiniu-task';
 
 // 目录分隔符
 export const DELIMITER = '/';
@@ -19,6 +21,9 @@ export class AdminFileSpaceService extends BaseService {
 
   @Inject()
   utils: Utils;
+
+  @Inject('bull:bullService')
+  bullService: BullService;
 
   config: conf.ConfigOptions;
   mac: auth.digest.Mac;
@@ -260,24 +265,38 @@ export class AdminFileSpaceService extends BaseService {
     });
   }
 
+  async createQiniuTask(data: ExecArgs): Promise<void> {
+    await this.bullService.getQueue(QiniuTaskQueue).add(data, {
+      removeOnComplete: true,
+      removeOnFail: true,
+    });
+  }
+
   /**
    * 设置队列任务状态
+   * 0 -> 启动
+   * 1 -> 成功 | 不存在redis key
+   * 2 -> 失败，在获取状态后会自动移除
    */
   async setQiniuTaskStatus(
     action: string,
     path: string,
     name: string,
-    code: number,
+    status: number,
     err?: string
   ): Promise<void> {
     const redisKey = `admin:qiniu:${action}:${path}${name}`;
-    await this.getAdminRedis().set(
-      redisKey,
-      JSON.stringify({
-        code,
-        err,
-      })
-    );
+    if (status === 1) {
+      await this.getAdminRedis().del(redisKey);
+    } else {
+      await this.getAdminRedis().set(
+        redisKey,
+        JSON.stringify({
+          status,
+          err,
+        })
+      );
+    }
   }
 
   /**
@@ -292,12 +311,11 @@ export class AdminFileSpaceService extends BaseService {
     const str = await this.getAdminRedis().get(redisKey);
     if (isEmpty(str)) {
       return {
-        code: -1,
-        err: '任务不存在',
+        status: 1,
       };
     } else {
       const obj: IQiniuTaskStatusInfo = JSON.parse(str);
-      if (obj.code !== 0) {
+      if (obj.status === 2) {
         await this.getAdminRedis().del(redisKey);
       }
       return obj;

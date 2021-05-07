@@ -114,6 +114,6 @@ export interface IFileInfo {
 }
 
 export interface IQiniuTaskStatusInfo {
-  code: number;
+  status: number;
   err?: string;
 }
