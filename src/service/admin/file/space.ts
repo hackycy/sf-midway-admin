@@ -7,7 +7,6 @@ import { IFileInfo, IFileListResult } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
 import { Utils } from '../../../common/utils';
-import { join } from 'path';
 
 // 目录分隔符
 export const DELIMITER = '/';
@@ -229,9 +228,9 @@ export class AdminFileSpaceService extends BaseService {
    * @param dir 文件路径
    * @param name 文件名称
    */
-  async renameFile(dir: string, name: string, toname: string): Promise<void> {
-    const fileName = join(dir, name);
-    const toFileName = join(dir, toname);
+  async renameFile(dir: string, name: string, toName: string): Promise<void> {
+    const fileName = `${dir}${name}`;
+    const toFileName = `${dir}${toName}`;
     const op = {
       force: true,
     };
@@ -265,8 +264,8 @@ export class AdminFileSpaceService extends BaseService {
    * 重命名文件夹，数量过多可能会导致超时
    */
   async renameDir(path: string, name: string, toName: string): Promise<void> {
-    const dirName = join(path, name);
-    const toDirName = join(path, toName);
+    const dirName = `${path}${name}`;
+    const toDirName = `${path}${toName}`;
     let hasFile = true;
     let marker = '';
     const op = {

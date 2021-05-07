@@ -18,7 +18,6 @@ import {
 import { ResOp } from '../../../interface';
 import { AdminFileSpaceService } from '../../../service/admin/file/space';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
-import { join } from 'path';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/file/space`, {
@@ -76,9 +75,8 @@ export class AdminFileSpaceController extends BaseController {
   @Post('/rename')
   @Validate()
   async rename(@Body(ALL) dto: RenameDto): Promise<ResOp> {
-    const fileOrDirPath = join(dto.path, dto.name);
     const result = await this.adminFileSpaceService.checkFileExist(
-      fileOrDirPath
+      `${dto.path}${dto.name}`
     );
     if (result) {
       return res({
