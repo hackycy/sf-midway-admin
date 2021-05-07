@@ -77,7 +77,7 @@ export class AdminFileSpaceController extends BaseController {
   @Validate()
   async rename(@Body(ALL) dto: RenameDto): Promise<ResOp> {
     const result = await this.adminFileSpaceService.checkFileExist(
-      `${dto.path}${dto.name}`
+      `${dto.path}${dto.toName}`
     );
     if (result) {
       return res({
