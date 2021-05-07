@@ -18,6 +18,8 @@ export interface Token {
   pv: number;
 }
 
+export type QINIU_ACCESS_CONTROL = 'private' | 'public';
+
 declare module 'egg' {
   interface Context {
     admin: Token;
@@ -33,6 +35,8 @@ declare module 'egg' {
       secretKey: string;
       bucket: string;
       zone: conf.Zone;
+      domain: string;
+      access: QINIU_ACCESS_CONTROL;
     };
   }
 }
