@@ -83,3 +83,18 @@ export class DeleteDto {
   @Rule(RuleType.string().allow('').required())
   path: string;
 }
+
+export class CheckStatusDto {
+  @Rule(
+    RuleType.string()
+      .pattern(/(^rename$)|(^delete$)/)
+      .required()
+  )
+  action: string;
+
+  @Rule(RuleType.string().required())
+  name: string;
+
+  @Rule(RuleType.string().allow('').required())
+  path: string;
+}

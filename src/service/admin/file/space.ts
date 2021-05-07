@@ -3,7 +3,7 @@ import { EggAppConfig } from 'egg';
 import { BaseService } from '../../base';
 import * as qiniu from 'qiniu';
 import { rs, conf, auth } from 'qiniu';
-import { IFileInfo, IFileListResult } from '../interface';
+import { IFileInfo, IFileListResult, IQiniuTaskStatusInfo } from '../interface';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
 import { Utils } from '../../../common/utils';
@@ -261,77 +261,127 @@ export class AdminFileSpaceService extends BaseService {
   }
 
   /**
+   * 设置队列任务状态
+   */
+  async setQiniuTaskStatus(
+    action: string,
+    path: string,
+    name: string,
+    code: number,
+    err?: string
+  ): Promise<void> {
+    const redisKey = `admin:qiniu:${action}:${path}${name}`;
+    await this.getAdminRedis().set(
+      redisKey,
+      JSON.stringify({
+        code,
+        err,
+      })
+    );
+  }
+
+  /**
+   * 获取队列任务状态
+   */
+  async getQiniuTaskStatus(
+    action: string,
+    path: string,
+    name: string
+  ): Promise<IQiniuTaskStatusInfo> {
+    const redisKey = `admin:qiniu:${action}:${path}${name}`;
+    const str = await this.getAdminRedis().get(redisKey);
+    if (isEmpty(str)) {
+      return {
+        code: -1,
+        err: '任务不存在',
+      };
+    } else {
+      const obj: IQiniuTaskStatusInfo = JSON.parse(str);
+      if (obj.code !== 0) {
+        await this.getAdminRedis().del(redisKey);
+      }
+      return obj;
+    }
+  }
+
+  /**
    * 重命名文件夹，数量过多可能会导致超时
    */
   async renameDir(path: string, name: string, toName: string): Promise<void> {
-    const dirName = `${path}${name}`;
-    const toDirName = `${path}${toName}`;
-    let hasFile = true;
-    let marker = '';
-    const op = {
-      force: true,
-    };
-    const bucketName = this.qiniuConfig.bucket;
-    while (hasFile) {
-      await new Promise<void>((resolve, reject) => {
-        // 列举当前目录下的所有文件
-        this.bucketManager.listPrefix(
-          this.qiniuConfig.bucket,
-          {
-            prefix: dirName,
-            limit: 1000,
-            marker,
-          },
-          (err, respBody, respInfo) => {
-            if (err) {
-              reject(err);
-              return;
-            }
-            if (respInfo.statusCode === 200) {
-              const moveOperations = respBody.items.map(item => {
-                const { key } = item;
-                const destKey = key.replace(dirName, toDirName);
-                return qiniu.rs.moveOp(
-                  bucketName,
-                  key,
-                  bucketName,
-                  destKey,
-                  op
-                );
-              });
-              this.bucketManager.batch(
-                moveOperations,
-                (err2, respBody2, respInfo2) => {
-                  if (err2) {
-                    reject(err2);
-                    return;
-                  }
-                  if (respInfo2.statusCode === 200) {
-                    if (isEmpty(respBody.marker)) {
-                      hasFile = false;
-                    } else {
-                      marker = respBody.marker;
+    try {
+      await this.setQiniuTaskStatus('rename', path, name, 0);
+      const dirName = `${path}${name}`;
+      const toDirName = `${path}${toName}`;
+      let hasFile = true;
+      let marker = '';
+      const op = {
+        force: true,
+      };
+      const bucketName = this.qiniuConfig.bucket;
+      while (hasFile) {
+        await new Promise<void>((resolve, reject) => {
+          // 列举当前目录下的所有文件
+          this.bucketManager.listPrefix(
+            this.qiniuConfig.bucket,
+            {
+              prefix: dirName,
+              limit: 1000,
+              marker,
+            },
+            (err, respBody, respInfo) => {
+              if (err) {
+                reject(err);
+                return;
+              }
+              if (respInfo.statusCode === 200) {
+                const moveOperations = respBody.items.map(item => {
+                  const { key } = item;
+                  const destKey = key.replace(dirName, toDirName);
+                  return qiniu.rs.moveOp(
+                    bucketName,
+                    key,
+                    bucketName,
+                    destKey,
+                    op
+                  );
+                });
+                this.bucketManager.batch(
+                  moveOperations,
+                  (err2, respBody2, respInfo2) => {
+                    if (err2) {
+                      reject(err2);
+                      return;
                     }
-                    resolve();
-                  } else {
-                    reject(
-                      new Error(
-                        `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`
-                      )
-                    );
+                    if (respInfo2.statusCode === 200) {
+                      if (isEmpty(respBody.marker)) {
+                        hasFile = false;
+                      } else {
+                        marker = respBody.marker;
+                      }
+                      resolve();
+                    } else {
+                      reject(
+                        new Error(
+                          `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`
+                        )
+                      );
+                    }
                   }
-                }
-              );
-            } else {
-              reject(
-                new Error(
-                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
-                )
-              );
+                );
+              } else {
+                reject(
+                  new Error(
+                    `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+                  )
+                );
+              }
             }
-          }
-        );
-      });
+          );
+        });
+      }
+      await this.setQiniuTaskStatus('rename', path, name, 1);
+    } catch (err) {
+      await this.setQiniuTaskStatus('rename', path, name, 2, `${err}`);
     }
   }
 
@@ -350,7 +400,7 @@ export class AdminFileSpaceService extends BaseService {
         Date.now() / 1000 + 36000
       );
     }
-    throw new Error('qiniu config access not support');
+    throw new Error('qiniu config access type not support');
   }
 
   /**

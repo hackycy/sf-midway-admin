@@ -11,6 +11,7 @@ import {
 } from '@midwayjs/decorator';
 import { res } from '../../../common/utils';
 import {
+  CheckStatusDto,
   DeleteDto,
   DownloadDto,
   GetFileListDto,
@@ -120,5 +121,17 @@ export class AdminFileSpaceController extends BaseController {
     } else {
       throw new Error('un support');
     }
+  }
+
+  @Post('/check')
+  @Validate()
+  async check(@Body(ALL) dto: CheckStatusDto): Promise<ResOp> {
+    return res({
+      data: await this.adminFileSpaceService.getQiniuTaskStatus(
+        dto.action,
+        dto.path,
+        dto.name
+      ),
+    });
   }
 }
