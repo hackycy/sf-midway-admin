@@ -11,6 +11,7 @@ import {
 } from '@midwayjs/decorator';
 import { res } from '../../../common/utils';
 import {
+  DownloadDto,
   GetFileListDto,
   MKDirDto,
   RenameDto,
@@ -98,5 +99,15 @@ export class AdminFileSpaceController extends BaseController {
       );
       return res();
     }
+  }
+
+  @Post('/download')
+  @Validate()
+  async download(@Body(ALL) dto: DownloadDto): Promise<ResOp> {
+    return res({
+      data: this.adminFileSpaceService.getDownloadLink(
+        `${dto.path}${dto.name}`
+      ),
+    });
   }
 }

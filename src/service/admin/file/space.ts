@@ -334,4 +334,22 @@ export class AdminFileSpaceService extends BaseService {
       });
     }
   }
+
+  /**
+   * 获取七牛下载的文件url链接
+   * @param key 文件路径
+   * @returns 连接
+   */
+  getDownloadLink(key: string): string {
+    if (this.qiniuConfig.access === 'public') {
+      return this.bucketManager.publicDownloadUrl(this.qiniuConfig.domain, key);
+    } else if (this.qiniuConfig.access === 'private') {
+      return this.bucketManager.privateDownloadUrl(
+        this.qiniuConfig.domain,
+        key,
+        Date.now() / 1000 + 36000
+      );
+    }
+    throw new Error('qiniu config access not support');
+  }
 }

@@ -60,3 +60,11 @@ export class RenameDto {
   @Rule(RuleType.string().allow('').required())
   path: string;
 }
+
+export class DownloadDto {
+  @Rule(RuleType.string().required())
+  name: string;
+
+  @Rule(RuleType.string().allow('').required())
+  path: string;
+}
