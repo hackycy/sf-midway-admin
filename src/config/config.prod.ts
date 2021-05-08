@@ -56,7 +56,18 @@ export default (): any => {
   };
 
   const parseZone = (zone: string) => {
-    return qiniu.zone[zone];
+    switch (zone) {
+      case 'Zone_as0':
+        return qiniu.zone.Zone_as0;
+      case 'Zone_na0':
+        return qiniu.zone.Zone_na0;
+      case 'Zone_z0':
+        return qiniu.zone.Zone_z0;
+      case 'Zone_z1':
+        return qiniu.zone.Zone_z1;
+      case 'Zone_z2':
+        return qiniu.zone.Zone_z2;
+    }
   };
 
   config.qiniu = {
