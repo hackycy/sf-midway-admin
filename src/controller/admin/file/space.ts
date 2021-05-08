@@ -118,10 +118,14 @@ export class AdminFileSpaceController extends BaseController {
   async delete(@Body(ALL) dto: DeleteDto): Promise<ResOp> {
     if (dto.type === 'file') {
       await this.adminFileSpaceService.deleteFile(dto.path, dto.name);
-      return res();
     } else {
-      throw new Error('un support');
+      await this.adminFileSpaceService.createQiniuTask({
+        action: 'delete',
+        path: dto.path,
+        name: dto.name,
+      });
     }
+    return res();
   }
 
   @Post('/check')

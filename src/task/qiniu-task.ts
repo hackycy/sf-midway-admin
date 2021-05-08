@@ -26,7 +26,7 @@ export class QiniuTaskQueue implements IQueue {
     if (data.action === 'rename') {
       await adminFileSpaceService.renameDir(data.path, data.name, data.toName);
     } else if (data.action === 'delete') {
-      //
+      await adminFileSpaceService.deleteDir(data.path, data.name);
     }
   }
   onEvent(): void | Promise<void> {

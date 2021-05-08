@@ -449,4 +449,65 @@ export class AdminFileSpaceService extends BaseService {
       );
     });
   }
+
+  async deleteDir(path: string, name: string): Promise<void> {
+    try {
+      await this.setQiniuTaskStatus('delete', path, name, 0);
+      const dirName = `${path}${name}/`;
+      let hasFile = true;
+      let marker = '';
+      while (hasFile) {
+        await new Promise<void>((resolve, reject) => {
+          this.bucketManager.listPrefix(
+            this.qiniuConfig.bucket,
+            {
+              prefix: dirName,
+              limit: 1000,
+              marker,
+            },
+            (err, respBody, respInfo) => {
+              if (err) {
+                reject(err);
+                return;
+              }
+              if (respInfo.statusCode === 200) {
+                const deleteOperations = respBody.items.map(item => {
+                  return qiniu.rs.deleteOp(this.qiniuConfig.bucket, item.key);
+                });
+                this.bucketManager.batch(
+                  deleteOperations,
+                  (err2, respBody2, respInfo2) => {
+                    if (err2) {
+                      reject(err2);
+                      return;
+                    }
+                    // 200 is success, 298 is part success
+                    if (respInfo2.statusCode === 200) {
+                      if (isEmpty(respBody.marker)) {
+                        hasFile = false;
+                      } else {
+                        marker = respBody.marker;
+                      }
+                      resolve();
+                    } else if (respInfo2.statusCode === 298) {
+                      reject(new Error('操作异常，但部分文件夹删除成功'));
+                    } else {
+                      reject(
+                        new Error(
+                          `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`
+                        )
+                      );
+                    }
+                  }
+                );
+              }
+            }
+          );
+        });
+      }
+      await this.setQiniuTaskStatus('delete', path, name, 1);
+    } catch (err) {
+      await this.setQiniuTaskStatus('delete', path, name, 2, `${err}`);
+    }
+  }
 }
