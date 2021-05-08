@@ -1,5 +1,6 @@
 import { EggAppConfig, PowerPartial } from 'egg';
 const redisStore = require('cache-manager-ioredis');
+import * as qiniu from 'qiniu';
 
 export default (): any => {
   const config: PowerPartial<EggAppConfig> = {};
@@ -19,7 +20,7 @@ export default (): any => {
 
   // bull config
   config.bull = {
-    SysTask: {
+    default: {
       redis: {
         port: parseInt(process.env.REDIS_PORT) || 6379,
         host: process.env.REDIS_HOST || '127.0.0.1',
@@ -52,6 +53,19 @@ export default (): any => {
     database: process.env.MYSQL_DATABASE || 'sf-admin',
     synchronize: false,
     logging: false,
+  };
+
+  const parseZone = (zone: string) => {
+    return qiniu.zone[zone];
+  };
+
+  config.qiniu = {
+    accessKey: process.env.QINIU_ACCESSKEY,
+    secretKey: process.env.QINIU_SECRETKEY,
+    domain: process.env.QINIU_DOMAIN,
+    bucket: process.env.QINIU_BUCKET,
+    zone: parseZone(process.env.QINIU_ZONE || 'Zone_z2'),
+    access: (process.env.QINIU_ACCESS_TYPE as any) || 'public',
   };
 
   // midway cache

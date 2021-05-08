@@ -48,6 +48,12 @@ services:
       MAILER_USER: xxx
       MAILER_PASS: xxx
       AMAP_KEY: xxx
+      QINIU_ACCESSKEY: xxx
+      QINIU_SECRETKEY: xxx
+      QINIU_DOMAIN: xxx
+      QINIU_BUCKET: xxx
+      QINIU_ZONE: xxx # Zone_as0 | Zone_na0 | Zone_z0 | Zone_z1 | Zone_z2
+      QINIU_ACCESS_TYPE: public # or private
 
   sfvue:
     image: qa894178522/sfvueadmin:rc
