@@ -24,7 +24,6 @@
     "mysql2": "^2.2.5",
     "nanoid": "^3.1.12",
     "nodemailer": "^6.5.0",
-    "qiniu": "^7.3.2",
     "svg-captcha": "^1.4.0",
     "swagger-ui-dist": "^3.45.1",
     "ua-parser-js": "^0.7.24"
