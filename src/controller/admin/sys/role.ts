@@ -26,8 +26,7 @@ import {
   GetRoleInfoExample,
   GetRoleListByPageExample,
   GetRoleListExample,
-  NormalExample,
-} from '../../swagger';
+} from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/role`, {
@@ -70,7 +69,7 @@ export class AdminSysRoleController extends BaseController {
 
   @(CreateApiDoc()
     .summary('删除角色')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/delete')
   @Validate()
@@ -86,7 +85,7 @@ export class AdminSysRoleController extends BaseController {
 
   @(CreateApiDoc()
     .summary('新增角色')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/add')
   @Validate()
@@ -97,7 +96,7 @@ export class AdminSysRoleController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新角色')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/update')
   @Validate()

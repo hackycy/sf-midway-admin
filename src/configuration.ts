@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import axios from 'axios';
 
 @Configuration({
+  conflictCheck: true, // 启用类名冲突检查
   imports: [
     orm, // 加载 orm 组件
     bull, // 加载 bull 组件

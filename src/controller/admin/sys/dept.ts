@@ -22,11 +22,7 @@ import {
 import { ResOp } from '../../../interface';
 import { AdminSysDeptService } from '../../../service/admin/sys/dept';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
-import {
-  GetInfoDeptExample,
-  GetListDeptExample,
-  NormalExample,
-} from '../../swagger';
+import { GetInfoDeptExample, GetListDeptExample } from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/dept`, {
@@ -53,7 +49,7 @@ export class AdminSysDeptController extends BaseController {
   @(CreateApiDoc()
     .summary('创建系统部门')
     .param('创建系统部门参数')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/add')
   @Validate()
@@ -68,7 +64,7 @@ export class AdminSysDeptController extends BaseController {
   @(CreateApiDoc()
     .summary('删除系统部门')
     .param('删除系统部门参数')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .build())
   @Post('/delete')
   @Validate()
@@ -113,7 +109,7 @@ export class AdminSysDeptController extends BaseController {
 
   @(CreateApiDoc()
     .summary('更新系统部门')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .param('更新部门信息参数')
     .build())
   @Post('/update')
@@ -125,7 +121,7 @@ export class AdminSysDeptController extends BaseController {
 
   @(CreateApiDoc()
     .summary('管理员部门转移')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .param('转移参数')
     .build())
   @Post('/transfer')
@@ -140,7 +136,7 @@ export class AdminSysDeptController extends BaseController {
 
   @(CreateApiDoc()
     .summary('部门移动排序')
-    .respond(200, '', 'json', { example: NormalExample })
+    .respond(200, '', 'json', { example: res() })
     .param('移动排序参数')
     .build())
   @Post('/move')

@@ -19,7 +19,7 @@ export default (): any => {
 
   // bull config
   config.bull = {
-    SysTask: {
+    default: {
       redis: {
         port: parseInt(process.env.REDIS_PORT) || 6379,
         host: process.env.REDIS_HOST || '127.0.0.1',

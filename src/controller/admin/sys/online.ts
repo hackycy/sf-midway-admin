@@ -16,7 +16,7 @@ import { ResOp } from '../../../interface';
 import { AdminSysOnlineService } from '../../../service/admin/sys/online';
 import { AdminSysUserService } from '../../../service/admin/sys/user';
 import { BaseController, ADMIN_PREFIX_URL } from '../../base';
-import { GetOnlineAdminListExample, NormalExample } from '../../swagger';
+import { GetOnlineAdminListExample } from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/online`, {
@@ -49,7 +49,7 @@ export class AdminSysOnlineController extends BaseController {
   @(CreateApiDoc()
     .summary('下线指定在线用户')
     .respond(200, '', 'json', {
-      example: NormalExample,
+      example: res(),
     })
     .build())
   @Post('/kick')

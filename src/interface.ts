@@ -1,4 +1,5 @@
 import 'egg';
+import { conf } from 'qiniu';
 
 export interface ResOp {
   data?: any;
@@ -17,6 +18,8 @@ export interface Token {
   pv: number;
 }
 
+export type QINIU_ACCESS_CONTROL = 'private' | 'public';
+
 declare module 'egg' {
   interface Context {
     admin: Token;
@@ -27,9 +30,13 @@ declare module 'egg' {
     jwt: {
       secret: string;
     };
-    aesSecret: {
-      admin: string;
-      front: string;
+    qiniu: {
+      accessKey: string;
+      secretKey: string;
+      bucket: string;
+      zone: conf.Zone;
+      domain: string;
+      access: QINIU_ACCESS_CONTROL;
     };
   }
 }

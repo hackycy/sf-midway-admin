@@ -21,7 +21,7 @@ import {
   GetReqLogByPageExample,
   GetTaskLogByPageExample,
   SearchReqLogByPageExample,
-} from '../../swagger';
+} from '../swagger';
 
 @Provide()
 @Controller(`${ADMIN_PREFIX_URL}/sys/log`, {
