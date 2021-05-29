@@ -112,8 +112,3 @@ export interface IFileInfo {
   fsize?: string;
   mimeType?: string;
 }
-
-export interface IQiniuTaskStatusInfo {
-  status: number;
-  err?: string;
-}
