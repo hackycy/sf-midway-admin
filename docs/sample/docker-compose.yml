@@ -50,7 +50,7 @@ services:
       AMAP_KEY: xxx
 
   sfvue:
-    image: qa894178522/sfvueadmin:rc
+    image: qa894178522/sfvueadmin:midway
     restart: always
     environment:
       TZ: Asia/Shanghai
