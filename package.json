@@ -1,7 +1,9 @@
 {
   "name": "sf-midway-admin",
-  "version": "0.0.1",
-  "description": "",
+  "version": "2.0.1",
+  "description": "simple and efficient authority management system with separation of front and backends",
+  "author": "hackycy",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@midwayjs/bootstrap": "^2.9.0",
@@ -78,7 +80,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/hackycy/sf-midway-admin"
-  },
-  "author": "hackycy",
-  "license": "MIT"
+  }
 }
